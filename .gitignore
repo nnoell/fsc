@@ -1,0 +1,7 @@
+.vs/*
+
+build/*
+!build/.gitkeep
+
+install/*
+!install/.gitkeep
