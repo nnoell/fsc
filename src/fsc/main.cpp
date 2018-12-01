@@ -28,7 +28,7 @@
 #define WINDOW_HEIGHT 720
 
 // The font path
-#define FONT_PATH "..\\src\\fsc\\font\\terminus.ttf"
+#define FONT_PATH "..\\fonts\\terminus.ttf"
 
 // The shader location
 #define SHADER_VERTEX_PATH "..\\src\\fsc\\shader\\vertex.glsl"
