@@ -17,11 +17,8 @@ namespace fsc {
 
 // The char data type
 struct CharData {
-  // The texture
-  unsigned int texture;
-
   // The vertices
-  float vertices[6 * 6];
+  std::shared_ptr<const float []> vertices;
 
   // The number of vertices
   unsigned int num_vertices;
@@ -31,6 +28,9 @@ struct CharData {
 
   // The position for the next character
   float next_position;
+
+  // The texture
+  unsigned int texture;
 };
 
 // The Font class

@@ -87,7 +87,7 @@ void Text::Draw() const {
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, char_data.stride * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
     // Configure VBO
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * char_data.stride * char_data.num_vertices, char_data.vertices);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * char_data.stride * char_data.num_vertices, char_data.vertices.get());
 
     // Activate render state
     glActiveTexture(GL_TEXTURE0);

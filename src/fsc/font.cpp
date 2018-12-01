@@ -100,21 +100,27 @@ Font::Font() :
       const float w = size.x * VERTEX_SCALE_FACTOR;
       const float h = size.y * VERTEX_SCALE_FACTOR;
 
-      // Create 2 triangles forming a square with the previous dimensions
-      char_vertices_map_.insert(std::pair<char, CharData>(c, {
-        texture,
-        {
-          x,     y + h, 0.0f, 1.0f, 0.0f, 0.0f,
-          x,     y,     0.0f, 1.0f, 0.0f, 1.0f,
-          x + w, y,     0.0f, 1.0f, 1.0f, 1.0f,
+      // Create the vertices
+      constexpr unsigned int num_vertices = 6;
+      constexpr unsigned int stride = 6;
+      std::shared_ptr<const float []> vertices(new float [stride * num_vertices] {
+        // Bottom left triangle
+        x,     y + h, 0.0f, 1.0f, 0.0f, 0.0f,
+        x,     y,     0.0f, 1.0f, 0.0f, 1.0f,
+        x + w, y,     0.0f, 1.0f, 1.0f, 1.0f,
+        // Top right triangle
+        x,     y + h, 0.0f, 1.0f, 0.0f, 0.0f,
+        x + w, y,     0.0f, 1.0f, 1.0f, 1.0f,
+        x + w, y + h, 0.0f, 1.0f, 1.0f, 0.0f
+      });
 
-          x,     y + h, 0.0f, 1.0f, 0.0f, 0.0f,
-          x + w, y,     0.0f, 1.0f, 1.0f, 1.0f,
-          x + w, y + h, 0.0f, 1.0f, 1.0f, 0.0f
-        },
-        6,
-        6,
-        next_position
+      // Create the CharData and insert it into the map
+      char_vertices_map_.insert(std::pair<char, CharData>(c, {
+        vertices,
+        num_vertices,
+        stride,
+        next_position,
+        texture
       }));
 
       // Unbind the texture
