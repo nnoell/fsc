@@ -21,7 +21,7 @@
 #include "camera.hpp"
 #include "object/folder.hpp"
 #include "object/text.hpp"
-#include "line.hpp"
+#include "object/line.hpp"
 
 // The window resulution
 #define WINDOW_WIDTH 1080

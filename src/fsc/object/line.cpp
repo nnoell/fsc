@@ -6,9 +6,10 @@
 
 // FSC
 #include "line.hpp"
-#include "pipeline.hpp"
+#include "../pipeline.hpp"
 
 namespace fsc {
+namespace object {
 
 Line::Line(std::vector<glm::vec3> points, glm::vec4 color) :
     num_vertices_(points.size() * 3 * 6),
@@ -75,4 +76,5 @@ void Line::Draw() const {
   glDeleteVertexArrays(1, &vao);
 }
 
+}  // namespace object
 }  // namespace fsc

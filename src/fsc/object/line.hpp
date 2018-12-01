@@ -13,6 +13,7 @@
 #include <fsc/external.hpp>
 
 namespace fsc {
+namespace object {
 
 // The Line class
 class Line final {
@@ -50,4 +51,5 @@ class Line final {
   glm::vec4 color_;
 };
 
+}  // namespace object
 }  // namespace fsc
