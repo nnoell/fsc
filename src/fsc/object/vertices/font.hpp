@@ -13,27 +13,12 @@
 // PUBLIC
 #include <fsc/external.hpp>
 
+// FSC
+#include "data.hpp"
+
 namespace fsc {
 namespace object {
 namespace vertices {
-
-// The char data type
-struct CharData {
-  // The vertices
-  std::shared_ptr<const float []> vertices;
-
-  // The number of vertices
-  unsigned int num_vertices;
-
-  // The stride
-  unsigned int stride;
-
-  // The position for the next character
-  float next_position;
-
-  // The texture
-  unsigned int texture;
-};
 
 // The Font class
 class Font final {
