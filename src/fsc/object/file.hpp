@@ -9,10 +9,11 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
 #include "complex.hpp"
 
 namespace fsc {
+namespace object {
 
 // The File class
 class File final : public Complex {
@@ -44,4 +45,5 @@ class File final : public Complex {
   bool is_folder_;
 };
 
+}  // namespace object
 }  // namespace fsc

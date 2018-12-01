@@ -8,6 +8,7 @@
 #include "cube.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
 // The cube vertices
@@ -60,5 +61,6 @@ const Data& GetCube() {
   return cube_data;
 }
 
-}  // vertices
-}  // fsc
+}  // namespace vertices
+}  // namespace object
+}  // namespace fsc

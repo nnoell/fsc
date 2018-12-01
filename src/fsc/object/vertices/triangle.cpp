@@ -4,29 +4,25 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// FSC
-#include "square.hpp"
+// GLE
+#include "triangle.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
-// The square vertices
-float square_vertices_[] = {
-  // First triangle
-  1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-  -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-
-  // Second triangle
-  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+// The triangle vertices
+const float triangle_vertices_[] = {
   -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-  -1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f
+  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+  0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f
 };
 
-const Data& GetSquare() {
-  static const Data& square_data {square_vertices_, 6, 6};
-  return square_data;
+const Data& GetTriangleVertices() {
+  static const Data triangle_data {triangle_vertices_, 3, 6};
+  return triangle_data;
 }
 
-}  // vertices
-}  // fsc
+}  // namespace vertices
+}  // namespace object
+}  // namespace fsc

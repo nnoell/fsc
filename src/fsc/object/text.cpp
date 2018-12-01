@@ -6,10 +6,11 @@
 
 // FSC
 #include "text.hpp"
-#include "font.hpp"
-#include "pipeline.hpp"
+#include "../font.hpp"
+#include "../pipeline.hpp"
 
 namespace fsc {
+namespace object {
 
 Text::Text(std::string text, glm::vec4 color, glm::mat4 model, TextFormat format) :
     Object(),
@@ -116,4 +117,5 @@ void Text::Draw() const {
   glDeleteVertexArrays(1, &vao);
 }
 
+}  // namespace object
 }  // namespace fsc

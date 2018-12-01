@@ -8,6 +8,7 @@
 #include "pyramid.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
 // The pyramid vertices
@@ -38,5 +39,6 @@ const Data& GetPyramid() {
   return pyramid_data;
 }
 
-}  // vertices
-}  // fsc
+}  // namespace vertices
+}  // namespace object
+}  // namespace fsc

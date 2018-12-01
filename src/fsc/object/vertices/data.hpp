@@ -5,14 +5,22 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// FSC
-#include "data.hpp"
-
 namespace fsc {
+namespace object {
 namespace vertices {
 
-// Get the square vertices data
-const Data& GetSquare();
+// The vertices data type
+struct Data {
+  // The vertices array
+  const float *vertices;
+
+  // The vertices size;
+  unsigned int num_vertices;
+
+  // The stride
+  unsigned int stride;
+};
 
 }  // namespace vertices
+}  // namespace object
 }  // namespace fsc

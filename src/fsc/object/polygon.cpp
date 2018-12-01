@@ -6,9 +6,10 @@
 
 // FSC
 #include "polygon.hpp"
-#include "pipeline.hpp"
+#include "../pipeline.hpp"
 
 namespace fsc {
+namespace object {
 
 Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, glm::mat4 model) :
     Object(),
@@ -92,4 +93,5 @@ void Polygon::Draw() const {
   glDeleteVertexArrays(1, &vao);
 }
 
+}  // namespace object
 }  // namespace fsc

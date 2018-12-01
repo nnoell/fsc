@@ -9,10 +9,12 @@
 #include "data.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
-// Gets the cube vertices data
-const Data& GetCube();
+// Get the pyramid vertices data
+const Data& GetPyramid();
 
 }  // namespace vertices
+}  // namespace object
 }  // namespace fsc

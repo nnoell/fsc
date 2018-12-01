@@ -9,12 +9,13 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
+#include "vertices/data.hpp"
 #include "object.hpp"
 #include "text.hpp"
-#include "vertices/data.hpp"
 
 namespace fsc {
+namespace object {
 
 // The Polygon class
 class Polygon : public Object {
@@ -70,4 +71,5 @@ class Polygon : public Object {
   glm::mat4 model_;
 };
 
+}  // namespace object
 }  // namespace fsc

@@ -1,26 +1,20 @@
+#pragma once
 //----------------------------------------------------------------------------------------------------------------------
 // Copyright   :  (c) Julian Bouzas 2018
 // License     :  BSD3-style (see LICENSE)
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// GLE
-#include "triangle.hpp"
+// FSC
+#include "data.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
-// The triangle vertices
-const float triangle_vertices_[] = {
-  -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-  0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f
-};
+// Get the square vertices data
+const Data& GetSquare();
 
-const Data& GetTriangleVertices() {
-  static const Data triangle_data {triangle_vertices_, 3, 6};
-  return triangle_data;
-}
-
-}  // vertices
-}  // fsc
+}  // namespace vertices
+}  // namespace object
+}  // namespace fsc

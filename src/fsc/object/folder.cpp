@@ -16,6 +16,7 @@
 #include "plane.hpp"
 
 namespace fsc {
+namespace object {
 
 Folder::Folder(std::string path) :
     Complex(std::make_shared<Plane>(20, 20, 1), {
@@ -53,4 +54,5 @@ Folder::Folder(std::string path) :
 Folder::~Folder() {
 }
 
+}  // namespace object
 }  // namespace fsc

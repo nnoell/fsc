@@ -9,10 +9,12 @@
 #include "data.hpp"
 
 namespace fsc {
+namespace object {
 namespace vertices {
 
 // Get the triangle vertices data
 const Data& GetTriangle();
 
 }  // namespace vertices
+}  // namespace object
 }  // namespace fsc

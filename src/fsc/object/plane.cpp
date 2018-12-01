@@ -13,6 +13,7 @@
 #include "vertices/square.hpp"
 
 namespace fsc {
+namespace object {
 
 static std::shared_ptr<Object> MakeMasterObject(float scale) {
   auto master_object = std::make_shared<Polygon>(vertices::GetSquare(), glm::vec4 {0.3f, 0.3f, 0.3f, 0.3f}, true);
@@ -41,4 +42,5 @@ Plane::Plane(unsigned int width, unsigned int height, float scale) :
 Plane::~Plane() {
 }
 
+}  // namespace object
 }  // namespace fsc

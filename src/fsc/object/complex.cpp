@@ -12,6 +12,7 @@
 #include "complex.hpp"
 
 namespace fsc {
+namespace object {
 
 Complex::Complex(std::shared_ptr<Object> master_object, std::vector<std::shared_ptr<Object>> objects) :
     Object(),
@@ -84,4 +85,5 @@ void Complex::RemoveObject(unsigned int id) {
       }));
 }
 
+}  // namespace object
 }  // namespace fsc

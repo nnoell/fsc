@@ -5,11 +5,12 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // FSC
+#include "vertices/cube.hpp"
 #include "file.hpp"
 #include "polygon.hpp"
-#include "vertices/cube.hpp"
 
 namespace fsc {
+namespace object {
 
 File::File(std::string name, bool is_folder) :
     Complex(
@@ -25,4 +26,5 @@ File::File(std::string name, bool is_folder) :
 File::~File() {
 }
 
+}  // namespace object
 }  // namespace fsc

@@ -17,16 +17,9 @@
 #include "font.hpp"
 #include "pipeline.hpp"
 #include "camera.hpp"
-#include "complex.hpp"
-#include "object.hpp"
-#include "folder.hpp"
-#include "file.hpp"
-#include "text.hpp"
-#include "plane.hpp"
+#include "object/folder.hpp"
+#include "object/text.hpp"
 #include "line.hpp"
-#include "vertices/cube.hpp"
-#include "vertices/square.hpp"
-#include "vertices/pyramid.hpp"
 
 // The window resulution
 #define WINDOW_WIDTH 1080
@@ -76,9 +69,9 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
     // Create the folder
-    Folder folder {"C:/Windows"};
+    object::Folder folder {"C:/Windows"};
 
-    Text title {"FSC - File System Cyberspace", glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, glm::mat4 {}, TextFormat {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
+    object::Text title {"FSC - File System Cyberspace", glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, glm::mat4 {}, object::TextFormat {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
     title.Translate({0.0f, 00.0f, 10.0f}).Scale({7.0f, 7.0f, 7.0f});
 
     // Render

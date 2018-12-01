@@ -11,6 +11,7 @@
 #include "object.hpp"
 
 namespace fsc {
+namespace object {
 
 // Gets a unique Id
 static unsigned int GetUniqueId() {
@@ -29,4 +30,5 @@ unsigned int Object::GetId() const {
   return id_;
 }
 
+}  // namespace object
 }  // namespace fsc

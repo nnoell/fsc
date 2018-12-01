@@ -11,10 +11,11 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
 #include "object.hpp"
 
 namespace fsc {
+namespace object {
 
 // The Complex class
 class Complex : public Object {
@@ -79,4 +80,5 @@ class Complex : public Object {
   std::vector<std::shared_ptr<Object>> objects_;
 };
 
+}  // namespace object
 }  // namespace fsc

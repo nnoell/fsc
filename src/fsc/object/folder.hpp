@@ -9,42 +9,41 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
 #include "complex.hpp"
 
 namespace fsc {
+namespace object {
 
-// The Directory class
-class Plane final : public Complex {
+// The Folder class
+class Folder final : public Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale);
+  Folder(std::string path);
 
   // Destructor
-  virtual ~Plane();
+  virtual ~Folder();
 
  private:
   // Copy Constructor
-  Plane(const Plane&) = delete;
+  Folder(const Folder&) = delete;
 
   // Move Constructor
-  Plane(Plane &&) = delete;
+  Folder(Folder &&) = delete;
 
   // Copy-Assign Constructor
-  Plane& operator=(const Plane&) = delete;
+  Folder& operator=(const Folder&) = delete;
 
   // Move-Assign Constructr
-  Plane& operator=(Plane &&) = delete;
+  Folder& operator=(Folder &&) = delete;
 
  private:
-  // The width of the plane
-  const unsigned int width_;
+  // The path of the directory
+  std::string path_;
 
-  // The height of the plane
-  const unsigned int height_;
-
-  // The scale of the plane
-  float scale_;
+  // The size of the directory
+  unsigned int size_;
 };
 
+}  // namespace object
 }  // namespace fsc

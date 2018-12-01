@@ -9,9 +9,10 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
 
 namespace fsc {
+namespace object {
 
 // The Object base class
 class Object {
@@ -62,4 +63,5 @@ class Object {
   const unsigned int id_;
 };
 
+}  // namespace object
 }  // namespace fsc

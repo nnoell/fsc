@@ -9,10 +9,11 @@
 #include <string>
 
 // FSC
-#include "external.hpp"
+#include "../external.hpp"
 #include "object.hpp"
 
 namespace fsc {
+namespace object {
 
 // The text fortmat type
 struct TextFormat {
@@ -83,4 +84,5 @@ class Text final : public Object {
   TextFormat format_;
 };
 
+}  // namespace object
 }  // namespace fsc
