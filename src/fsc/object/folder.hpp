@@ -8,8 +8,10 @@
 // STL
 #include <string>
 
+// PUBLIC
+#include <fsc/external.hpp>
+
 // FSC
-#include "../external.hpp"
 #include "complex.hpp"
 
 namespace fsc {

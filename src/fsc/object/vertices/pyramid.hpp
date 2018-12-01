@@ -5,6 +5,9 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
+// PUBLIC
+#include <fsc/external.hpp>
+
 // FSC
 #include "data.hpp"
 

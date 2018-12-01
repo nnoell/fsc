@@ -8,8 +8,10 @@
 // STL
 #include <string>
 
+// PUBLIC
+#include <fsc/external.hpp>
+
 // FSC
-#include "../external.hpp"
 #include "vertices/data.hpp"
 #include "object.hpp"
 #include "text.hpp"

@@ -10,8 +10,10 @@
 #include <memory>
 #include <filesystem>
 
+// PUBLIC
+#include <fsc/external.hpp>
+
 // FSC
-#include "external.hpp"
 #include "window.hpp"
 #include "world.hpp"
 #include "object/vertices/font.hpp"

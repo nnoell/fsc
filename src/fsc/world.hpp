@@ -5,8 +5,8 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// FSC
-#include "external.hpp"
+// PUBLIC
+#include <fsc/external.hpp>
 
 namespace fsc {
 

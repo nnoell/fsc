@@ -11,8 +11,8 @@
 #include <unordered_map>
 #include <mutex>
 
-// FSC
-#include "external.hpp"
+// PUBLIC
+#include <fsc/external.hpp>
 
 namespace fsc {
 

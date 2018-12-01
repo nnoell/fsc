@@ -10,8 +10,8 @@
 #include <string>
 #include <memory>
 
-// FSC
-#include "../../external.hpp"
+// PUBLIC
+#include <fsc/external.hpp>
 
 namespace fsc {
 namespace object {
