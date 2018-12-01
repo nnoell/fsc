@@ -22,28 +22,13 @@ namespace object {
 class Line final : public Object {
  public:
   // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color, glm::mat4 model = {});
+  Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Line();
 
-  // Gets the current position
-  glm::vec3 GetPosition() const override;
-
-  // Resets the object
-  Object& Reset() override;
-
-  // Scales the object
-  Object& Scale(glm::vec3 factor) override;
-
-  // Translates the object
-  Object& Translate(glm::vec3 position) override;
-
-  // Rotates the object
-  Object& Rotate(float radians, glm::vec3 axes) override;
-
   // Draw the line
-  void Draw() const override;
+  void ModelDraw(glm::mat4 model = {}) const override;
 
  private:
   // Copy Constructor
@@ -67,9 +52,6 @@ class Line final : public Object {
 
   // The color of the line
   glm::vec4 color_;
-
-  // The model matrix
-  glm::mat4 model_;
 };
 
 }  // namespace object

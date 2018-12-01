@@ -14,6 +14,21 @@
 namespace fsc {
 namespace object {
 
+// The object data type
+struct ObjectData {
+  // The position
+  glm::vec3 position;
+
+  // The size
+  glm::vec3 scale;
+
+  // The radians
+  float radians;
+
+  // The axes
+  glm::vec3 axes;
+};
+
 // The Object base class
 class Object {
  public:
@@ -23,27 +38,33 @@ class Object {
   // Gets the Id
   unsigned int GetId() const;
 
-  // Gets the current position
-  virtual glm::vec3 GetPosition() const = 0;
+  // Checks whether the object is complex or not
+  const bool IsComplex() const;
 
-  // Resets the object
-  virtual Object& Reset() = 0;
+  // Gets the object data
+  const ObjectData& GetObjectData() const;
+
+  // Gets the current position
+  glm::vec3 GetPosition() const;
 
   // Scales the object
-  virtual Object& Scale(glm::vec3 factor) = 0;
+  Object& Scale(glm::vec3 factor);
 
   // Translates the object
-  virtual Object& Translate(glm::vec3 position) = 0;
+  Object& Translate(glm::vec3 position);
 
   // Rotates the object
-  virtual Object& Rotate(float radians, glm::vec3 axes) = 0;
+  Object& Rotate(float radians, glm::vec3 axes);
 
-  // Draws the vertex
-  virtual void Draw() const = 0;
+  // Draws the object
+  void Draw() const;
+
+  // Draws using a specific model
+  virtual void ModelDraw(glm::mat4 model = {}) const = 0;
 
  protected:
   // Constructor
-  Object();
+  Object(bool is_complex, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
  private:
   // Copy Constructor
@@ -61,6 +82,14 @@ class Object {
  private:
   // The Id
   const unsigned int id_;
+
+  const bool is_complex_;
+
+  // The object data
+  const ObjectData object_data_;
+
+  // The model matrix
+  glm::mat4 model_;
 };
 
 }  // namespace object

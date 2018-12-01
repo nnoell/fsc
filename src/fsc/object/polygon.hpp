@@ -23,28 +23,13 @@ namespace object {
 class Polygon : public Object {
  public:
   // Constructor
-  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, glm::mat4 model = {});
+  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Polygon();
 
-  // Gets the current position
-  glm::vec3 GetPosition() const override;
-
-  // Resets the polygon object
-  Polygon& Reset() override;
-
-  // Scales the polygon object
-  Polygon& Scale(glm::vec3 factor) override;
-
-  // Translates the polygon object
-  Polygon& Translate(glm::vec3 factor) override;
-
-  // Rotates the polygon object
-  Polygon& Rotate(float radians, glm::vec3 factor) override;
-
   // Draws the polygon object
-  void Draw() const override;
+  void ModelDraw(glm::mat4 model = {}) const override;
 
  private:
   // Copy Constructor
@@ -68,9 +53,6 @@ class Polygon : public Object {
 
   // Whether it is in wireframe mode or not
   bool wireframe_;
-
-  // The initial model matrix (position)
-  glm::mat4 model_;
 };
 
 }  // namespace object

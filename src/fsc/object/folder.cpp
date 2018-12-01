@@ -18,12 +18,18 @@
 namespace fsc {
 namespace object {
 
-Folder::Folder(std::string path) :
-    Complex(std::make_shared<Plane>(20, 20, 1), {
-      // The path of the Folder
-      std::make_shared<Text>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, glm::mat4 {}, TextFormat {{0.0f, -2.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
-      // Extra stuff such as size, date, etc...
-    }),
+Folder::Folder(std::string path, ObjectData object_data, glm::mat4 model) :
+    Complex(
+      {
+        // The floor
+        std::make_shared<Plane>(20, 20, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
+        // The path label
+        std::make_shared<Text>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
+        // Extra stuff such as size, date, etc...
+      },
+      std::move(object_data),
+      std::move(model)
+    ),
     path_(std::move(path)),
     size_(0) {
 
@@ -43,9 +49,7 @@ Folder::Folder(std::string path) :
       z++;
     }
 
-    std::shared_ptr<Object> object = std::make_shared<File>(filename, dir_entry.is_directory());
-    object->Translate({x * 5.0f,  2.0f, z * -5.0f});
-    AddObject(std::move(object));
+    AddObject(std::make_shared<File>(filename, dir_entry.is_directory(), ObjectData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}));
     x++;
     size_++;
   }

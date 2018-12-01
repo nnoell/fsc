@@ -12,13 +12,18 @@
 namespace fsc {
 namespace object {
 
-File::File(std::string name, bool is_folder) :
+File::File(std::string name, bool is_folder, ObjectData object_data, glm::mat4 model) :
     Complex(
-      std::make_shared<Polygon>(vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 0.5f, 0.25f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true), {
-        // The file name
-        std::make_shared<Text>(name, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, glm::mat4 {}, TextFormat {{1.5f, -0.4f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
+      {
+        // The cube
+        std::make_shared<Polygon>(vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 0.5f, 0.25f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true),
+        // The file name label
+        std::make_shared<Text>(name, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
         // Extra stuff such as size, date, etc...
-      }),
+      },
+      std::move(object_data),
+      std::move(model)
+    ),
     name_(std::move(name)),
     is_folder_(is_folder) {
 }

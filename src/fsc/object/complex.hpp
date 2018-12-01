@@ -23,31 +23,10 @@ namespace object {
 class Complex : public Object {
  public:
   // Constructor
-  Complex(std::shared_ptr<Object> master_object, std::vector<std::shared_ptr<Object>> objects = {});
+  Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Complex();
-
-  // Gets the current position
-  glm::vec3 GetPosition() const override;
-
-  // Resets the complex object
-  Complex& Reset() override;
-
-  // Scales the complex object
-  Complex& Scale(glm::vec3 factor) override;
-
-  // Translates the complex object
-  Complex& Translate(glm::vec3 position) override;
-
-  // Rotates the complex object
-  Complex& Rotate(float radians, glm::vec3 axes) override;
-
-  // Draws the complex object
-  void Draw() const override;
-
-  // Gets the master object
-  std::shared_ptr<Object> GetMasterObject(unsigned int id) const;
 
   // Finds the nested object by Id
   std::shared_ptr<Object> FindObject(unsigned int id) const;
@@ -57,6 +36,10 @@ class Complex : public Object {
 
   // Removes a object
   void RemoveObject(unsigned int id);
+
+ protected:
+  // Draws the complex object
+  void ModelDraw(glm::mat4 model = {}) const override;
 
  private:
   // Copy Constructor
@@ -72,12 +55,6 @@ class Complex : public Object {
   Complex& operator=(Complex &&) = delete;
 
  private:
-  // The id
-  unsigned int id_;
-
-  // The master object
-  std::shared_ptr<Object> master_object_;
-
   // The list of objects
   std::vector<std::shared_ptr<Object>> objects_;
 };

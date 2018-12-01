@@ -11,45 +11,20 @@
 namespace fsc {
 namespace object {
 
-Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, glm::mat4 model) :
-    Object(),
+Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data, glm::mat4 model) :
+    Object(false, std::move(object_data), std::move(model)),
     vertices_data_(vertices_data),
     color_(std::move(color)),
-    wireframe_(wireframe),
-    model_(std::move(model)) {
+    wireframe_(wireframe) {
 }
 
 Polygon::~Polygon() {
 }
 
-glm::vec3 Polygon::GetPosition() const {
-  return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
-}
-
-Polygon& Polygon::Reset() {
-  model_ = glm::mat4 {};
-  return *this;
-}
-
-Polygon& Polygon::Scale(glm::vec3 factor) {
-  model_ = glm::scale(model_, factor);
-  return *this;
-}
-
-Polygon& Polygon::Translate(glm::vec3 position) {
-  model_ = glm::translate(model_, position);  
-  return *this;
-}
-
-Polygon& Polygon::Rotate(float radians, glm::vec3 factor) {
-  model_ = glm::rotate(model_, radians, factor);  
-  return *this;
-}
-
-void Polygon::Draw() const {
+void Polygon::ModelDraw(glm::mat4 model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
-  Pipeline::GetInstance().SetMat4("model_", model_);
+  Pipeline::GetInstance().SetMat4("model_", model);
   Pipeline::GetInstance().SetVec4("color_", color_);
 
   // Configure OpenGL

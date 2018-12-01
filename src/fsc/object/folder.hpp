@@ -21,7 +21,7 @@ namespace object {
 class Folder final : public Complex {
  public:
   // Constructor
-  Folder(std::string path);
+  Folder(std::string path, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();

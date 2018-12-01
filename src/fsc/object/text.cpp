@@ -12,42 +12,16 @@
 namespace fsc {
 namespace object {
 
-Text::Text(std::string text, glm::vec4 color, glm::mat4 model, TextFormat format) :
-    Object(),
+Text::Text(std::string text, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
+    Object(true, std::move(object_data)),
     text_(std::move(text)),
-    color_(std::move(color)),
-    model_(std::move(model)),
-    format_(std::move(format)) {
+    color_(std::move(color)) {
 }
 
 Text::~Text() {
 }
 
-glm::vec3 Text::GetPosition() const {
-  return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
-}
-
-Text& Text::Reset() {
-  model_ = glm::mat4 {};
-  return *this;
-}
-
-Text& Text::Scale(glm::vec3 factor) {
-  model_ = glm::scale(model_, std::move(factor));
-  return *this;
-}
-
-Text& Text::Translate(glm::vec3 position) {
-  model_ = glm::translate(model_, std::move(position));
-  return *this;
-}
-
-Text& Text::Rotate(float radians, glm::vec3 axes) {
-  model_ = glm::rotate(model_, radians, std::move(axes));
-  return *this;
-}
-
-void Text::Draw() const {
+void Text::ModelDraw(glm::mat4 model) const {
     // Set pipeline
   Pipeline::GetInstance().SetBool("is_text_", true);
   Pipeline::GetInstance().SetVec4("color_", color_);
@@ -63,11 +37,11 @@ void Text::Draw() const {
   glGenVertexArrays(1, &vao);
   glGenBuffers(1, &vbo);
 
-  // Make a copy of the model
-  glm::mat4 model_local = model_;
-  model_local = glm::scale(model_local, format_.scale);
-  model_local = glm::rotate(model_local, format_.radians, format_.axes);
-  glm::vec3 position_local = format_.position;
+  // Make the model transformations based on the object data
+  const ObjectData& object_data = GetObjectData();
+  model = glm::scale(model, object_data.scale);
+  model = glm::rotate(model, object_data.radians, object_data.axes);
+  glm::vec3 position_local = object_data.position;
 
   // Render each character
   for (auto&& c : text_) {
@@ -96,7 +70,7 @@ void Text::Draw() const {
     glBindTexture(GL_TEXTURE_2D, char_data.texture);
 
     // Set the model
-    Pipeline::GetInstance().SetMat4("model_", glm::translate(model_local, position_local));
+    Pipeline::GetInstance().SetMat4("model_", glm::translate(model, position_local));
 
     // Draw
     glDrawArrays(GL_TRIANGLES, 0, char_data.num_vertices);

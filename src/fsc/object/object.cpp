@@ -19,8 +19,11 @@ static unsigned int GetUniqueId() {
   return id++;
 }
 
-Object::Object() :
-    id_(GetUniqueId()) {
+Object::Object(bool is_complex, ObjectData object_data, glm::mat4 model) :
+    id_(GetUniqueId()),
+    is_complex_(is_complex),
+    object_data_(std::move(object_data)),
+    model_(std::move(model)) {
 }
 
 Object::~Object() {
@@ -28,6 +31,37 @@ Object::~Object() {
 
 unsigned int Object::GetId() const {
   return id_;
+}
+
+const bool Object::IsComplex() const {
+  return is_complex_;
+}
+
+const ObjectData& Object::GetObjectData() const {
+  return object_data_;
+}
+
+glm::vec3 Object::GetPosition() const {
+  return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
+}
+
+Object& Object::Scale(glm::vec3 factor) {
+  model_ = glm::scale(model_, factor);
+  return *this;
+}
+
+Object& Object::Translate(glm::vec3 position) {
+  model_ = glm::translate(model_, position);  
+  return *this;
+}
+
+Object& Object::Rotate(float radians, glm::vec3 axes) {
+  model_ = glm::rotate(model_, radians, axes);
+  return *this;
+}
+
+void Object::Draw() const {
+  ModelDraw(model_);
 }
 
 }  // namespace object

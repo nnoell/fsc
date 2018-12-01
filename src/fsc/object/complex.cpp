@@ -14,57 +14,12 @@
 namespace fsc {
 namespace object {
 
-Complex::Complex(std::shared_ptr<Object> master_object, std::vector<std::shared_ptr<Object>> objects) :
-    Object(),
-    master_object_(std::move(master_object)),
+Complex::Complex(std::vector<std::shared_ptr<Object>> objects, ObjectData object_data, glm::mat4 model) :
+    Object(true, std::move(object_data), std::move(model)),
     objects_(std::move(objects)) {
-  if (!master_object_)
-    throw std::runtime_error("Error: Cannot create a complex object without a master object");
 }
 
 Complex::~Complex() {
-}
-
-glm::vec3 Complex::GetPosition() const {
-  return master_object_->GetPosition();
-}
-
-Complex& Complex::Reset() {
-  master_object_->Reset();
-  for (auto&& object : objects_)
-    object->Reset();
-  return *this;
-}
-
-Complex& Complex::Scale(glm::vec3 factor) {
-  master_object_->Scale(factor);
-  for (auto&& object : objects_)
-    object->Scale(factor);
-  return *this;
-}
-
-Complex& Complex::Translate(glm::vec3 position) {
-  master_object_->Translate(position);
-  for (auto&& object : objects_)
-    object->Translate(position);
-  return *this;
-}
-
-Complex& Complex::Rotate(float radians, glm::vec3 axes) {
-  master_object_->Rotate(radians, axes);
-  for (auto&& object : objects_)
-    object->Rotate(radians, axes);
-  return *this;
-}
-
-void Complex::Draw() const {
-  master_object_->Draw();
-  for (auto&& object : objects_)
-    object->Draw();
-}
-
-std::shared_ptr<Object> Complex::GetMasterObject(unsigned int id) const {
-  return master_object_;
 }
 
 std::shared_ptr<Object> Complex::FindObject(unsigned int id) const {
@@ -83,6 +38,28 @@ void Complex::RemoveObject(unsigned int id) {
       [&](const std::shared_ptr<Object>& object){
         return object->GetId() == id;
       }));
+}
+
+void Complex::ModelDraw(glm::mat4 model) const {
+  // Get the object data
+  const ObjectData& object_data = GetObjectData();
+
+  // Transform the object model using the object data
+  model = glm::scale(model, object_data.scale);
+  model = glm::rotate(model, object_data.radians, object_data.axes);
+  model = glm::translate(model, object_data.position);
+
+  // Transform each sub-object model using each sub-object model
+  for (auto&& object : objects_) {
+    if (object->IsComplex()) {
+      object->ModelDraw(model);
+    } else {
+      glm::mat4 model_local = glm::scale(model, object->GetObjectData().scale);
+      model_local = glm::rotate(model_local, object->GetObjectData().radians, object->GetObjectData().axes);
+      model_local = glm::translate(model_local, object->GetObjectData().position);
+      object->ModelDraw(model_local);
+    }
+  } 
 }
 
 }  // namespace object
