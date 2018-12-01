@@ -70,6 +70,16 @@ void Camera::LookRight() {
   UpdateLook();
 }
 
+void Camera::SetPosition(glm::vec3 position) {
+  camera_position_ = std::move(position);
+}
+
+void Camera::SetFront(glm::vec3 front) {
+  camera_front_ = std::move(front);
+  x_euler_angle_ = 0.0f;
+  y_euler_angle_ = -90.0f;
+}
+
 void Camera::Update() const {
   // Set the pipeline
   Pipeline::GetInstance().SetMat4("view_", glm::lookAt(camera_position_, camera_position_ + camera_front_, camera_up_));

@@ -49,6 +49,12 @@ class Camera final {
   // Looks right
   void LookRight();
 
+  // Sets the position
+  void SetPosition(glm::vec3 position = {0.0f, 2.0f, 3.0});
+
+  // Sets the front
+  void SetFront(glm::vec3 front = {0.0f, 0.0f, -1.0f});
+
   // Updates the camera changes
   void Update() const;
 

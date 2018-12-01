@@ -72,6 +72,8 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_Z, std::bind(&Camera::LookDown, &camera));
     window.AddKeyCallback(GLFW_KEY_Q, std::bind(&Camera::LookLeft, &camera));
     window.AddKeyCallback(GLFW_KEY_E, std::bind(&Camera::LookRight, &camera));
+    window.AddKeyCallback(GLFW_KEY_R, std::bind(&Camera::SetPosition, &camera, glm::vec3 {0.0f, 2.0f, 3.0f}));
+    window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
     // Create the folder
     Folder folder {"C:/Windows"};
