@@ -12,20 +12,38 @@
 // PUBLIC
 #include <fsc/external.hpp>
 
+// FSC
+#include "object.hpp"
+
 namespace fsc {
 namespace object {
 
 // The Line class
-class Line final {
+class Line final : public Object {
  public:
   // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color);
+  Line(std::vector<glm::vec3> points, glm::vec4 color, glm::mat4 model = {});
 
   // Destructor
   virtual ~Line();
 
+  // Gets the current position
+  glm::vec3 GetPosition() const override;
+
+  // Resets the object
+  Object& Reset() override;
+
+  // Scales the object
+  Object& Scale(glm::vec3 factor) override;
+
+  // Translates the object
+  Object& Translate(glm::vec3 position) override;
+
+  // Rotates the object
+  Object& Rotate(float radians, glm::vec3 axes) override;
+
   // Draw the line
-  void Draw() const;
+  void Draw() const override;
 
  private:
   // Copy Constructor
@@ -49,6 +67,9 @@ class Line final {
 
   // The color of the line
   glm::vec4 color_;
+
+  // The model matrix
+  glm::mat4 model_;
 };
 
 }  // namespace object
