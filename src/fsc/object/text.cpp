@@ -5,8 +5,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // FSC
+#include "vertices/font.hpp"
 #include "text.hpp"
-#include "../font.hpp"
 #include "../pipeline.hpp"
 
 namespace fsc {
@@ -71,7 +71,7 @@ void Text::Draw() const {
 
   // Render each character
   for (auto&& c : text_) {
-    const CharData& char_data = Font::GetInstance().GetCharData(c);
+    const vertices::CharData& char_data = vertices::Font::GetInstance().GetCharData(c);
 
     // Bind VAO and VBO
     glBindVertexArray(vao);

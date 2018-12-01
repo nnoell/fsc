@@ -6,12 +6,13 @@
 
 // FSC
 #include "font.hpp"
-#include "pipeline.hpp"
 
 // FreeType vertices are too big so we reduce their size by this factor
 #define VERTEX_SCALE_FACTOR 0.02f
 
 namespace fsc {
+namespace object {
+namespace vertices {
 
 std::unique_ptr<Font> Font::instance_ = nullptr;
 
@@ -139,4 +140,6 @@ const CharData& Font::GetCharData(char c) const {
   return char_vertices_map_.at(c);
 }
 
+}  // namespace vertices
+}  // namespace object
 }  // namespace fsc

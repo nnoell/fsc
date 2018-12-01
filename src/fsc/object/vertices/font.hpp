@@ -11,9 +11,11 @@
 #include <memory>
 
 // FSC
-#include "external.hpp"
+#include "../../external.hpp"
 
 namespace fsc {
+namespace object {
+namespace vertices {
 
 // The char data type
 struct CharData {
@@ -90,4 +92,6 @@ class Font final {
   std::unordered_map<char, CharData> char_vertices_map_;
 };
 
+}  // namespace vertices
+}  // namespace object
 }  // namespace fsc

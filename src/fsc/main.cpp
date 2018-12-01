@@ -14,7 +14,7 @@
 #include "external.hpp"
 #include "window.hpp"
 #include "world.hpp"
-#include "font.hpp"
+#include "object/vertices/font.hpp"
 #include "pipeline.hpp"
 #include "camera.hpp"
 #include "object/folder.hpp"
@@ -47,7 +47,7 @@ bool Main(int argc, char* argv[]) {
     World world {WINDOW_WIDTH, WINDOW_HEIGHT, {0.1f, 0.1f, 0.1f, 0.1f}};
 
     // Create the font
-    Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
+    object::vertices::Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
 
     // Configure and pipeline
     Pipeline::Configure(SHADER_VERTEX_PATH, SHADER_FRAGMENT_PATH);
