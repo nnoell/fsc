@@ -17,37 +17,27 @@
 namespace fsc {
 namespace object {
 
-// The Plane class
-class Plane final : public Complex {
+// The Cursor class
+class Cursor final : public Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Cursor(ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
-  virtual ~Plane();
+  virtual ~Cursor();
 
  private:
   // Copy Constructor
-  Plane(const Plane&) = delete;
+  Cursor(const Cursor&) = delete;
 
   // Move Constructor
-  Plane(Plane &&) = delete;
+  Cursor(Cursor &&) = delete;
 
   // Copy-Assign Constructor
-  Plane& operator=(const Plane&) = delete;
+  Cursor& operator=(const Cursor&) = delete;
 
   // Move-Assign Constructr
-  Plane& operator=(Plane &&) = delete;
-
- private:
-  // The width of the plane
-  const unsigned int width_;
-
-  // The height of the plane
-  const unsigned int height_;
-
-  // The scale of the plane
-  float scale_;
+  Cursor& operator=(Cursor &&) = delete;
 };
 
 }  // namespace object

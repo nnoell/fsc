@@ -24,6 +24,7 @@
 #include "object/ascii.hpp"
 #include "object/line.hpp"
 #include "object/plane.hpp"
+#include "object/cursor.hpp"
 
 // The window resulution
 #define WINDOW_WIDTH 1080

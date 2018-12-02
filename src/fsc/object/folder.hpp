@@ -15,6 +15,7 @@
 #include "complex.hpp"
 #include "ascii.hpp"
 #include "plane.hpp"
+#include "cursor.hpp"
 
 namespace fsc {
 namespace object {
@@ -62,6 +63,9 @@ class Folder final : public Complex {
 
   // The plane object
   std::shared_ptr<Plane> plane_;
+
+  // The cursor object
+  std::shared_ptr<Cursor> cursor_;
 };
 
 }  // namespace object

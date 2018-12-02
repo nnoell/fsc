@@ -22,7 +22,8 @@ Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectDat
     parent_(std::move(parent)),
     opened_folders_({}),
     label_(std::make_shared<Ascii>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {2.0f, 2.0f, 2.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    plane_(std::make_shared<Plane>(1, 1, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
+    plane_(std::make_shared<Plane>(1, 1, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    cursor_(std::make_shared<Cursor>(object::ObjectData {{0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})) {
   Refresh();
 }
 
@@ -52,6 +53,9 @@ void Folder::Refresh() {
 
   // Add the label
   AddObject(label_);
+
+  // Add the cursor
+  AddObject(cursor_);
 
   // Add the files
   {
