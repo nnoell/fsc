@@ -13,6 +13,8 @@
 
 // FSC
 #include "complex.hpp"
+#include "ascii.hpp"
+#include "plane.hpp"
 
 namespace fsc {
 namespace object {
@@ -21,7 +23,7 @@ namespace object {
 class Folder final : public Complex {
  public:
   // Constructor
-  Folder(std::string path, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();
@@ -49,11 +51,17 @@ class Folder final : public Complex {
   // The size of the directory
   unsigned int size_;
 
+  // The parent folder
+  const std::shared_ptr<const Folder> parent_;
+
+  // Opened folders
+  std::vector<std::shared_ptr<Folder> > opened_folders_;
+
   // The label object
-  std::shared_ptr<Object> label_;
+  std::shared_ptr<Ascii> label_;
 
   // The plane object
-  std::shared_ptr<Object> plane_;
+  std::shared_ptr<Plane> plane_;
 };
 
 }  // namespace object
