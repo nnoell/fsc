@@ -39,7 +39,7 @@ class Object {
   unsigned int GetId() const;
 
   // Checks whether the object is complex or not
-  const bool IsComplex() const;
+  virtual const bool IsComplex() const = 0;
 
   // Gets the object data
   const ObjectData& GetObjectData() const;
@@ -64,7 +64,7 @@ class Object {
 
  protected:
   // Constructor
-  Object(bool is_complex, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Object(ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
  private:
   // Copy Constructor
@@ -82,9 +82,6 @@ class Object {
  private:
   // The Id
   const unsigned int id_;
-
-  // Whether the object is complex or not
-  const bool is_complex_;
 
   // The object data
   const ObjectData object_data_;

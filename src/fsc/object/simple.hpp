@@ -20,6 +20,9 @@ class Simple : public Object {
   // Destructor
   virtual ~Simple();
 
+  // Checks whether the object is complex or not
+  const bool IsComplex() const override;
+
   // Gets the color
   glm::vec4 GetColor() const;
 

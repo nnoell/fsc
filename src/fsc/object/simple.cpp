@@ -11,11 +11,15 @@ namespace fsc {
 namespace object {
 
 Simple::Simple(glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Object(false, std::move(object_data), std::move(model)),
+    Object(std::move(object_data), std::move(model)),
     color_(std::move(color)) {
 }
 
 Simple::~Simple() {
+}
+
+const bool Simple::IsComplex() const {
+  return false;
 }
 
 glm::vec4 Simple::GetColor() const {

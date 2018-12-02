@@ -15,11 +15,15 @@ namespace fsc {
 namespace object {
 
 Complex::Complex(std::vector<std::shared_ptr<Object>> objects, ObjectData object_data, glm::mat4 model) :
-    Object(true, std::move(object_data), std::move(model)),
+    Object(std::move(object_data), std::move(model)),
     objects_(std::move(objects)) {
 }
 
 Complex::~Complex() {
+}
+
+const bool Complex::IsComplex() const {
+  return true;
 }
 
 std::shared_ptr<Object> Complex::FindObject(unsigned int id) const {

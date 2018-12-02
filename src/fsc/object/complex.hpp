@@ -25,6 +25,9 @@ class Complex : public Object {
   // Destructor
   virtual ~Complex();
 
+  // Checks whether the object is complex or not
+  const bool IsComplex() const override;
+
   // Finds the nested object by Id
   std::shared_ptr<Object> FindObject(unsigned int id) const;
 

@@ -19,9 +19,8 @@ static unsigned int GetUniqueId() {
   return id++;
 }
 
-Object::Object(bool is_complex, ObjectData object_data, glm::mat4 model) :
+Object::Object(ObjectData object_data, glm::mat4 model) :
     id_(GetUniqueId()),
-    is_complex_(is_complex),
     object_data_(std::move(object_data)),
     model_(std::move(model)) {
 }
@@ -31,10 +30,6 @@ Object::~Object() {
 
 unsigned int Object::GetId() const {
   return id_;
-}
-
-const bool Object::IsComplex() const {
-  return is_complex_;
 }
 
 const ObjectData& Object::GetObjectData() const {
