@@ -21,7 +21,7 @@ Folder::Folder(std::string path, ObjectData object_data, glm::mat4 model) :
     Complex({}, std::move(object_data), std::move(model) ),
     path_(path),
     size_(0),
-    label_(std::make_shared<Ascii>(path, ObjectData {{0.0f, -2.5f, 0.0f}, {2.0f, 2.0f, 2.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    label_(std::make_shared<Ascii>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {2.0f, 2.0f, 2.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
     plane_(std::make_shared<Plane>(1, 1, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
   Refresh();
 }
