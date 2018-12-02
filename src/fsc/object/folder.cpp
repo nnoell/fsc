@@ -23,7 +23,7 @@ Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectDat
     opened_folders_({}),
     label_(std::make_shared<Ascii>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {2.0f, 2.0f, 2.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
     plane_(std::make_shared<Plane>(1, 1, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    cursor_(std::make_shared<Cursor>(object::ObjectData {{0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})) {
+    cursor_(nullptr) {
   Refresh();
 }
 
@@ -54,13 +54,11 @@ void Folder::Refresh() {
   // Add the label
   AddObject(label_);
 
-  // Add the cursor
-  AddObject(cursor_);
-
   // Add the files
   {
     unsigned int x = 0;
     unsigned int z = 0;
+    bool cursor_added = false;
     std::filesystem::directory_iterator dir {path_};
     for (const std::filesystem::directory_entry& dir_entry : dir) {
       if (x >= i) {
@@ -69,10 +67,22 @@ void Folder::Refresh() {
       }
 
       const std::string filename = dir_entry.path().filename().string();
-      AddObject(std::make_shared<File>(filename, dir_entry.is_directory(), ObjectData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}));
+      auto file = std::make_shared<File>(filename, dir_entry.is_directory(), ObjectData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+      AddObject(file);
+
+      // Add the cursor pointing to the first file of the directory
+      if (!cursor_added) {
+        cursor_added = true;
+        cursor_ = std::make_shared<Cursor>(object::ObjectData {file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+      }
+
       x++;
     }
   }
+
+  // Add the cursor if created
+  if (cursor_)
+    AddObject(cursor_);
 }
 
 }  // namespace object
