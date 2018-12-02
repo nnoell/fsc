@@ -10,13 +10,13 @@
 
 // FSC
 #include "vertices/font.hpp"
-#include "object.hpp"
+#include "simple.hpp"
 
 namespace fsc {
 namespace object {
 
 // The Character class
-class Character final : public Object {
+class Character final : public Simple {
  public:
   // Constructor
   Character(char character, glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
@@ -46,9 +46,6 @@ class Character final : public Object {
  private:
   // The character data
   const vertices::CharData& char_data_;
-
-  // The color
-  glm::vec4 color_;
 };
 
 }  // namespace object

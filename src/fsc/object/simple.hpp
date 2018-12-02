@@ -5,50 +5,47 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// STL
-#include <vector>
-#include <memory>
-
 // PUBLIC
 #include <fsc/external.hpp>
 
 // FSC
-#include "simple.hpp"
+#include "object.hpp"
 
 namespace fsc {
 namespace object {
 
-// The Line class
-class Line final : public Simple {
+// The Simple class
+class Simple : public Object {
  public:
-  // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
-
   // Destructor
-  virtual ~Line();
+  virtual ~Simple();
+
+  // Gets the color
+  glm::vec4 GetColor() const;
 
   // Draw the line
-  void ModelDraw(glm::mat4 model = {}) const override;
+  virtual void ModelDraw(glm::mat4 model = {}) const override = 0;
+
+ protected:
+  // Constructor
+  Simple(glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
  private:
   // Copy Constructor
-  Line(const Line&) = delete;
+  Simple(const Simple&) = delete;
 
   // Move Constructor
-  Line(Line &&) = delete;
+  Simple(Simple &&) = delete;
 
   // Copy-Assign Constructor
-  Line& operator=(const Line&) = delete;
+  Simple& operator=(const Simple&) = delete;
 
   // Move-Assign Constructr
-  Line& operator=(Line &&) = delete;
+  Simple& operator=(Simple &&) = delete;
 
  private:
-  // The number of vertices
-  unsigned int num_vertices_;
-
-  // The vertices of the line
-  std::shared_ptr<float []> vertices_;
+  // The color of the line
+  glm::vec4 color_;
 };
 
 }  // namespace object

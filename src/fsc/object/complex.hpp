@@ -22,9 +22,6 @@ namespace object {
 // The Complex class
 class Complex : public Object {
  public:
-  // Constructor
-  Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
-
   // Destructor
   virtual ~Complex();
 
@@ -38,6 +35,9 @@ class Complex : public Object {
   void RemoveObject(unsigned int id);
 
  protected:
+  // Constructor
+  Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+
   // Draws the complex object
   void ModelDraw(glm::mat4 model = {}) const override;
 

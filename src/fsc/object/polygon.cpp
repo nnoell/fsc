@@ -12,9 +12,8 @@ namespace fsc {
 namespace object {
 
 Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data, glm::mat4 model) :
-    Object(false, std::move(object_data), std::move(model)),
+    Simple(std::move(color), std::move(object_data), std::move(model)),
     vertices_data_(vertices_data),
-    color_(std::move(color)),
     wireframe_(wireframe) {
 }
 
@@ -25,7 +24,7 @@ void Polygon::ModelDraw(glm::mat4 model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", model);
-  Pipeline::GetInstance().SetVec4("color_", color_);
+  Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL
   glDisable(GL_CULL_FACE);

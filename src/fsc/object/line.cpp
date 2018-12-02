@@ -12,10 +12,9 @@ namespace fsc {
 namespace object {
 
 Line::Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Object(false, std::move(object_data), std::move(model)),
+    Simple(std::move(color), std::move(object_data), std::move(model)),
     num_vertices_(points.size() * 3 * 6),
-    vertices_(new float[num_vertices_], std::default_delete<float[]>()),
-    color_(std::move(color)) {
+    vertices_(new float[num_vertices_], std::default_delete<float[]>()) {
   unsigned int i = 0;
   for (auto&& p : points) {
     vertices_[i++] = p.x;
@@ -34,7 +33,7 @@ void Line::ModelDraw(glm::mat4 model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", model);
-  Pipeline::GetInstance().SetVec4("color_", color_);
+  Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL
   glDisable(GL_CULL_FACE);

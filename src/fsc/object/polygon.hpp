@@ -13,13 +13,13 @@
 
 // FSC
 #include "vertices/data.hpp"
-#include "object.hpp"
+#include "simple.hpp"
 
 namespace fsc {
 namespace object {
 
 // The Polygon class
-class Polygon : public Object {
+class Polygon : public Simple {
  public:
   // Constructor
   Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
@@ -46,9 +46,6 @@ class Polygon : public Object {
  private:
   // The vertices data
   const vertices::Data& vertices_data_;
-
-  // The color
-  glm::vec4 color_;
 
   // Whether it is in wireframe mode or not
   bool wireframe_;
