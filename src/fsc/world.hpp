@@ -10,6 +10,7 @@
 
 // FSC
 #include "object/ascii.hpp"
+#include "object/folder.hpp"
 
 namespace fsc {
 
@@ -47,6 +48,9 @@ class World final {
 
   // The title object
   object::Ascii title_;
+
+  // The root folder
+  object::Folder root_;
 };
 
 }  // namespace fsc

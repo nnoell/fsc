@@ -72,17 +72,13 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_R, std::bind(&Camera::SetPosition, &camera, glm::vec3 {0.0f, 2.0f, 3.0f}));
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
-    // Create the folder
-    object::Folder windows {"C:/Windows"};
-
     // Render
     window.Render([&](){
-      // Update the camera and world
-      world.Update();
+      // Update the camera
       camera.Update();
 
-      // Draw the folder
-      windows.Draw();
+      // Update the world
+      world.Update();
     });
 
     // Exit
