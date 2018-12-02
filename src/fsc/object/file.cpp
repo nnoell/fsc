@@ -17,7 +17,7 @@ File::File(std::string name, bool is_folder, ObjectData object_data, glm::mat4 m
     Complex(
       {
         // The cube
-        std::make_shared<Polygon>(vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 1.0f, 0.8f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true),
+        std::make_shared<Polygon>(vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true),
         // The file name label
         std::make_shared<Ascii>(name, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{1.5f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
         // Extra stuff such as size, date, etc...

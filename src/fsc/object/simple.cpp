@@ -26,5 +26,9 @@ glm::vec4 Simple::GetColor() const {
   return color_;
 }
 
+void Simple::SetColor(glm::vec4 color) {
+  color_ = color;
+}
+
 }  // namespace object
 }  // namespace fsc

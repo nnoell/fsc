@@ -26,6 +26,9 @@ class Simple : public Object {
   // Gets the color
   glm::vec4 GetColor() const;
 
+  // Sets the color
+  void SetColor(glm::vec4 color);
+
   // Draw the line
   virtual void ModelDraw(glm::mat4 model = {}) const override = 0;
 
