@@ -10,8 +10,7 @@
 
 // FSC
 #include "folder.hpp"
-#include "polygon.hpp"
-#include "text.hpp"
+#include "ascii.hpp"
 #include "file.hpp"
 #include "plane.hpp"
 
@@ -24,7 +23,7 @@ Folder::Folder(std::string path, ObjectData object_data, glm::mat4 model) :
         // The floor
         std::make_shared<Plane>(20, 20, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
         // The path label
-        std::make_shared<Text>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
+        std::make_shared<Ascii>(path, ObjectData {{0.0f, -2.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
         // Extra stuff such as size, date, etc...
       },
       std::move(object_data),

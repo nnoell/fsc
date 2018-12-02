@@ -21,7 +21,7 @@
 #include "camera.hpp"
 #include "object/folder.hpp"
 #include "object/file.hpp"
-#include "object/text.hpp"
+#include "object/ascii.hpp"
 #include "object/line.hpp"
 #include "object/plane.hpp"
 
@@ -73,7 +73,7 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
     // Create the title
-    object::Text title {"FSC - File System Cyberspace", glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, object::ObjectData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
+    object::Ascii title {"FSC - File System Cyberspace", object::ObjectData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
 
     // Create the folder
     object::Folder folder {"C:/Windows"};

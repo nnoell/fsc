@@ -12,46 +12,36 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "vertices/data.hpp"
-#include "object.hpp"
+#include "complex.hpp"
 
 namespace fsc {
 namespace object {
 
-// The Polygon class
-class Polygon : public Object {
+// The Ascii class
+class Ascii final : public Complex {
  public:
   // Constructor
-  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Ascii(std::string ascii, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.0f, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
-  virtual ~Polygon();
-
-  // Draws the polygon object
-  void ModelDraw(glm::mat4 model = {}) const override;
+  virtual ~Ascii();
 
  private:
   // Copy Constructor
-  Polygon(const Polygon&) = delete;
+  Ascii(const Ascii&) = delete;
 
   // Move Constructor
-  Polygon(Polygon &&) = delete;
+  Ascii(Ascii &&) = delete;
 
   // Copy-Assign Constructor
-  Polygon& operator=(const Polygon&) = delete;
+  Ascii& operator=(const Ascii&) = delete;
 
   // Move-Assign Constructr
-  Polygon& operator=(Polygon &&) = delete;
+  Ascii& operator=(Ascii &&) = delete;
 
  private:
-  // The vertices data
-  const vertices::Data& vertices_data_;
-
-  // The color
-  glm::vec4 color_;
-
-  // Whether it is in wireframe mode or not
-  bool wireframe_;
+  // The ascii text
+  std::string ascii_;
 };
 
 }  // namespace object
