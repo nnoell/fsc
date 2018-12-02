@@ -12,7 +12,8 @@ namespace fsc {
 
 World::World(int width, int height, glm::vec4 color) :
     color_(std::move(color)),
-    projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)) {
+    projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
+    title_("File System Cyberspace", object::ObjectData {{0.0f, -3.0f, 0.0f}, {5.0f, 5.0f, 5.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}) {
   // configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
 }
@@ -27,6 +28,9 @@ void World::Update() const {
 
   // Set the pipeline
   Pipeline::GetInstance().SetMat4("projection_", projection_);
+
+  // Draw the objects
+  title_.Draw();
 }
 
 }  // namespace fsc

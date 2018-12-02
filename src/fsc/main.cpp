@@ -47,15 +47,15 @@ bool Main(int argc, char* argv[]) {
     Window window {WINDOW_WIDTH, WINDOW_HEIGHT, "FSC " FSC_VERSION};
     window.SetResizeCallback([](int width, int height) { glViewport(0, 0, width, height); });
 
-    // Create the world
-    World world {WINDOW_WIDTH, WINDOW_HEIGHT, {0.1f, 0.1f, 0.1f, 0.1f}};
-
-    // Create the font
+    // Load the font
     object::vertices::Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // Configure and pipeline
+    // Load the shaders
     Pipeline::Configure(SHADER_VERTEX_PATH, SHADER_FRAGMENT_PATH);
     Pipeline::GetInstance().Use();
+
+    // Create the world
+    World world {WINDOW_WIDTH, WINDOW_HEIGHT, {0.1f, 0.1f, 0.1f, 0.1f}};
 
     // Create the camera and bind it to the keyboard
     Camera camera {};
@@ -72,9 +72,6 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_R, std::bind(&Camera::SetPosition, &camera, glm::vec3 {0.0f, 2.0f, 3.0f}));
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
-    // Create the title
-    object::Ascii title {"File System Cyberspace", object::ObjectData {{0.0f, -3.0f, 0.0f}, {5.0f, 5.0f, 5.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
-
     // Create the folder
     object::Folder windows {"C:/Windows"};
 
@@ -83,9 +80,6 @@ bool Main(int argc, char* argv[]) {
       // Update the camera and world
       world.Update();
       camera.Update();
-
-      // Draw the title
-      title.Draw();
 
       // Draw the folder
       windows.Draw();

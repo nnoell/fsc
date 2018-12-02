@@ -8,6 +8,9 @@
 // PUBLIC
 #include <fsc/external.hpp>
 
+// FSC
+#include "object/ascii.hpp"
+
 namespace fsc {
 
 // The World class
@@ -41,6 +44,9 @@ class World final {
 
   // The projection matrix
   glm::mat4 projection_;
+
+  // The title object
+  object::Ascii title_;
 };
 
 }  // namespace fsc
