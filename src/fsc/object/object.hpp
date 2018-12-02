@@ -83,6 +83,7 @@ class Object {
   // The Id
   const unsigned int id_;
 
+  // Whether the object is complex or not
   const bool is_complex_;
 
   // The object data
