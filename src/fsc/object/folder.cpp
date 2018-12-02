@@ -10,7 +10,6 @@
 
 // FSC
 #include "folder.hpp"
-#include "file.hpp"
 
 namespace fsc {
 namespace object {
@@ -23,7 +22,8 @@ Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectDat
     opened_folders_({}),
     label_(std::make_shared<Ascii>(path, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{0.0f, -2.5f, 0.0f}, {2.0f, 2.0f, 2.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
     plane_(std::make_shared<Plane>(1, 1, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    cursor_(nullptr) {
+    cursor_(nullptr),
+    selected_file_(nullptr) {
   Refresh();
 }
 
@@ -74,6 +74,7 @@ void Folder::Refresh() {
       if (!cursor_added) {
         cursor_added = true;
         cursor_ = std::make_shared<Cursor>(object::ObjectData {file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+        selected_file_ = file;
       }
 
       x++;
@@ -83,6 +84,10 @@ void Folder::Refresh() {
   // Add the cursor if created
   if (cursor_)
     AddObject(cursor_);
+}
+
+std::shared_ptr<File> Folder::GetSelectedFile() const {
+  return selected_file_;
 }
 
 }  // namespace object

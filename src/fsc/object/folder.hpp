@@ -16,6 +16,7 @@
 #include "ascii.hpp"
 #include "plane.hpp"
 #include "cursor.hpp"
+#include "file.hpp"
 
 namespace fsc {
 namespace object {
@@ -31,6 +32,9 @@ class Folder final : public Complex {
 
   // Refreshes the folder
   void Refresh();
+
+  // Gets the selected file
+  std::shared_ptr<File> GetSelectedFile() const;
 
  private:
   // Copy Constructor
@@ -66,6 +70,9 @@ class Folder final : public Complex {
 
   // The cursor object
   std::shared_ptr<Cursor> cursor_;
+
+  // The selected file
+  std::shared_ptr<File> selected_file_;
 };
 
 }  // namespace object
