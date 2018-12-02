@@ -44,6 +44,10 @@ void Complex::RemoveObject(unsigned int id) {
       }));
 }
 
+void Complex::ClearObjects() {
+  objects_.clear();
+}
+
 void Complex::ModelDraw(glm::mat4 model) const {
   // Get the object data
   const ObjectData& object_data = GetObjectData();

@@ -73,10 +73,10 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
     // Create the title
-    object::Ascii title {"FSC - File System Cyberspace", object::ObjectData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
+    object::Ascii title {"File System Cyberspace", object::ObjectData {{0.0f, -3.0f, 0.0f}, {5.0f, 5.0f, 5.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}};
 
     // Create the folder
-    object::Folder folder {"C:/Windows"};
+    object::Folder windows {"C:/Windows"};
 
     // Render
     window.Render([&](){
@@ -88,7 +88,7 @@ bool Main(int argc, char* argv[]) {
       title.Draw();
 
       // Draw the folder
-      folder.Draw();
+      windows.Draw();
     });
 
     // Exit

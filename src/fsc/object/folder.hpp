@@ -26,6 +26,9 @@ class Folder final : public Complex {
   // Destructor
   virtual ~Folder();
 
+  // Refreshes the folder
+  void Refresh();
+
  private:
   // Copy Constructor
   Folder(const Folder&) = delete;
@@ -45,6 +48,12 @@ class Folder final : public Complex {
 
   // The size of the directory
   unsigned int size_;
+
+  // The label object
+  std::shared_ptr<Object> label_;
+
+  // The plane object
+  std::shared_ptr<Object> plane_;
 };
 
 }  // namespace object

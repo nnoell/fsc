@@ -37,6 +37,9 @@ class Complex : public Object {
   // Removes a object
   void RemoveObject(unsigned int id);
 
+  // Clear Objects
+  void ClearObjects();
+
  protected:
   // Constructor
   Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
