@@ -36,5 +36,9 @@ std::string File::GetName() const {
   return name_;
 }
 
+bool File::IsFolder() const {
+  return is_folder_;
+}
+
 }  // namespace object
 }  // namespace fsc

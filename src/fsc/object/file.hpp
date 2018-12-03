@@ -29,6 +29,9 @@ class File final : public Complex {
   // Gets the name
   std::string GetName() const;
 
+  // Checks whether the file is a folder or not
+  bool IsFolder() const;
+
  private:
   // Copy Constructor
   File(const File&) = delete;
