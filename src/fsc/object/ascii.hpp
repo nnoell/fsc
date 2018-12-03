@@ -26,6 +26,16 @@ class Ascii final : public Complex {
   // Destructor
   virtual ~Ascii();
 
+  // Gets the Ascii
+  std::string GetAscii() const;
+
+  // Sets the Ascii
+  void SetAscii(std::string ascii);
+
+ private:
+  // Updates the Ascii text
+  void Update();
+
  private:
   // Copy Constructor
   Ascii(const Ascii&) = delete;
@@ -42,6 +52,9 @@ class Ascii final : public Complex {
  private:
   // The ascii text
   std::string ascii_;
+
+  // The color
+  glm::vec4 color_;
 };
 
 }  // namespace object

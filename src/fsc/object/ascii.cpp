@@ -11,24 +11,37 @@
 namespace fsc {
 namespace object {
 
-// Creates a vector of Characters given an ascii string
-static std::vector<std::shared_ptr<Object>> CreateCharacters(std::string ascii, glm::vec4 color) {
-  std::vector<std::shared_ptr<Object>> characters;
-  float next_pos = 0.0f;
-  for (auto&& c : ascii) {
-    auto character = std::make_shared<Character>(c, color, ObjectData {{next_pos, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 0.0f}});
-    next_pos += character->GetData().next_position;
-    characters.push_back(std::move(character));
-  }
-  return characters;
-}
-
 Ascii::Ascii(std::string ascii, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Complex(CreateCharacters(ascii, std::move(color)), std::move(object_data), std::move(model)),
-    ascii_(std::move(ascii)) {
+    Complex({}, std::move(object_data), std::move(model)),
+    ascii_(std::move(ascii)),
+    color_(std::move(color)) {
+  // Update the objects
+  Update();
 }
 
 Ascii::~Ascii() {
+}
+
+std::string Ascii::GetAscii() const {
+  return ascii_;
+}
+
+void Ascii::SetAscii(std::string ascii) {
+  ascii_ = ascii;
+  Update();
+}
+
+void Ascii::Update() {
+  // Clears the objects
+  ClearObjects();
+
+  // Add the new objects
+  float next_pos = 0.0f;
+  for (auto&& c : ascii_) {
+    auto character = std::make_shared<Character>(c, color_, ObjectData {{next_pos, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 0.0f}});
+    next_pos += character->GetData().next_position;
+    AddObject(std::move(character));
+  }
 }
 
 }  // namespace object
