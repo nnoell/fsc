@@ -24,6 +24,12 @@ class Character final : public Simple {
   // Destructor
   virtual ~Character();
 
+  // Gets the character
+  char GetCharacter() const;
+
+  // Sets the character
+  void SetCharacter(char character);
+
   // Gets the data
   const vertices::CharData& GetData() const;
 
@@ -44,8 +50,8 @@ class Character final : public Simple {
   Character& operator=(Character &&) = delete;
 
  private:
-  // The character data
-  const vertices::CharData& char_data_;
+  // The character
+  char character_;
 };
 
 }  // namespace object
