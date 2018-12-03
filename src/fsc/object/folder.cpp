@@ -35,11 +35,13 @@ static unsigned int CountNumRows(unsigned int size) {
 class FolderDetails : public Complex {
  public:
   // Constructor
-  FolderDetails(std::string path, unsigned int num_files, glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {}) :
+  FolderDetails(std::string path, unsigned int num_files, std::shared_ptr<File> file = nullptr,
+      glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {}) :
       Complex(
       {
-        std::make_shared<Ascii>("Total Files: " + std::to_string(num_files), color, ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
-        std::make_shared<Ascii>("Path: " + path, color, ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
+        std::make_shared<Ascii>("Selected File: " + (file ? file->GetName() : "(NULL)"), color, ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
+        std::make_shared<Ascii>("Total Files: " + std::to_string(num_files), color, ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
+        std::make_shared<Ascii>("Path: " + path, color, ObjectData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
       },
       std::move(object_data),
       std::move(model)) {
@@ -92,14 +94,6 @@ void Folder::Scan() {
   // Get the number of rows
   num_rows_ = CountNumRows(num_files_);
 
-  // Create and add the label
-  auto label = std::make_shared<FolderDetails>(path_, num_files_);
-  AddObject(std::move(label));
-
-  // Create and add the plane
-  auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
-  AddObject(std::move(plane));
-
   // Allocate the files array
   files_ = std::shared_ptr<std::shared_ptr<File> []>(new std::shared_ptr<File> [num_files_], std::default_delete<std::shared_ptr<File> []>());
 
@@ -128,6 +122,14 @@ void Folder::Scan() {
     AddObject(std::move(cursor));
     cursor_position_ = {0, 0};
   }
+
+  // Create and add the label
+  auto label = std::make_shared<FolderDetails>(path_, num_files_, GetSelectedFile());
+  AddObject(std::move(label));
+
+  // Create and add the plane
+  auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
+  AddObject(std::move(plane));
 }
 
 unsigned int Folder::GetNumFiles() const {

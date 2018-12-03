@@ -32,5 +32,9 @@ File::File(std::string name, bool is_folder, ObjectData object_data, glm::mat4 m
 File::~File() {
 }
 
+std::string File::GetName() const {
+  return name_;
+}
+
 }  // namespace object
 }  // namespace fsc

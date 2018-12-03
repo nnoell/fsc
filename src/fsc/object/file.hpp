@@ -26,6 +26,9 @@ class File final : public Complex {
   // Destructor
   virtual ~File();
 
+  // Gets the name
+  std::string GetName() const;
+
  private:
   // Copy Constructor
   File(const File&) = delete;
