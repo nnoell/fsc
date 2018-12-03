@@ -4,11 +4,70 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
+// STL
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 // FSC
 #include "pipeline.hpp"
-#include "shader.hpp"
 
 namespace fsc {
+
+// The Shader class
+class Shader final {
+ public:
+  // Constructor
+  Shader(const char *source_path, GLenum type) :
+      id_(glCreateShader(type)) {
+    if (!id_)
+      throw std::runtime_error("Error: Failed to create shader");
+
+    // Read the source file
+    std::ifstream file;
+    file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    file.open(source_path, std::ios::in);
+    std::stringstream source_stream;
+    source_stream << file.rdbuf();
+    std::string source = source_stream.str();
+    file.close();
+
+    // Set the source
+    const char *shader_source = source.c_str();
+    glShaderSource(id_, 1, &shader_source, nullptr);
+
+    // Compile
+    glCompileShader(id_);
+
+    // Check for compile error
+    int res = 0;
+    glGetShaderiv(id_, GL_COMPILE_STATUS, &res);
+    if (!res)
+      throw std::runtime_error("Error: Failed to compile shader");
+  }
+
+  // Destructor
+  virtual ~Shader() {
+    glDeleteShader(id_);
+  }
+
+ private:
+  // Copy Constructor
+  Shader(const Shader&) = delete;
+
+  // Move Constructor
+  Shader(Shader &&) = delete;
+
+  // Copy-Assign Constructor
+  Shader& operator=(const Shader&) = delete;
+
+  // Move-Assign Constructr
+  Shader& operator=(Shader &&) = delete;
+
+ public:
+  // The Id
+  const int id_;
+};
 
 std::unique_ptr<Pipeline> Pipeline::instance_ = nullptr;
 
@@ -46,12 +105,12 @@ Pipeline::Pipeline() :
 
   // Create the shaders and add them to the program
   Shader vertex_shader(vertex_shader_path_, GL_VERTEX_SHADER);
-  glAttachShader(id_, vertex_shader.GetId());
+  glAttachShader(id_, vertex_shader.id_);
   Shader fragment_shader(fragment_shader_path_, GL_FRAGMENT_SHADER);
-  glAttachShader(id_, fragment_shader.GetId());
+  glAttachShader(id_, fragment_shader.id_);
   if (geometry_shader_path_) {
     Shader geometry_shader(geometry_shader_path_, GL_FRAGMENT_SHADER);
-    glAttachShader(id_, geometry_shader.GetId());
+    glAttachShader(id_, geometry_shader.id_);
   }
 
   // Link the shaders
