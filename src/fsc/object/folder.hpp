@@ -7,6 +7,7 @@
 
 // STL
 #include <string>
+#include <array>
 
 // PUBLIC
 #include <fsc/external.hpp>
@@ -30,10 +31,13 @@ class Folder final : public Complex {
   // Destructor
   virtual ~Folder();
 
-  // Refreshes the folder
-  void Refresh();
+  // Scans the folder for files
+  void Scan();
 
-  // Gets the selected file
+  // Gets the number of files the folder has
+  unsigned int GetNumFiles() const;
+
+  // Gets the selected file or null if the folder is empty
   std::shared_ptr<File> GetSelectedFile() const;
 
  private:
@@ -51,28 +55,22 @@ class Folder final : public Complex {
 
  private:
   // The path of the directory
-  std::string path_;
-
-  // The size of the directory
-  unsigned int size_;
+  const std::string path_;
 
   // The parent folder
   const std::shared_ptr<const Folder> parent_;
 
-  // Opened folders
-  std::vector<std::shared_ptr<Folder> > opened_folders_;
+  // The files the folder has
+  std::shared_ptr<std::shared_ptr<File> []> files_;
 
-  // The label object
-  std::shared_ptr<Ascii> label_;
+  // The number of files the directory has
+  unsigned int num_files_;
 
-  // The plane object
-  std::shared_ptr<Plane> plane_;
+  // The number of rows of the folder
+  unsigned int num_rows_;
 
-  // The cursor object
-  std::shared_ptr<Cursor> cursor_;
-
-  // The selected file
-  std::shared_ptr<File> selected_file_;
+  // The cursor position
+  glm::uvec2 cursor_position_;
 };
 
 }  // namespace object
