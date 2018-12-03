@@ -44,6 +44,9 @@ class Object {
   // Gets the object data
   const ObjectData& GetObjectData() const;
 
+  // Sets the object data
+  void SetObjectData(ObjectData object_data);
+
   // Gets the current position
   glm::vec3 GetPosition() const;
 
@@ -84,7 +87,7 @@ class Object {
   const unsigned int id_;
 
   // The object data
-  const ObjectData object_data_;
+  ObjectData object_data_;
 
   // The model matrix
   glm::mat4 model_;

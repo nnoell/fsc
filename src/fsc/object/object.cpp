@@ -36,6 +36,10 @@ const ObjectData& Object::GetObjectData() const {
   return object_data_;
 }
 
+void Object::SetObjectData(ObjectData object_data) {
+  object_data_ = std::move(object_data);
+}
+
 glm::vec3 Object::GetPosition() const {
   return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
 }
