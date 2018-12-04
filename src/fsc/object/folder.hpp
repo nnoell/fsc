@@ -16,8 +16,9 @@
 #include "complex.hpp"
 #include "ascii.hpp"
 #include "plane.hpp"
-#include "cursor.hpp"
 #include "file.hpp"
+#include "polygon.hpp"
+#include "vertices/cube.hpp"
 
 namespace fsc {
 namespace object {
@@ -85,6 +86,29 @@ class Details : public Complex {
   std::shared_ptr<Ascii> path_section_;
 };
 
+// The folder Cursor class
+class Cursor final : public Complex {
+ public:
+  // Constructor
+  Cursor(ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+
+  // Destructor
+  virtual ~Cursor();
+
+ private:
+  // Copy Constructor
+  Cursor(const Cursor&) = delete;
+
+  // Move Constructor
+  Cursor(Cursor &&) = delete;
+
+  // Copy-Assign Constructor
+  Cursor& operator=(const Cursor&) = delete;
+
+  // Move-Assign Constructr
+  Cursor& operator=(Cursor &&) = delete;
+};
+
 }  // namespace folder
 
 // The Folder class
@@ -145,7 +169,7 @@ class Folder final : public Complex {
   std::shared_ptr<folder::Details> folder_details_;
 
   // The cursor
-  std::shared_ptr<Cursor> cursor_;
+  std::shared_ptr<folder::Cursor> cursor_;
 
   // The files the folder has
   std::shared_ptr<std::shared_ptr<File> []> files_;

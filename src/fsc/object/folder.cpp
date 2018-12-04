@@ -64,6 +64,18 @@ void Details::UpdatePath() {
   path_section_->SetAscii("Path: " + path_);
 }
 
+Cursor::Cursor(ObjectData object_data, glm::mat4 model) :
+    Complex(
+      {
+        std::make_shared<Polygon>(vertices::GetCube(), glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}, true, ObjectData {{0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})
+      },
+      std::move(object_data),
+      std::move(model)) {
+}
+
+Cursor::~Cursor() {
+}
+
 }  // namespace folder
 
 // Counts the number of files a folder has
@@ -138,7 +150,7 @@ void Folder::Scan() {
 
   // Add the cursor if the folder is not empty
   if (num_files_ > 0) {
-    cursor_ = std::make_shared<Cursor>(object::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    cursor_ = std::make_shared<folder::Cursor>(object::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     AddObject(cursor_);
     cursor_position_ = {0, 0};
   }
