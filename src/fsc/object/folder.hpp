@@ -21,6 +21,71 @@
 
 namespace fsc {
 namespace object {
+namespace folder {
+
+// The folder Details class
+class Details : public Complex {
+ public:
+  // Constructor
+  Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f},
+      ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+
+  // Destructor
+  virtual ~Details();
+
+  // Sets the selected file
+  void SetSelectedFile(std::shared_ptr<File> selected_file);
+
+  // Sets the number of files
+  void SetNumFiles(unsigned int num_files);
+
+  // Sets the path
+  void SetPath(std::string path);
+
+ private:
+  // Updates the selected file section
+  void UpdateSelectedFile();
+
+  // Updates the num files section
+  void UpdateNumFiles();
+
+  // Updates the path section
+  void UpdatePath();
+
+ private:
+  // Copy Constructor
+  Details(const Details&) = delete;
+
+  // Move Constructor
+  Details(Details &&) = delete;
+
+  // Copy-Assign Constructor
+  Details& operator=(const Details&) = delete;
+
+  // Move-Assign Constructr
+  Details& operator=(Details &&) = delete;
+
+ private:
+  // The selected_file
+  std::shared_ptr<File> selected_file_;
+
+  // The number of files
+  unsigned int num_files_;
+
+  // The path
+  std::string path_;
+
+  // The selected file section
+  std::shared_ptr<Ascii> selected_file_section_;
+
+  // The num files section
+  std::shared_ptr<Ascii> num_files_section_;
+
+  // The path section
+  std::shared_ptr<Ascii> path_section_;
+};
+
+}  // namespace folder
 
 // The Folder class
 class Folder final : public Complex {
@@ -39,6 +104,18 @@ class Folder final : public Complex {
 
   // Gets the selected file or null if the folder is empty
   std::shared_ptr<File> GetSelectedFile() const;
+
+  // Moves the cursor up
+  void MoveCursorUp();
+
+  // Moves the cursor down
+  void MoveCursorDown();
+
+  // Moves the cursor to the left
+  void MoveCursorLeft();
+
+  // Moves the cursor to the right
+  void MoveCursorRight();
 
  private:
   // Copy Constructor
@@ -59,6 +136,12 @@ class Folder final : public Complex {
 
   // The parent folder
   const std::shared_ptr<const Folder> parent_;
+
+  // The folder details
+  std::shared_ptr<folder::Details> folder_details_;
+
+  // The cursor
+  std::shared_ptr<Cursor> cursor_;
 
   // The files the folder has
   std::shared_ptr<std::shared_ptr<File> []> files_;

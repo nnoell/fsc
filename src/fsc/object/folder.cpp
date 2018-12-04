@@ -13,6 +13,58 @@
 
 namespace fsc {
 namespace object {
+namespace folder {
+
+Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, ObjectData object_data , glm::mat4 model) :
+    Complex({}, std::move(object_data), std::move(model)),
+    selected_file_(std::move(selected_file)),
+    num_files_(std::move(num_files)),
+    path_(std::move(path)),
+    selected_file_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    num_files_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    path_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
+  // Add the objects
+  AddObject(selected_file_section_);
+  AddObject(num_files_section_);
+  AddObject(path_section_);
+
+  // Update the objects
+  UpdateSelectedFile();
+  UpdateNumFiles();
+  UpdatePath();
+}
+
+Details::~Details() {
+}
+
+void Details::SetSelectedFile(std::shared_ptr<File> selected_file) {
+  selected_file_ = std::move(selected_file);
+  UpdateSelectedFile();
+}
+
+void Details::SetNumFiles(unsigned int num_files) {
+  num_files_ = std::move(num_files);
+  UpdateNumFiles();
+}
+  
+void Details::SetPath(std::string path) {
+  path_ = std::move(path);
+  UpdatePath();
+}
+
+void Details::UpdateSelectedFile() {
+  selected_file_section_->SetAscii("Selected File: " + (selected_file_ ? selected_file_->GetName() : "(NULL)"));
+}
+
+void Details::UpdateNumFiles() {
+  num_files_section_->SetAscii("Total Files: " + std::to_string(num_files_));
+}
+
+void Details::UpdatePath() {
+  path_section_->SetAscii("Path: " + path_);
+}
+
+}  // namespace folder
 
 // Counts the number of files a folder has
 static unsigned int CountNumFiles(std::string path) {
@@ -31,44 +83,12 @@ static unsigned int CountNumRows(unsigned int size) {
   return res;
 }
 
-// The FolderDetals class
-class FolderDetails : public Complex {
- public:
-  // Constructor
-  FolderDetails(std::string path, unsigned int num_files, std::shared_ptr<File> file = nullptr,
-      glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {}) :
-      Complex(
-      {
-        std::make_shared<Ascii>("Selected File: " + (file ? file->GetName() : "(NULL)"), color, ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
-        std::make_shared<Ascii>("Total Files: " + std::to_string(num_files), color, ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
-        std::make_shared<Ascii>("Path: " + path, color, ObjectData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})
-      },
-      std::move(object_data),
-      std::move(model)) {
-  }
-
-  // Destructor
-  virtual ~FolderDetails() {
-  }
-
- private:
-  // Copy Constructor
-  FolderDetails(const FolderDetails&) = delete;
-
-  // Move Constructor
-  FolderDetails(FolderDetails &&) = delete;
-
-  // Copy-Assign Constructor
-  FolderDetails& operator=(const FolderDetails&) = delete;
-
-  // Move-Assign Constructr
-  FolderDetails& operator=(FolderDetails &&) = delete;
-};
-
 Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectData object_data, glm::mat4 model) :
     Complex({}, std::move(object_data), std::move(model)),
-    path_(path),
+    path_(std::move(path)),
     parent_(std::move(parent)),
+    folder_details_(std::make_shared<folder::Details>(nullptr, 0, path_)),
+    cursor_(nullptr),
     files_(nullptr),
     num_files_(0),
     num_rows_(0),
@@ -116,16 +136,18 @@ void Folder::Scan() {
     x++;
   }
 
-  // Add the curso if the folder is not empty
+  // Add the cursor if the folder is not empty
   if (num_files_ > 0) {
-    auto cursor = std::make_shared<Cursor>(object::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
-    AddObject(std::move(cursor));
+    cursor_ = std::make_shared<Cursor>(object::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    AddObject(cursor_);
     cursor_position_ = {0, 0};
   }
 
-  // Create and add the label
-  auto label = std::make_shared<FolderDetails>(path_, num_files_, GetSelectedFile());
-  AddObject(std::move(label));
+  // Set and Add the folder details
+  folder_details_->SetSelectedFile(GetSelectedFile());
+  folder_details_->SetNumFiles(num_files_);
+  folder_details_->SetPath(path_);
+  AddObject(folder_details_);
 
   // Create and add the plane
   auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
@@ -141,6 +163,54 @@ std::shared_ptr<File> Folder::GetSelectedFile() const {
     return nullptr;
 
   return files_[cursor_position_.x + (cursor_position_.y * num_rows_)];
+}
+
+void Folder::MoveCursorUp() {
+  const int pos = cursor_position_.x + ((cursor_position_.y + 1) * num_rows_);
+  if (pos < 0 || pos >= num_files_)
+    return;
+
+  cursor_position_.y++;
+
+  std::shared_ptr<File> selected_file = GetSelectedFile();
+  cursor_->SetObjectData({selected_file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  folder_details_->SetSelectedFile(std::move(selected_file));
+}
+
+void Folder::MoveCursorDown() {
+  const int pos = cursor_position_.x + ((cursor_position_.y - 1) * num_rows_);
+  if (pos < 0 || pos >= num_files_)
+    return;
+
+  cursor_position_.y--;
+
+  std::shared_ptr<File> selected_file = GetSelectedFile();
+  cursor_->SetObjectData({selected_file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  folder_details_->SetSelectedFile(std::move(selected_file));
+}
+
+void Folder::MoveCursorLeft() {
+  const int pos = (cursor_position_.x - 1) + (cursor_position_.y * num_rows_);
+  if (pos < 0 || pos >= num_files_)
+    return;
+
+  cursor_position_.x--;
+
+  std::shared_ptr<File> selected_file = GetSelectedFile();
+  cursor_->SetObjectData({selected_file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  folder_details_->SetSelectedFile(std::move(selected_file));
+}
+
+void Folder::MoveCursorRight() {
+  const int pos = (cursor_position_.x + 1) + (cursor_position_.y * num_rows_);
+  if (pos < 0 || pos >= num_files_)
+    return;
+
+  cursor_position_.x++;
+
+  std::shared_ptr<File> selected_file = GetSelectedFile();
+  cursor_->SetObjectData({selected_file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  folder_details_->SetSelectedFile(std::move(selected_file));
 }
 
 }  // namespace object
