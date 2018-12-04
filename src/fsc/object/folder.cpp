@@ -15,14 +15,14 @@ namespace fsc {
 namespace object {
 namespace folder {
 
-Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, ObjectData object_data , glm::mat4 model) :
+Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, base::ObjectData object_data , glm::mat4 model) :
     Complex({}, std::move(object_data), std::move(model)),
     selected_file_(std::move(selected_file)),
     num_files_(std::move(num_files)),
     path_(std::move(path)),
-    selected_file_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    num_files_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    path_section_(std::make_shared<Ascii>("", color, ObjectData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
+    selected_file_section_(std::make_shared<base::Ascii>("", color, base::ObjectData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    num_files_section_(std::make_shared<base::Ascii>("", color, base::ObjectData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
+    path_section_(std::make_shared<base::Ascii>("", color, base::ObjectData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
   // Add the objects
   AddObject(selected_file_section_);
   AddObject(num_files_section_);
@@ -64,10 +64,10 @@ void Details::UpdatePath() {
   path_section_->SetAscii("Path: " + path_);
 }
 
-Cursor::Cursor(ObjectData object_data, glm::mat4 model) :
+Cursor::Cursor(base::ObjectData object_data, glm::mat4 model) :
     Complex(
       {
-        std::make_shared<Polygon>(vertices::GetCube(), glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}, true, ObjectData {{0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})
+        std::make_shared<base::Polygon>(base::vertices::GetCube(), glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}, true, base::ObjectData {{0.0f, 0.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})
       },
       std::move(object_data),
       std::move(model)) {
@@ -95,7 +95,7 @@ static unsigned int CountNumRows(unsigned int size) {
   return res;
 }
 
-Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectData object_data, glm::mat4 model) :
+Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, base::ObjectData object_data, glm::mat4 model) :
     Complex({}, std::move(object_data), std::move(model)),
     path_(std::move(path)),
     parent_(std::move(parent)),
@@ -141,7 +141,7 @@ void Folder::Scan() {
 
     // Create the file object and add it into the lists
     const std::string filename = dir_entry.path().filename().string();
-    auto file = std::make_shared<File>(filename, dir_entry.is_directory(), ObjectData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    auto file = std::make_shared<File>(filename, dir_entry.is_directory(), base::ObjectData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     files_[x + (z * num_rows_)] = file;
     AddObject(file);
 
@@ -150,7 +150,7 @@ void Folder::Scan() {
 
   // Add the cursor if the folder is not empty
   if (num_files_ > 0) {
-    cursor_ = std::make_shared<folder::Cursor>(object::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    cursor_ = std::make_shared<folder::Cursor>(base::ObjectData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     AddObject(cursor_);
     cursor_position_ = {0, 0};
   }
@@ -162,7 +162,7 @@ void Folder::Scan() {
   AddObject(folder_details_);
 
   // Create and add the plane
-  auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, object::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
+  auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, base::ObjectData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
   AddObject(std::move(plane));
 }
 

@@ -10,6 +10,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 Ascii::Ascii(std::string ascii, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
     Complex({}, std::move(object_data), std::move(model)),
@@ -44,5 +45,6 @@ void Ascii::Update() {
   }
 }
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

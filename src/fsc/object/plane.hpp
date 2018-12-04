@@ -12,16 +12,16 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "complex.hpp"
+#include "base/complex.hpp"
 
 namespace fsc {
 namespace object {
 
 // The Plane class
-class Plane final : public Complex {
+class Plane final : public base::Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Plane(unsigned int width, unsigned int height, float scale, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Plane();

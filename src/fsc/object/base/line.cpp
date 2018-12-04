@@ -6,10 +6,11 @@
 
 // FSC
 #include "line.hpp"
-#include "../pipeline.hpp"
+#include "../../pipeline.hpp"
 
 namespace fsc {
 namespace object {
+namespace base {
 
 Line::Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
     Simple(std::move(color), std::move(object_data), std::move(model)),
@@ -76,5 +77,6 @@ void Line::ModelDraw(glm::mat4 model) const {
   glDeleteVertexArrays(1, &vao);
 }
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

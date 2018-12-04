@@ -13,6 +13,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // The object data type
 struct ObjectData {
@@ -93,5 +94,6 @@ class Object {
   glm::mat4 model_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

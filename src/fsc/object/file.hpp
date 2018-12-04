@@ -12,16 +12,16 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "complex.hpp"
+#include "base/complex.hpp"
 
 namespace fsc {
 namespace object {
 
 // The File class
-class File final : public Complex {
+class File final : public base::Complex {
  public:
   // Constructor
-  File(std::string name, bool is_folder = false, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  File(std::string name, bool is_folder = false, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~File();

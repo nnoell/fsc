@@ -13,11 +13,13 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // Gets the cube vertices data
 const Data& GetCube();
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

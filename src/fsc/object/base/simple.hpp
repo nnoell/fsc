@@ -13,6 +13,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // The Simple class
 class Simple : public Object {
@@ -54,5 +55,6 @@ class Simple : public Object {
   glm::vec4 color_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

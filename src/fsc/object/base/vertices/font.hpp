@@ -18,6 +18,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // The Font class
@@ -78,5 +79,6 @@ class Font final {
 };
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

@@ -13,6 +13,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // The polygon data type
@@ -46,5 +47,6 @@ struct CharData {
 };
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

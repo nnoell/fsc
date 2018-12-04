@@ -4,31 +4,27 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// FSC
-#include "simple.hpp"
+// GLE
+#include "triangle.hpp"
 
 namespace fsc {
 namespace object {
+namespace base {
+namespace vertices {
 
-Simple::Simple(glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Object(std::move(object_data), std::move(model)),
-    color_(std::move(color)) {
+// The triangle vertices
+const float triangle_vertices_[] = {
+  -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+  1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+  0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f
+};
+
+const Data& GetTriangleVertices() {
+  static const Data triangle_data {triangle_vertices_, 3, 6};
+  return triangle_data;
 }
 
-Simple::~Simple() {
-}
-
-const bool Simple::IsComplex() const {
-  return false;
-}
-
-glm::vec4 Simple::GetColor() const {
-  return color_;
-}
-
-void Simple::SetColor(glm::vec4 color) {
-  color_ = color;
-}
-
+}  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

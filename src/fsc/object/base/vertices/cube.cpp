@@ -9,6 +9,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // The cube vertices
@@ -62,5 +63,6 @@ const Data& GetCube() {
 }
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

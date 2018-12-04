@@ -13,23 +13,23 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "complex.hpp"
-#include "ascii.hpp"
+#include "base/vertices/cube.hpp"
+#include "base/complex.hpp"
+#include "base/ascii.hpp"
+#include "base/polygon.hpp"
 #include "plane.hpp"
 #include "file.hpp"
-#include "polygon.hpp"
-#include "vertices/cube.hpp"
 
 namespace fsc {
 namespace object {
 namespace folder {
 
 // The folder Details class
-class Details : public Complex {
+class Details : public base::Complex {
  public:
   // Constructor
   Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f},
-      ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+      base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Details();
@@ -77,20 +77,20 @@ class Details : public Complex {
   std::string path_;
 
   // The selected file section
-  std::shared_ptr<Ascii> selected_file_section_;
+  std::shared_ptr<base::Ascii> selected_file_section_;
 
   // The num files section
-  std::shared_ptr<Ascii> num_files_section_;
+  std::shared_ptr<base::Ascii> num_files_section_;
 
   // The path section
-  std::shared_ptr<Ascii> path_section_;
+  std::shared_ptr<base::Ascii> path_section_;
 };
 
 // The folder Cursor class
-class Cursor final : public Complex {
+class Cursor final : public base::Complex {
  public:
   // Constructor
-  Cursor(ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Cursor(base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Cursor();
@@ -112,10 +112,10 @@ class Cursor final : public Complex {
 }  // namespace folder
 
 // The Folder class
-class Folder final : public Complex {
+class Folder final : public base::Complex {
  public:
   // Constructor
-  Folder(std::string path, std::shared_ptr<const Folder> parent, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::string path, std::shared_ptr<const Folder> parent, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();

@@ -6,10 +6,11 @@
 
 // FSC
 #include "character.hpp"
-#include "../pipeline.hpp"
+#include "../../pipeline.hpp"
 
 namespace fsc {
 namespace object {
+namespace base {
 
 Character::Character(char character, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
     Simple(std::move(color), std::move(object_data), std::move(model)),
@@ -89,5 +90,6 @@ void Character::ModelDraw(glm::mat4 model) const {
   glDeleteVertexArrays(1, &vao);
 }
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

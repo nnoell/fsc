@@ -13,6 +13,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 Complex::Complex(std::vector<std::shared_ptr<Object>> objects, ObjectData object_data, glm::mat4 model) :
     Object(std::move(object_data), std::move(model)),
@@ -70,5 +71,6 @@ void Complex::ModelDraw(glm::mat4 model) const {
   } 
 }
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

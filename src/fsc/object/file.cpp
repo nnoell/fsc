@@ -5,21 +5,21 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // FSC
-#include "vertices/cube.hpp"
+#include "base/vertices/cube.hpp"
+#include "base/polygon.hpp"
+#include "base/ascii.hpp"
 #include "file.hpp"
-#include "polygon.hpp"
-#include "ascii.hpp"
 
 namespace fsc {
 namespace object {
 
-File::File(std::string name, bool is_folder, ObjectData object_data, glm::mat4 model) :
-    Complex(
+File::File(std::string name, bool is_folder, base::ObjectData object_data, glm::mat4 model) :
+    base::Complex(
       {
         // The cube
-        std::make_shared<Polygon>(vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true),
+        std::make_shared<base::Polygon>(base::vertices::GetCube(), is_folder ? glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f} : glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, true),
         // The file name label
-        std::make_shared<Ascii>(name, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, ObjectData {{2.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
+        std::make_shared<base::Ascii>(name, glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, base::ObjectData {{2.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
         // Extra stuff such as size, date, etc...
       },
       std::move(object_data),

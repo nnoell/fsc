@@ -12,6 +12,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // Gets a unique Id
 static unsigned int GetUniqueId() {
@@ -63,5 +64,6 @@ void Object::Draw() const {
   ModelDraw(model_);
 }
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

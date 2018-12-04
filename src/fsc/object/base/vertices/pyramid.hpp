@@ -13,11 +13,13 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // Get the pyramid vertices data
 const Data& GetPyramid();
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

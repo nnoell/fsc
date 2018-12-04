@@ -9,6 +9,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 // The pyramid vertices
@@ -40,5 +41,6 @@ const Data& GetPyramid() {
 }
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

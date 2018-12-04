@@ -14,16 +14,16 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "window.hpp"
-#include "world.hpp"
-#include "object/vertices/font.hpp"
-#include "pipeline.hpp"
-#include "camera.hpp"
+#include "object/base/vertices/font.hpp"
+#include "object/base/ascii.hpp"
+#include "object/base/line.hpp"
 #include "object/folder.hpp"
 #include "object/file.hpp"
-#include "object/ascii.hpp"
-#include "object/line.hpp"
 #include "object/plane.hpp"
+#include "window.hpp"
+#include "world.hpp"
+#include "pipeline.hpp"
+#include "camera.hpp"
 
 // The window resulution
 #define WINDOW_WIDTH 1080
@@ -47,10 +47,10 @@ bool Main(int argc, char* argv[]) {
     Window window {WINDOW_WIDTH, WINDOW_HEIGHT, "FSC " FSC_VERSION};
     window.SetResizeCallback([](int width, int height) { glViewport(0, 0, width, height); });
 
-    // Load the font
-    object::vertices::Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
+    // Configure the font
+    object::base::vertices::Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    // Load the shaders
+    // Configure the shaders
     Pipeline::Configure(SHADER_VERTEX_PATH, SHADER_FRAGMENT_PATH);
     Pipeline::GetInstance().Use();
 

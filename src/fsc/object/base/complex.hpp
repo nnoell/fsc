@@ -18,6 +18,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // The Complex class
 class Complex : public Object {
@@ -65,5 +66,6 @@ class Complex : public Object {
   std::vector<std::shared_ptr<Object>> objects_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

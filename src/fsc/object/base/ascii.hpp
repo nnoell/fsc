@@ -16,6 +16,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // The Ascii class
 class Ascii final : public Complex {
@@ -57,5 +58,6 @@ class Ascii final : public Complex {
   glm::vec4 color_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

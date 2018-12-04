@@ -9,7 +9,7 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "object/ascii.hpp"
+#include "object/base/ascii.hpp"
 #include "object/folder.hpp"
 
 namespace fsc {
@@ -59,7 +59,7 @@ class World final {
   glm::mat4 projection_;
 
   // The title object
-  object::Ascii title_;
+  object::base::Ascii title_;
 
   // The root folder
   object::Folder root_;

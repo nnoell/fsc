@@ -14,6 +14,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 
 // The Character class
 class Character final : public Simple {
@@ -54,5 +55,6 @@ class Character final : public Simple {
   char character_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

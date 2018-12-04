@@ -6,50 +6,52 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // STL
-#include <vector>
-#include <memory>
+#include <string>
 
 // PUBLIC
 #include <fsc/external.hpp>
 
 // FSC
+#include "vertices/data.hpp"
 #include "simple.hpp"
 
 namespace fsc {
 namespace object {
+namespace base {
 
-// The Line class
-class Line final : public Simple {
+// The Polygon class
+class Polygon : public Simple {
  public:
   // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
-  virtual ~Line();
+  virtual ~Polygon();
 
-  // Draw the line
+  // Draws the polygon object
   void ModelDraw(glm::mat4 model = {}) const override;
 
  private:
   // Copy Constructor
-  Line(const Line&) = delete;
+  Polygon(const Polygon&) = delete;
 
   // Move Constructor
-  Line(Line &&) = delete;
+  Polygon(Polygon &&) = delete;
 
   // Copy-Assign Constructor
-  Line& operator=(const Line&) = delete;
+  Polygon& operator=(const Polygon&) = delete;
 
   // Move-Assign Constructr
-  Line& operator=(Line &&) = delete;
+  Polygon& operator=(Polygon &&) = delete;
 
  private:
-  // The number of vertices
-  unsigned int num_vertices_;
+  // The vertices data
+  const vertices::Data& vertices_data_;
 
-  // The vertices of the line
-  std::shared_ptr<float []> vertices_;
+  // Whether it is in wireframe mode or not
+  bool wireframe_;
 };
 
+}  // namespace base
 }  // namespace object
 }  // namespace fsc

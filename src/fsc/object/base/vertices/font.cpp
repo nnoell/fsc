@@ -12,6 +12,7 @@
 
 namespace fsc {
 namespace object {
+namespace base {
 namespace vertices {
 
 std::unique_ptr<Font> Font::instance_ = nullptr;
@@ -141,5 +142,6 @@ const CharData& Font::GetCharData(char c) const {
 }
 
 }  // namespace vertices
+}  // namespace base
 }  // namespace object
 }  // namespace fsc
