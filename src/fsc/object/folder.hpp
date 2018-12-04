@@ -118,6 +118,10 @@ class Folder final : public Complex {
   void MoveCursorRight();
 
  private:
+  // Update cursor
+  void UpdateCursor();
+
+ private:
   // Copy Constructor
   Folder(const Folder&) = delete;
 
