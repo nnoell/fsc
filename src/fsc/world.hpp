@@ -26,6 +26,18 @@ class World final {
   // Update the world changes
   void Update() const;
 
+  // Selects up
+  void SelectUp();
+
+  // Selects down
+  void SelectDown();
+
+  // Selects Left
+  void SelectLeft();
+
+  // Selects Right
+  void SelectRight();
+
  private:
   // Copy Constructor
   World(const World&) = delete;

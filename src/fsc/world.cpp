@@ -37,4 +37,20 @@ void World::Update() const {
   root_.Draw();
 }
 
+void World::SelectUp() {
+  root_.MoveCursorUp();
+}
+  
+void World::SelectDown() {
+  root_.MoveCursorDown();
+}
+ 
+void World::SelectLeft() {
+  root_.MoveCursorLeft();
+}
+
+void World::SelectRight() {
+  root_.MoveCursorRight();
+}
+
 }  // namespace fsc

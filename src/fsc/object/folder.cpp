@@ -179,7 +179,10 @@ std::shared_ptr<File> Folder::GetSelectedFile() const {
 
 void Folder::MoveCursorUp() {
   // Check for the new position
-  const int pos = cursor_position_.x + ((cursor_position_.y + 1) * num_rows_);
+  const int new_y = cursor_position_.y + 1;
+  if (new_y < 0 || new_y >= num_rows_)
+    return;
+  const int pos = cursor_position_.x + (new_y * num_rows_);
   if (pos < 0 || pos >= num_files_)
     return;
 
@@ -190,7 +193,10 @@ void Folder::MoveCursorUp() {
 
 void Folder::MoveCursorDown() {
   // Check for the new position
-  const int pos = cursor_position_.x + ((cursor_position_.y - 1) * num_rows_);
+  const int new_y = cursor_position_.y - 1;
+  if (new_y < 0 || new_y >= num_rows_)
+    return;
+  const int pos = cursor_position_.x + (new_y * num_rows_);
   if (pos < 0 || pos >= num_files_)
     return;
 
@@ -201,7 +207,10 @@ void Folder::MoveCursorDown() {
 
 void Folder::MoveCursorLeft() {
   // Check for the new position
-  const int pos = (cursor_position_.x - 1) + (cursor_position_.y * num_rows_);
+  const int new_x = cursor_position_.x - 1;
+  if (new_x < 0 || new_x >= num_rows_)
+    return;
+  const int pos = new_x + (cursor_position_.y * num_rows_);
   if (pos < 0 || pos >= num_files_)
     return;
 
@@ -212,7 +221,10 @@ void Folder::MoveCursorLeft() {
 
 void Folder::MoveCursorRight() {
   // Check for the new position
-  const int pos = (cursor_position_.x + 1) + (cursor_position_.y * num_rows_);
+  const int new_x = cursor_position_.x + 1;
+  if (new_x < 0 || new_x >= num_rows_)
+    return;
+  const int pos = new_x + (cursor_position_.y * num_rows_);
   if (pos < 0 || pos >= num_files_)
     return;
 
@@ -223,7 +235,7 @@ void Folder::MoveCursorRight() {
 
 void Folder::UpdateCursor() {
   std::shared_ptr<File> selected_file = GetSelectedFile();
-  cursor_->SetObjectData({selected_file->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  cursor_->SetObjectData({selected_file->GetObjectData().position, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   folder_details_->SetSelectedFile(std::move(selected_file));
 }
 

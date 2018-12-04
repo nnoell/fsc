@@ -54,11 +54,13 @@ bool Main(int argc, char* argv[]) {
     Pipeline::Configure(SHADER_VERTEX_PATH, SHADER_FRAGMENT_PATH);
     Pipeline::GetInstance().Use();
 
+    // Create the camera
+    Camera camera {};
+
     // Create the world
     World world {WINDOW_WIDTH, WINDOW_HEIGHT, {0.1f, 0.1f, 0.1f, 0.1f}};
 
-    // Create the camera and bind it to the keyboard
-    Camera camera {};
+    // Bind the keys camera keys
     window.AddKeyCallback(GLFW_KEY_W, std::bind(&Camera::MoveFront, &camera));
     window.AddKeyCallback(GLFW_KEY_S, std::bind(&Camera::MoveBack, &camera));
     window.AddKeyCallback(GLFW_KEY_A, std::bind(&Camera::MoveLeft, &camera));
@@ -71,6 +73,12 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_E, std::bind(&Camera::LookRight, &camera));
     window.AddKeyCallback(GLFW_KEY_R, std::bind(&Camera::SetPosition, &camera, glm::vec3 {0.0f, 2.0f, 3.0f}));
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
+
+    // Bind the world keys
+    window.AddKeyCallback(GLFW_KEY_UP, std::bind(&World::SelectUp, &world));
+    window.AddKeyCallback(GLFW_KEY_DOWN, std::bind(&World::SelectDown, &world));
+    window.AddKeyCallback(GLFW_KEY_LEFT, std::bind(&World::SelectLeft, &world));
+    window.AddKeyCallback(GLFW_KEY_RIGHT, std::bind(&World::SelectRight, &world));
 
     // Render
     window.Render([&](){
