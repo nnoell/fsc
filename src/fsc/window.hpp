@@ -19,8 +19,20 @@ namespace fsc {
 // The Window class
 class Window final {
  public:
-  // The key function type
+  // The Key function type
   using KeyFunction = std::function<void(void)>;
+
+  // The Key function configuration type
+  struct KeyFunctionConf {
+    // Callback used when the key is pressed
+    KeyFunction press_callback;
+
+    // Whether to block the pressed callback until released
+    bool block_until_released;
+
+    // Whether the key is blocked or not
+    bool is_blocked;
+  };
 
   // The mouse function type
   using MouseFunction = std::function<void(double, double)>;
@@ -39,7 +51,7 @@ class Window final {
   virtual ~Window();
 
   // Adds a key callback
-  void AddKeyCallback(int key, KeyFunction callback);
+  void AddKeyCallback(int key, KeyFunction pressed, bool block_until_released = false);
 
   // Sets the mouse callback
   void SetMouseCallback(MouseFunction callback);
@@ -48,17 +60,17 @@ class Window final {
   void SetResizeCallback(ResizeFunction callback);
 
   // Calls the mouse callback
-  void CallMouseCallback(double x, double y) const;
+  void CallMouseCallback(double x, double y);
 
   // Calls the resize callback
-  void CallResizeCallback(int w, int h) const;
+  void CallResizeCallback(int w, int h);
 
   // Renders the window
-  void Render(RenderFunction render_function = [](){}) const;
+  void Render(RenderFunction render_function = [](){});
 
  private:
   // Processes the input
-  void ProcessInput() const;
+  void ProcessInput();
 
  private:
   // Copy Constructor
@@ -87,7 +99,7 @@ class Window final {
   mutable std::mutex resize_callback_mutex_;
 
   // The key callback map
-  std::unordered_map<int, KeyFunction> key_callback_map_;
+  std::unordered_map<int, KeyFunctionConf> key_callback_map_;
 
   // The mouse callback
   MouseFunction mouse_callback_;

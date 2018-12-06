@@ -25,7 +25,7 @@ Window::Window(unsigned int width, unsigned int height, const char *title) :
     window_(GlfwWindowInit(width, height, title)),
     key_callback_map_mutex_(),
     mouse_callback_mutex_(),
-    key_callback_map_({{GLFW_KEY_ESCAPE, [&](){glfwSetWindowShouldClose(window_.get(), true);}}}),
+    key_callback_map_({{GLFW_KEY_ESCAPE, {[&](){glfwSetWindowShouldClose(window_.get(), true);}, false, false}}}),
     mouse_callback_(nullptr) {
   if (!window_)
     throw std::runtime_error("Error: Could not create GLFW window");
@@ -59,11 +59,11 @@ Window::~Window() {
   glfwTerminate();
 }
 
-void Window::AddKeyCallback(int key, KeyFunction callback) {
+void Window::AddKeyCallback(int key, KeyFunction pressed, bool block_until_released) {
   std::unique_lock<std::mutex> lock(key_callback_map_mutex_);
 
   // Add the new callback
-  key_callback_map_[key] = callback;
+  key_callback_map_[key] = {std::move(pressed), block_until_released, false};
 }
 
 void Window::SetMouseCallback(MouseFunction callback) {
@@ -80,7 +80,7 @@ void Window::SetResizeCallback(ResizeFunction callback) {
   resize_callback_ = callback;
 }
 
-void Window::CallMouseCallback(double x, double y) const {
+void Window::CallMouseCallback(double x, double y) {
   std::unique_lock<std::mutex> lock(mouse_callback_mutex_);
 
   // Call the callback
@@ -88,7 +88,7 @@ void Window::CallMouseCallback(double x, double y) const {
     mouse_callback_(x, y);
 }
 
-void Window::CallResizeCallback(int w, int h) const {
+void Window::CallResizeCallback(int w, int h) {
   std::unique_lock<std::mutex> lock(resize_callback_mutex_);
 
   // Call the callback
@@ -96,7 +96,7 @@ void Window::CallResizeCallback(int w, int h) const {
     resize_callback_(w, h);
 }
 
-void Window::Render(RenderFunction render_function) const {
+void Window::Render(RenderFunction render_function) {
   // Render loop
   while (!glfwWindowShouldClose(window_.get())) {
     // Process window input
@@ -113,13 +113,24 @@ void Window::Render(RenderFunction render_function) const {
   }
 }
 
-void Window::ProcessInput() const {
+void Window::ProcessInput() {
   std::unique_lock<std::mutex> lock(key_callback_map_mutex_);
 
   // Call the specific handler
-  for (const auto& pair : key_callback_map_)
-    if (glfwGetKey(window_.get(), pair.first) == GLFW_PRESS)
-      pair.second();
+  for (auto&& pair : key_callback_map_) {
+    // The key press handler
+    if (glfwGetKey(window_.get(), pair.first) == GLFW_PRESS && !pair.second.is_blocked) {
+      pair.second.press_callback();
+
+      // Block the key until it is released if block_until_released is true
+      if (pair.second.block_until_released)
+        pair.second.is_blocked = true;
+    }
+
+    // The key release handler
+    if (glfwGetKey(window_.get(), pair.first) == GLFW_RELEASE)
+      pair.second.is_blocked = false;
+  }
 }
 
 }  // namespace fsc

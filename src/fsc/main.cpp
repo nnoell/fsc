@@ -75,10 +75,10 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_F, std::bind(&Camera::SetFront, &camera, glm::vec3 {0.0f, 0.0f, -1.0f}));
 
     // Bind the world keys
-    window.AddKeyCallback(GLFW_KEY_UP, std::bind(&World::SelectUp, &world));
-    window.AddKeyCallback(GLFW_KEY_DOWN, std::bind(&World::SelectDown, &world));
-    window.AddKeyCallback(GLFW_KEY_LEFT, std::bind(&World::SelectLeft, &world));
-    window.AddKeyCallback(GLFW_KEY_RIGHT, std::bind(&World::SelectRight, &world));
+    window.AddKeyCallback(GLFW_KEY_UP, std::bind(&World::SelectUp, &world), true);
+    window.AddKeyCallback(GLFW_KEY_DOWN, std::bind(&World::SelectDown, &world), true);
+    window.AddKeyCallback(GLFW_KEY_LEFT, std::bind(&World::SelectLeft, &world), true);
+    window.AddKeyCallback(GLFW_KEY_RIGHT, std::bind(&World::SelectRight, &world), true);
 
     // Render
     window.Render([&](){
