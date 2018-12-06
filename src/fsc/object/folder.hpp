@@ -114,7 +114,7 @@ class Cursor final : public base::Complex {
 class Folder final : public base::Complex {
  public:
   // Constructor
-  Folder(std::filesystem::path path, std::shared_ptr<const Folder> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::filesystem::path path, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();
@@ -160,9 +160,6 @@ class Folder final : public base::Complex {
  private:
   // The path of the directory
   const std::filesystem::path path_;
-
-  // The parent folder
-  const std::shared_ptr<const Folder> parent_;
 
   // The folder details
   std::shared_ptr<folder::Details> folder_details_;

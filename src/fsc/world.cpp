@@ -17,7 +17,7 @@ World::World(int width, int height, glm::vec4 color) :
     color_(std::move(color)),
     projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
     title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::TransformData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
-    root_(std::make_shared<object::Folder>("C:/", nullptr)),
+    root_(std::make_shared<object::Folder>("C:/")),
     opened_folders_({}) {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
@@ -67,7 +67,7 @@ void World::OpenSelected() {
     return;
 
   std::cout << file->GetPath() << std::endl;
-  auto folder = std::make_shared<object::Folder>(file->GetPath(), root_, object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  auto folder = std::make_shared<object::Folder>(file->GetPath(), object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   opened_folders_.push_back(std::move(folder));
 }
 

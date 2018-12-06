@@ -95,10 +95,9 @@ static unsigned int CountNumRows(unsigned int size) {
   return res;
 }
 
-Folder::Folder(std::filesystem::path path, std::shared_ptr<const Folder> parent, base::TransformData transform_data, glm::mat4 model) :
+Folder::Folder(std::filesystem::path path, base::TransformData transform_data, glm::mat4 model) :
     Complex({}, std::move(transform_data), std::move(model)),
     path_(std::move(path)),
-    parent_(std::move(parent)),
     folder_details_(std::make_shared<folder::Details>(nullptr, 0, path_.filename().string())),
     cursor_(nullptr),
     files_(nullptr),
