@@ -9,7 +9,7 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "vertices/font.hpp"
+#include "vertices/data.hpp"
 #include "simple.hpp"
 
 namespace fsc {
@@ -31,8 +31,8 @@ class Character final : public Simple {
   // Sets the character
   void SetCharacter(char character);
 
-  // Gets the data
-  const vertices::CharData& GetData() const;
+  // Gets the next position for the next character
+  double GetNextPosition() const;
 
   // Draws the text object
   void ModelDraw(glm::mat4 model = {}) const override;
@@ -53,6 +53,9 @@ class Character final : public Simple {
  private:
   // The character
   char character_;
+
+  // The vertices data
+  std::shared_ptr<const vertices::CharData> vertices_data_;
 };
 
 }  // namespace base

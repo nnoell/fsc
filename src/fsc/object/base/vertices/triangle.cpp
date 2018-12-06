@@ -19,7 +19,7 @@ const float triangle_vertices_[] = {
   0.0f,  1.0f, 0.0f, 1.0f, 0.0f, 0.0f
 };
 
-const Data& GetTriangleVertices() {
+const Data& GetTriangle() {
   static const Data triangle_data {triangle_vertices_, 3, 6};
   return triangle_data;
 }

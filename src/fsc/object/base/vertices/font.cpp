@@ -37,7 +37,7 @@ const Font& Font::GetInstance() {
 }
 
 Font::Font() :
-    char_vertices_map_() {
+    char_vertices_data_map_() {
     // Init FreeType
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
@@ -55,7 +55,7 @@ Font::Font() :
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
     // Load first 128 characters of ASCII set
-    for (GLubyte c = 0; c < 128; c++) {
+    for (unsigned char c = 0; c < 128; c++) {
       // Load character glyph 
       if (FT_Load_Char(face, c, FT_LOAD_RENDER))
         std::runtime_error("Error: failed to load char");
@@ -110,13 +110,8 @@ Font::Font() :
       });
 
       // Create the CharData and insert it into the map
-      char_vertices_map_.insert(std::pair<char, CharData>(c, {
-        vertices,
-        num_vertices,
-        stride,
-        next_position,
-        texture
-      }));
+      std::shared_ptr<const CharData> vertices_data(new CharData {std::move(vertices), num_vertices, stride, next_position, texture});
+      char_vertices_data_map_.insert(std::pair<char, std::shared_ptr<const CharData>>(c, std::move(vertices_data)));
 
       // Unbind the texture
       glBindTexture(GL_TEXTURE_2D, 0);
@@ -130,8 +125,8 @@ Font::Font() :
 Font::~Font() {
 }
 
-const CharData& Font::GetCharData(char c) const {
-  return char_vertices_map_.at(c);
+std::shared_ptr<const CharData> Font::GetCharVerticesData(char c) const {
+  return char_vertices_data_map_.at(c);
 }
 
 }  // namespace vertices

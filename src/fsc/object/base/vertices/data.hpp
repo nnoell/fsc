@@ -16,7 +16,7 @@ namespace object {
 namespace base {
 namespace vertices {
 
-// The polygon data type
+// The data type
 struct Data {
   // The vertices array
   const float *vertices;

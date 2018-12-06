@@ -38,7 +38,7 @@ class Font final {
   virtual ~Font();
 
   // Gets the char vertices of a character
-  const CharData& GetCharData(char c) const;
+  std::shared_ptr<const CharData> GetCharVerticesData(char c) const;
 
  private:
   // Constructor
@@ -66,7 +66,7 @@ class Font final {
 
  private:
   // The char data map
-  std::unordered_map<char, CharData> char_vertices_map_;
+  std::unordered_map<unsigned char, std::shared_ptr<const CharData>> char_vertices_data_map_;
 };
 
 }  // namespace vertices

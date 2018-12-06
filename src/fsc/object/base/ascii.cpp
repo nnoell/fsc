@@ -40,7 +40,7 @@ void Ascii::Update() {
   float next_pos = 0.0f;
   for (auto&& c : ascii_) {
     auto character = std::make_shared<Character>(c, color_, ObjectData {{next_pos, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 0.0f}});
-    next_pos += character->GetData().next_position;
+    next_pos += character->GetNextPosition();
     AddObject(std::move(character));
   }
 }

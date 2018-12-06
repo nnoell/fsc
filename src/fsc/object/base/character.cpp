@@ -5,6 +5,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // FSC
+#include "vertices/font.hpp"
 #include "character.hpp"
 #include "../../pipeline.hpp"
 
@@ -14,7 +15,8 @@ namespace base {
 
 Character::Character(char character, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
     Simple(std::move(color), std::move(object_data), std::move(model)),
-    character_(character) {
+    character_(character),
+    vertices_data_(vertices::Font::GetInstance().GetCharVerticesData(character_)) {
 }
 
 Character::~Character() {
@@ -27,16 +29,14 @@ char Character::GetCharacter() const {
 
 void Character::SetCharacter(char character) {
   character_ = character;
+  vertices_data_ = vertices::Font::GetInstance().GetCharVerticesData(character_);
 }
 
-const vertices::CharData& Character::GetData() const {
-  return vertices::Font::GetInstance().GetCharData(character_);
+double Character::GetNextPosition() const {
+  return vertices_data_->next_position;
 }
 
 void Character::ModelDraw(glm::mat4 model) const {
-  // Get the char data
-  const vertices::CharData& char_data = vertices::Font::GetInstance().GetCharData(character_);
-
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", true);
   Pipeline::GetInstance().SetMat4("model_", model);
@@ -58,25 +58,25 @@ void Character::ModelDraw(glm::mat4 model) const {
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
   // Configure Buffer
-  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * char_data.stride * char_data.num_vertices, NULL, GL_DYNAMIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices_data_->stride * vertices_data_->num_vertices, NULL, GL_DYNAMIC_DRAW);
 
   // Configure Vertex
-  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, char_data.stride * sizeof(GLfloat), (void *)0);
+  glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, vertices_data_->stride * sizeof(GLfloat), (void *)0);
   glEnableVertexAttribArray(0);
   // Configure Extra
-  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, char_data.stride * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat)));
+  glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, vertices_data_->stride * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat)));
   glEnableVertexAttribArray(1);
   // Configure VBO
-  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * char_data.stride * char_data.num_vertices, char_data.vertices.get());
+  glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * vertices_data_->stride * vertices_data_->num_vertices, vertices_data_->vertices.get());
 
   // Activate render state
   glActiveTexture(GL_TEXTURE0);
 
   // Bind texture
-  glBindTexture(GL_TEXTURE_2D, char_data.texture);
+  glBindTexture(GL_TEXTURE_2D, vertices_data_->texture);
 
   // Draw
-  glDrawArrays(GL_TRIANGLES, 0, char_data.num_vertices);
+  glDrawArrays(GL_TRIANGLES, 0, vertices_data_->num_vertices);
 
   // Unbind texture
   glBindTexture(GL_TEXTURE_2D, 0);
