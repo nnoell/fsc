@@ -25,7 +25,7 @@ namespace vertices {
 class Font final {
  public:
   // Configures the singleton
-  static void Configure(const char *font_path, unsigned int width, unsigned int height);
+  static void Configure(const char *font_path);
 
   // Resets the singleton
   static void Reset();
@@ -64,16 +64,7 @@ class Font final {
   // The font path
   static const char * font_path_;
 
-  // The width of the screen
-  static unsigned int width_;
-
-  // The height of the screen
-  static unsigned int height_;
-
  private:
-  // Projection
-  glm::mat4 projection_;
-
   // The char data map
   std::unordered_map<char, CharData> char_vertices_map_;
 };

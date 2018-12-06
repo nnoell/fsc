@@ -47,8 +47,8 @@ bool Main(int argc, char* argv[]) {
     Window window {WINDOW_WIDTH, WINDOW_HEIGHT, "FSC " FSC_VERSION};
     window.SetResizeCallback([](int width, int height) { glViewport(0, 0, width, height); });
 
-    // Configure the font
-    object::base::vertices::Font::Configure(FONT_PATH, WINDOW_WIDTH, WINDOW_HEIGHT);
+    // Configure the font vertices
+    object::base::vertices::Font::Configure(FONT_PATH);
 
     // Configure the shaders
     Pipeline::Configure(SHADER_VERTEX_PATH, SHADER_FRAGMENT_PATH);

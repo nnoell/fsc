@@ -19,14 +19,8 @@ std::unique_ptr<Font> Font::instance_ = nullptr;
 
 const char * Font::font_path_ = "terminus.ttf";
 
-unsigned int Font::width_ = 1080;
-
-unsigned int Font::height_ = 720;
-
-void Font::Configure(const char *font_path, unsigned int width, unsigned int height) {
+void Font::Configure(const char *font_path) {
   font_path_ = font_path;
-  width_ = width;
-  height_ = height;
 }
 
 void Font::Reset() {
@@ -43,7 +37,6 @@ const Font& Font::GetInstance() {
 }
 
 Font::Font() :
-    projection_(glm::ortho(0.0f, static_cast<GLfloat>(width_), 0.0f, static_cast<GLfloat>(height_))),
     char_vertices_map_() {
     // Init FreeType
     FT_Library ft;
