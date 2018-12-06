@@ -32,6 +32,19 @@ class Fps final {
   double GetMillisecondPerFrame() const;
 
  private:
+  // Copy Constructor
+  Fps(const Fps&) = delete;
+
+  // Move Constructor
+  Fps(Fps &&) = delete;
+
+  // Copy-Assign Constructor
+  Fps& operator=(const Fps&) = delete;
+
+  // Move-Assign Constructr
+  Fps& operator=(Fps &&) = delete;
+
+ private:
   // The base time
   double base_time_;
 
