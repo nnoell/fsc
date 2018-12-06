@@ -4,8 +4,12 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
+// STL
+#include <sstream>
+
 // FSC
 #include "window.hpp"
+#include "fps.hpp"
 
 namespace fsc {
 
@@ -21,8 +25,9 @@ static std::shared_ptr<GLFWwindow> GlfwWindowInit(unsigned int width, unsigned i
   return std::shared_ptr<GLFWwindow> {glfwCreateWindow(width, height, title, nullptr, nullptr), glfwDestroyWindow};
 }
 
-Window::Window(unsigned int width, unsigned int height, const char *title) : 
-    window_(GlfwWindowInit(width, height, title)),
+Window::Window(unsigned int width, unsigned int height, std::string title) : 
+    title_(std::move(title)),
+    window_(GlfwWindowInit(width, height, title_.c_str())),
     key_callback_map_mutex_(),
     mouse_callback_mutex_(),
     key_callback_map_({{GLFW_KEY_ESCAPE, {[&](){glfwSetWindowShouldClose(window_.get(), true);}, false, false}}}),
@@ -97,8 +102,17 @@ void Window::CallResizeCallback(int w, int h) {
 }
 
 void Window::Render(RenderFunction render_function) {
+  // Create the FPS counter
+  Fps fps {};
+
   // Render loop
   while (!glfwWindowShouldClose(window_.get())) {
+    // Update the FPS
+    fps.Update();
+
+    // Update the windows title
+    UpdateWindowTitle(fps.GetFps(), fps.GetMillisecondPerFrame());
+
     // Process window input
     ProcessInput();
 
@@ -111,6 +125,12 @@ void Window::Render(RenderFunction render_function) {
     // Poll events
     glfwPollEvents();
   }
+}
+
+void Window::UpdateWindowTitle(double fps, double msframe) {
+  std::stringstream ss;
+  ss << title_ << " | " << std::floor(fps) << " fps | " << std::floor(msframe) << " ms/fps";
+  glfwSetWindowTitle(window_.get(), ss.str().c_str());
 }
 
 void Window::ProcessInput() {

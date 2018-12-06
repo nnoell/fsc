@@ -10,6 +10,7 @@
 #include <functional>
 #include <unordered_map>
 #include <mutex>
+#include <string>
 
 // PUBLIC
 #include <fsc/external.hpp>
@@ -45,7 +46,7 @@ class Window final {
 
  public:
   // Constructor
-  Window(unsigned int width, unsigned int height, const char *title);
+  Window(unsigned int width, unsigned int height, std::string title);
 
   // Destructor
   virtual ~Window();
@@ -69,6 +70,9 @@ class Window final {
   void Render(RenderFunction render_function = [](){});
 
  private:
+  // Updates the window title
+  void UpdateWindowTitle(double fps, double msframe);
+
   // Processes the input
   void ProcessInput();
 
@@ -86,8 +90,11 @@ class Window final {
   Window& operator=(Window &&) = delete;
 
  private:
+  // The title
+  const std::string title_;
+
   // The window 
-  std::shared_ptr<GLFWwindow> window_;
+  const std::shared_ptr<GLFWwindow> window_;
 
   // The key callback map mutex
   mutable std::mutex key_callback_map_mutex_;
