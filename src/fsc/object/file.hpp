@@ -21,7 +21,7 @@ namespace object {
 class File final : public base::Complex {
  public:
   // Constructor
-  File(std::string name, bool is_folder = false, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  File(std::string name, bool is_folder = false, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~File();

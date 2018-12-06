@@ -15,8 +15,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Complex::Complex(std::vector<std::shared_ptr<Object>> objects, ObjectData object_data, glm::mat4 model) :
-    Object(std::move(object_data), std::move(model)),
+Complex::Complex(std::vector<std::shared_ptr<Object>> objects, TransformData transform_data, glm::mat4 model) :
+    Object(std::move(transform_data), std::move(model)),
     objects_(std::move(objects)) {
 }
 
@@ -50,7 +50,7 @@ void Complex::ClearObjects() {
 }
 
 void Complex::ModelDraw(const glm::mat4& model) const {
-  // Transform the object model using the object data
+  // Transform the object model using the transform data
   glm::mat4 model2 = ModelTransform(model);
 
   // Transform each sub-object model using each sub-object model

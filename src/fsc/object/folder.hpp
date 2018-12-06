@@ -29,7 +29,7 @@ class Details : public base::Complex {
  public:
   // Constructor
   Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f},
-      base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+      base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Details();
@@ -90,7 +90,7 @@ class Details : public base::Complex {
 class Cursor final : public base::Complex {
  public:
   // Constructor
-  Cursor(base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Cursor(base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Cursor();
@@ -115,7 +115,7 @@ class Cursor final : public base::Complex {
 class Folder final : public base::Complex {
  public:
   // Constructor
-  Folder(std::string path, std::shared_ptr<const Folder> parent, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::string path, std::shared_ptr<const Folder> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();

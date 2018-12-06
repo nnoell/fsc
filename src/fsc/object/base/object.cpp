@@ -20,9 +20,9 @@ static unsigned int GetUniqueId() {
   return id++;
 }
 
-Object::Object(ObjectData object_data, glm::mat4 model) :
+Object::Object(TransformData transform_data, glm::mat4 model) :
     id_(GetUniqueId()),
-    object_data_(std::move(object_data)),
+    transform_data_(std::move(transform_data)),
     model_(std::move(model)) {
 }
 
@@ -33,12 +33,12 @@ unsigned int Object::GetId() const {
   return id_;
 }
 
-const ObjectData& Object::GetObjectData() const {
-  return object_data_;
+const TransformData& Object::GetTransformData() const {
+  return transform_data_;
 }
 
-void Object::SetObjectData(ObjectData object_data) {
-  object_data_ = std::move(object_data);
+void Object::SetTransformData(TransformData transform_data) {
+  transform_data_ = std::move(transform_data);
 }
 
 glm::vec3 Object::GetPosition() const {
@@ -51,9 +51,9 @@ glm::mat4 Object::Transform() {
 }
  
 glm::mat4 Object::ModelTransform(const glm::mat4& model) const {
-  glm::mat4 res = glm::scale(model, object_data_.scale);
-  res = glm::rotate(res, object_data_.radians, object_data_.axes);
-  return glm::translate(res, object_data_.position);
+  glm::mat4 res = glm::scale(model, transform_data_.scale);
+  res = glm::rotate(res, transform_data_.radians, transform_data_.axes);
+  return glm::translate(res, transform_data_.position);
 }
 
 void Object::Draw() const {

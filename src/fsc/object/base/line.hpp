@@ -23,7 +23,7 @@ namespace base {
 class Line final : public Simple {
  public:
   // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Line();

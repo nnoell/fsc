@@ -15,8 +15,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-// The object data type
-struct ObjectData {
+// The transform data type
+struct TransformData {
   // The position
   glm::vec3 position;
 
@@ -42,11 +42,11 @@ class Object {
   // Checks whether the object is complex or not
   virtual const bool IsComplex() const = 0;
 
-  // Gets the object data
-  const ObjectData& GetObjectData() const;
+  // Gets the transform data
+  const TransformData& GetTransformData() const;
 
-  // Sets the object data
-  void SetObjectData(ObjectData object_data);
+  // Sets the transform data
+  void SetTransformData(TransformData transform_data);
 
   // Gets the current position
   glm::vec3 GetPosition() const;
@@ -65,7 +65,7 @@ class Object {
 
  protected:
   // Constructor
-  Object(ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Object(TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
  private:
   // Copy Constructor
@@ -84,8 +84,8 @@ class Object {
   // The Id
   const unsigned int id_;
 
-  // The object data
-  ObjectData object_data_;
+  // The transform data
+  TransformData transform_data_;
 
   // The model matrix
   glm::mat4 model_;

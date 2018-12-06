@@ -43,7 +43,7 @@ class Complex : public Object {
 
  protected:
   // Constructor
-  Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Complex(std::vector<std::shared_ptr<Object>> objects = {}, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Draws the complex object
   void ModelDraw(const glm::mat4& model = {}) const override;

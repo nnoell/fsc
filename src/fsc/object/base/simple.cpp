@@ -11,8 +11,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Simple::Simple(glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Object(std::move(object_data), std::move(model)),
+Simple::Simple(glm::vec4 color, TransformData transform_data, glm::mat4 model) :
+    Object(std::move(transform_data), std::move(model)),
     color_(std::move(color)) {
 }
 

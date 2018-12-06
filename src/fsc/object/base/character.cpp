@@ -13,8 +13,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Character::Character(char character, glm::vec4 color, ObjectData object_data, glm::mat4 model) :
-    Simple(std::move(color), std::move(object_data), std::move(model)),
+Character::Character(char character, glm::vec4 color, TransformData transform_data, glm::mat4 model) :
+    Simple(std::move(color), std::move(transform_data), std::move(model)),
     character_(character),
     vertices_data_(vertices::Font::GetInstance().GetCharVerticesData(character_)) {
 }

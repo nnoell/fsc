@@ -21,7 +21,7 @@ namespace object {
 class Plane final : public base::Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale, base::ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Plane(unsigned int width, unsigned int height, float scale, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Plane();
