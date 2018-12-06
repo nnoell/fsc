@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // STL
-#include <string>
+#include <filesystem>
 
 // PUBLIC
 #include <fsc/external.hpp>
@@ -21,7 +21,7 @@ namespace object {
 class File final : public base::Complex {
  public:
   // Constructor
-  File(std::string name, bool is_folder = false, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  File(std::filesystem::path path, bool is_folder = false, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~File();
@@ -46,8 +46,8 @@ class File final : public base::Complex {
   File& operator=(File &&) = delete;
 
  private:
-  // The name of the file
-  std::string name_;
+  // The path of the file
+  std::filesystem::path path_;
 
   // Whether this file is a folder or not
   bool is_folder_;

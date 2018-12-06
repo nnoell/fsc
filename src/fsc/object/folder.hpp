@@ -6,8 +6,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // STL
-#include <string>
-#include <array>
+#include <filesystem>
 
 // PUBLIC
 #include <fsc/external.hpp>
@@ -115,13 +114,13 @@ class Cursor final : public base::Complex {
 class Folder final : public base::Complex {
  public:
   // Constructor
-  Folder(std::string path, std::shared_ptr<const Folder> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::filesystem::path path, std::shared_ptr<const Folder> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Folder();
 
-  // Scans the folder for files
-  void Scan();
+  // Updates the folder
+  void Update();
 
   // Gets the number of files the folder has
   unsigned int GetNumFiles() const;
@@ -160,7 +159,7 @@ class Folder final : public base::Complex {
 
  private:
   // The path of the directory
-  const std::string path_;
+  const std::filesystem::path path_;
 
   // The parent folder
   const std::shared_ptr<const Folder> parent_;

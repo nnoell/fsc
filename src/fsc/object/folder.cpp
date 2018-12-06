@@ -79,7 +79,7 @@ Cursor::~Cursor() {
 }  // namespace folder
 
 // Counts the number of files a folder has
-static unsigned int CountNumFiles(std::string path) {
+static unsigned int CountNumFiles(std::filesystem::path path) {
   unsigned int res = 0;
   std::filesystem::directory_iterator dir {path};
   for (const std::filesystem::directory_entry& dir_entry : dir)
@@ -95,24 +95,24 @@ static unsigned int CountNumRows(unsigned int size) {
   return res;
 }
 
-Folder::Folder(std::string path, std::shared_ptr<const Folder> parent, base::TransformData transform_data, glm::mat4 model) :
+Folder::Folder(std::filesystem::path path, std::shared_ptr<const Folder> parent, base::TransformData transform_data, glm::mat4 model) :
     Complex({}, std::move(transform_data), std::move(model)),
     path_(std::move(path)),
     parent_(std::move(parent)),
-    folder_details_(std::make_shared<folder::Details>(nullptr, 0, path_)),
+    folder_details_(std::make_shared<folder::Details>(nullptr, 0, path_.filename().string())),
     cursor_(nullptr),
     files_(nullptr),
     num_files_(0),
     num_rows_(0),
     cursor_position_({0, 0}) {
-  // Scan for files
-  Scan();
+  // Update the folder
+  Update();
 }
 
 Folder::~Folder() {
 }
 
-void Folder::Scan() {
+void Folder::Update() {
   // Clear
   ClearObjects();
   files_ = nullptr;
@@ -140,8 +140,8 @@ void Folder::Scan() {
     }
 
     // Create the file object and add it into the lists
-    const std::string filename = dir_entry.path().filename().string();
-    auto file = std::make_shared<File>(filename, dir_entry.is_directory(), base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    const std::filesystem::path file_path = dir_entry.path();
+    auto file = std::make_shared<File>(file_path.filename().string(), dir_entry.is_directory(), base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     files_[x + (z * num_rows_)] = file;
     AddObject(file);
 
@@ -158,7 +158,7 @@ void Folder::Scan() {
   // Set and Add the folder details
   folder_details_->SetSelectedFile(GetSelectedFile());
   folder_details_->SetNumFiles(num_files_);
-  folder_details_->SetPath(path_);
+  folder_details_->SetPath(path_.filename().string());
   AddObject(folder_details_);
 
   // Create and add the plane
