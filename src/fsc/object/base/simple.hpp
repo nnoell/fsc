@@ -31,7 +31,7 @@ class Simple : public Object {
   void SetColor(glm::vec4 color);
 
   // Draw the line
-  virtual void ModelDraw(glm::mat4 model = {}) const override = 0;
+  virtual void ModelDraw(const glm::mat4& model = {}) const override = 0;
 
  protected:
   // Constructor

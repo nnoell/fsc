@@ -35,7 +35,7 @@ class Character final : public Simple {
   double GetNextPosition() const;
 
   // Draws the text object
-  void ModelDraw(glm::mat4 model = {}) const override;
+  void ModelDraw(const glm::mat4& model = {}) const override;
 
  private:
   // Copy Constructor

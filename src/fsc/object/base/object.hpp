@@ -50,21 +50,18 @@ class Object {
 
   // Gets the current position
   glm::vec3 GetPosition() const;
+  
+  // Transforms the object
+  glm::mat4 Transform();
 
-  // Scales the object
-  Object& Scale(glm::vec3 factor);
-
-  // Translates the object
-  Object& Translate(glm::vec3 position);
-
-  // Rotates the object
-  Object& Rotate(float radians, glm::vec3 axes);
+  // Transforms the object using a specific model
+  glm::mat4 ModelTransform(const glm::mat4& model = {}) const;
 
   // Draws the object
   void Draw() const;
 
   // Draws using a specific model
-  virtual void ModelDraw(glm::mat4 model = {}) const = 0;
+  virtual void ModelDraw(const glm::mat4& model = {}) const = 0;
 
  protected:
   // Constructor

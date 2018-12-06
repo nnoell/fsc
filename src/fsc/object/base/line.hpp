@@ -29,7 +29,7 @@ class Line final : public Simple {
   virtual ~Line();
 
   // Draw the line
-  void ModelDraw(glm::mat4 model = {}) const override;
+  void ModelDraw(const glm::mat4& model = {}) const override;
 
  private:
   // Copy Constructor

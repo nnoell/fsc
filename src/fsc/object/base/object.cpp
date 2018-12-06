@@ -45,19 +45,15 @@ glm::vec3 Object::GetPosition() const {
   return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
 }
 
-Object& Object::Scale(glm::vec3 factor) {
-  model_ = glm::scale(model_, factor);
-  return *this;
+glm::mat4 Object::Transform() {
+  model_ = ModelTransform(model_);
+  return model_;
 }
-
-Object& Object::Translate(glm::vec3 position) {
-  model_ = glm::translate(model_, position);  
-  return *this;
-}
-
-Object& Object::Rotate(float radians, glm::vec3 axes) {
-  model_ = glm::rotate(model_, radians, axes);
-  return *this;
+ 
+glm::mat4 Object::ModelTransform(const glm::mat4& model) const {
+  glm::mat4 res = glm::scale(model, object_data_.scale);
+  res = glm::rotate(res, object_data_.radians, object_data_.axes);
+  return glm::translate(res, object_data_.position);
 }
 
 void Object::Draw() const {

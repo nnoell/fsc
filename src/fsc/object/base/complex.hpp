@@ -46,7 +46,7 @@ class Complex : public Object {
   Complex(std::vector<std::shared_ptr<Object>> objects = {}, ObjectData object_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Draws the complex object
-  void ModelDraw(glm::mat4 model = {}) const override;
+  void ModelDraw(const glm::mat4& model = {}) const override;
 
  private:
   // Copy Constructor

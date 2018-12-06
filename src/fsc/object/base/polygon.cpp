@@ -21,7 +21,7 @@ Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wire
 Polygon::~Polygon() {
 }
 
-void Polygon::ModelDraw(glm::mat4 model) const {
+void Polygon::ModelDraw(const glm::mat4& model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", model);

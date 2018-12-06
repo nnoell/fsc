@@ -30,7 +30,7 @@ Line::Line(std::vector<glm::vec3> points, glm::vec4 color, ObjectData object_dat
 Line::~Line() {
 }
 
-void Line::ModelDraw(glm::mat4 model) const {
+void Line::ModelDraw(const glm::mat4& model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", model);

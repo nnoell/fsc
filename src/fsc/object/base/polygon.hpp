@@ -29,7 +29,7 @@ class Polygon : public Simple {
   virtual ~Polygon();
 
   // Draws the polygon object
-  void ModelDraw(glm::mat4 model = {}) const override;
+  void ModelDraw(const glm::mat4& model = {}) const override;
 
  private:
   // Copy Constructor

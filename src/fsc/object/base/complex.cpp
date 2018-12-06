@@ -49,25 +49,16 @@ void Complex::ClearObjects() {
   objects_.clear();
 }
 
-void Complex::ModelDraw(glm::mat4 model) const {
-  // Get the object data
-  const ObjectData& object_data = GetObjectData();
-
+void Complex::ModelDraw(const glm::mat4& model) const {
   // Transform the object model using the object data
-  model = glm::scale(model, object_data.scale);
-  model = glm::rotate(model, object_data.radians, object_data.axes);
-  model = glm::translate(model, object_data.position);
+  glm::mat4 model2 = ModelTransform(model);
 
   // Transform each sub-object model using each sub-object model
   for (auto&& object : objects_) {
-    if (object->IsComplex()) {
-      object->ModelDraw(model);
-    } else {
-      glm::mat4 model_local = glm::scale(model, object->GetObjectData().scale);
-      model_local = glm::rotate(model_local, object->GetObjectData().radians, object->GetObjectData().axes);
-      model_local = glm::translate(model_local, object->GetObjectData().position);
-      object->ModelDraw(model_local);
-    }
+    if (object->IsComplex())
+      object->ModelDraw(model2);
+    else
+      object->ModelDraw(object->ModelTransform(model2));
   } 
 }
 

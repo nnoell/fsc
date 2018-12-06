@@ -36,7 +36,7 @@ double Character::GetNextPosition() const {
   return vertices_data_->next_position;
 }
 
-void Character::ModelDraw(glm::mat4 model) const {
+void Character::ModelDraw(const glm::mat4& model) const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", true);
   Pipeline::GetInstance().SetMat4("model_", model);
