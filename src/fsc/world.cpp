@@ -13,7 +13,7 @@ namespace fsc {
 World::World(int width, int height, glm::vec4 color) :
     color_(std::move(color)),
     projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
-    title_("File System Cyberspace", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::ObjectData {{0.0f, -3.0f, 0.0f}, {5.0f, 5.0f, 5.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
+    title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::ObjectData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
     root_("C:/", nullptr) {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
