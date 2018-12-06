@@ -26,6 +26,9 @@ class File final : public base::Complex {
   // Destructor
   virtual ~File();
 
+  // Gets the path
+  std::filesystem::path GetPath() const;
+
   // Gets the name
   std::string GetName() const;
 

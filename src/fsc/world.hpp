@@ -38,6 +38,9 @@ class World final {
   // Selects Right
   void SelectRight();
 
+  // Opens selected file
+  void OpenSelected();
+
  private:
   // Copy Constructor
   World(const World&) = delete;
@@ -62,7 +65,10 @@ class World final {
   object::base::Ascii title_;
 
   // The root folder
-  object::Folder root_;
+  std::shared_ptr<object::Folder> root_;
+
+  // Opened folders
+  std::vector<std::shared_ptr<object::Folder> > opened_folders_;
 };
 
 }  // namespace fsc

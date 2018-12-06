@@ -79,6 +79,7 @@ bool Main(int argc, char* argv[]) {
     window.AddKeyCallback(GLFW_KEY_DOWN, std::bind(&World::SelectDown, &world), true);
     window.AddKeyCallback(GLFW_KEY_LEFT, std::bind(&World::SelectLeft, &world), true);
     window.AddKeyCallback(GLFW_KEY_RIGHT, std::bind(&World::SelectRight, &world), true);
+    window.AddKeyCallback(GLFW_KEY_ENTER, std::bind(&World::OpenSelected, &world), true);
 
     // Render
     window.Render([&](){

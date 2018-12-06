@@ -32,6 +32,10 @@ File::File(std::filesystem::path path, bool is_folder, base::TransformData trans
 File::~File() {
 }
 
+std::filesystem::path File::GetPath() const {
+  return path_;
+}
+
 std::string File::GetName() const {
   return path_.filename().string();
 }

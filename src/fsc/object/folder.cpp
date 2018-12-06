@@ -141,7 +141,7 @@ void Folder::Update() {
 
     // Create the file object and add it into the lists
     const std::filesystem::path file_path = dir_entry.path();
-    auto file = std::make_shared<File>(file_path.filename().string(), dir_entry.is_directory(), base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    auto file = std::make_shared<File>(file_path, dir_entry.is_directory(), base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     files_[x + (z * num_rows_)] = file;
     AddObject(file);
 
