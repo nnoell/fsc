@@ -6,7 +6,9 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 // STL
+#include <memory>
 #include <vector>
+#include <unordered_map>
 #include <filesystem>
 
 // PUBLIC
@@ -19,13 +21,19 @@ namespace fsc {
 namespace object {
 
 // The Node class
-class Node final : public base::Complex {
+class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
  public:
   // Constructor
   Node(std::filesystem::path path, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Node();
+
+  // Gets the folder of the node
+  std::shared_ptr<Folder> GetFolder() const;
+
+  // Opens the selected file if it is a folder, otherwise does nothing
+  void OpenSelectedFile();
 
  private:
   // Copy Constructor
@@ -47,8 +55,11 @@ class Node final : public base::Complex {
   // The parent node
   std::shared_ptr<Node> parent_;
 
-  // The children nodes
-  std::vector<std::shared_ptr<Node> > children_;
+  // The selected node
+  std::shared_ptr<Node> selected_node_;
+
+  // Opened nodes
+  std::unordered_map<unsigned int, std::shared_ptr<Node>> opened_nodes_;
 };
 
 }  // namespace object

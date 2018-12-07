@@ -10,7 +10,7 @@
 
 // FSC
 #include "object/base/ascii.hpp"
-#include "object/folder.hpp"
+#include "object/node.hpp"
 
 namespace fsc {
 
@@ -64,11 +64,11 @@ class World final {
   // The title object
   object::base::Ascii title_;
 
-  // The root folder
-  std::shared_ptr<object::Folder> root_;
+  // The root node of the filesystem
+  std::shared_ptr<object::Node> root_;
 
-  // Opened folders
-  std::vector<std::shared_ptr<object::Folder> > opened_folders_;
+  // The selected node
+  std::shared_ptr<object::Node> selected_node_;
 };
 
 }  // namespace fsc
