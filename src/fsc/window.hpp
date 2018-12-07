@@ -90,6 +90,9 @@ class Window final {
   Window& operator=(Window &&) = delete;
 
  private:
+  // GLFW init
+  const std::unique_ptr<const int, void(*)(const int*)> glfw_;
+
   // The title
   const std::string title_;
 

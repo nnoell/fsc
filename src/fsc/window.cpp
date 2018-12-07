@@ -13,21 +13,25 @@
 
 namespace fsc {
 
-// Initializes GLFW and creates a window
-static std::shared_ptr<GLFWwindow> GlfwWindowInit(unsigned int width, unsigned int height, const char *title) {
+// Initializes GLFW
+std::unique_ptr<const int, void(*)(const int*)> InitGlfw() {
   // Init GLFW
-  glfwInit();
+  const int res = glfwInit();
+  if (res != GLFW_TRUE)
+    throw std::runtime_error("Error: Ccould not initialize GLFW");
+
+  // Configure
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  // Create a window
-  return std::shared_ptr<GLFWwindow> {glfwCreateWindow(width, height, title, nullptr, nullptr), glfwDestroyWindow};
+  return {new int {res}, [](const int *res) { glfwTerminate(); delete res;}};
 }
 
 Window::Window(unsigned int width, unsigned int height, std::string title) : 
+    glfw_(InitGlfw()),
     title_(std::move(title)),
-    window_(GlfwWindowInit(width, height, title_.c_str())),
+    window_(glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr), glfwDestroyWindow),
     key_callback_map_mutex_(),
     mouse_callback_mutex_(),
     key_callback_map_({{GLFW_KEY_ESCAPE, {[&](){glfwSetWindowShouldClose(window_.get(), true);}, false, false}}}),
@@ -61,7 +65,6 @@ Window::Window(unsigned int width, unsigned int height, std::string title) :
 }
 
 Window::~Window() {
-  glfwTerminate();
 }
 
 void Window::AddKeyCallback(int key, KeyFunction pressed, bool block_until_released) {
