@@ -79,12 +79,12 @@ Cursor::~Cursor() {
 }  // namespace folder
 
 // Counts the number of files a folder has
-static unsigned int CountNumFiles(std::filesystem::path path) {
-  unsigned int res = 0;
+static std::vector<std::filesystem::directory_entry> GetDirectoryEntries(std::filesystem::path path) {
+  std::vector<std::filesystem::directory_entry> entries;
   std::filesystem::directory_iterator dir {path};
   for (const std::filesystem::directory_entry& dir_entry : dir)
-    ++res;
-  return res;
+    entries.push_back(dir_entry);
+  return entries;
 }
 
 // Counts the number of rows the folder has based on the number of files
@@ -119,8 +119,11 @@ void Folder::Update() {
   num_rows_ = 0;
   cursor_position_ = {0, 0};
 
+  // Get the directory entries
+  const std::vector<std::filesystem::directory_entry> entries = GetDirectoryEntries(path_);
+
   // Get the number of files
-  num_files_ = CountNumFiles(path_);
+  num_files_ = entries.size();
 
   // Get the number of rows
   num_rows_ = CountNumRows(num_files_);
@@ -128,19 +131,17 @@ void Folder::Update() {
   // Allocate the files array
   files_ = std::shared_ptr<std::shared_ptr<File> []>(new std::shared_ptr<File> [num_files_], std::default_delete<std::shared_ptr<File> []>());
 
-  // Scan and add the files
+  // Create the files and add them
   unsigned int x = 0;
   unsigned int z = 0;
-  std::filesystem::directory_iterator dir {path_};
-  for (const std::filesystem::directory_entry& dir_entry : dir) {
+  for (const std::filesystem::directory_entry& entry : entries) {
     if (x >= num_rows_) {
       x = 0;
       z++;
     }
 
     // Create the file object and add it into the lists
-    const std::filesystem::path file_path = dir_entry.path();
-    auto file = std::make_shared<File>(file_path, dir_entry.is_directory(), base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    auto file = std::make_shared<File>(entry, base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     files_[x + (z * num_rows_)] = file;
     AddObject(file);
 
@@ -233,7 +234,7 @@ void Folder::MoveCursorRight() {
 }
 
 void Folder::UpdateCursor() {
-  std::shared_ptr<File> selected_file = GetSelectedFile();
+  const std::shared_ptr<File> selected_file = GetSelectedFile();
   cursor_->SetTransformData({selected_file->GetTransformData().position, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   folder_details_->SetSelectedFile(std::move(selected_file));
 }

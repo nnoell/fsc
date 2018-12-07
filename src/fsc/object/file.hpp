@@ -21,7 +21,7 @@ namespace object {
 class File final : public base::Complex {
  public:
   // Constructor
-  File(std::filesystem::path path, bool is_folder = false, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  File(std::filesystem::directory_entry entry, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~File();
@@ -49,11 +49,8 @@ class File final : public base::Complex {
   File& operator=(File &&) = delete;
 
  private:
-  // The path of the file
-  std::filesystem::path path_;
-
-  // Whether this file is a folder or not
-  bool is_folder_;
+  // The directory entry
+  const std::filesystem::directory_entry entry_;
 };
 
 }  // namespace object
