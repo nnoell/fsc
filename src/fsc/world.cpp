@@ -55,11 +55,19 @@ void World::SelectRight() {
 }
 
 void World::OpenSelected() {
-  selected_node_ = selected_node_->OpenSelectedFolder();
+  const auto node = selected_node_->OpenSelectedFolder();
+  if (!node)
+    return;
+
+  selected_node_ = node;
 }
 
 void World::SelectParent() {
-  selected_node_ = selected_node_->GetParent();
+  const auto node = selected_node_->GetParent();
+  if (!node)
+    return;
+
+  selected_node_ = node;
 }
 
 }  // namespace fsc
