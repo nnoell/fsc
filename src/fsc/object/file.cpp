@@ -17,7 +17,7 @@ File::File(std::filesystem::directory_entry entry, base::TransformData transform
     base::Complex(
       {
         // The cube
-        std::make_shared<base::Polygon>(base::vertices::GetCube(), entry.is_directory() ? glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f} : ( entry.is_regular_file() ? glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f} : glm::vec4 {1.0f, 0.7f, 0.0f, 1.0f}), true),
+        std::make_shared<base::Polygon>(base::vertices::GetCube(), entry.is_directory() ? glm::vec4 {1.0f, 0.7f, 0.0f, 1.0f} : ( entry.is_regular_file() ? glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f} : glm::vec4 {1.0f, 0.0f, 1.0f, 1.0f}), false),
         // The file name label
         std::make_shared<base::Ascii>(entry.path().filename().string(), glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, base::TransformData {{2.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(90.0f), {0.0f, 0.0f, 1.0f}})
         // Extra stuff such as size, date, etc...
