@@ -132,7 +132,7 @@ void Window::Render(RenderFunction render_function) {
 
 void Window::UpdateWindowTitle(double fps, double msframe) {
   std::stringstream ss;
-  ss << title_ << " | " << std::floor(fps) << " fps | " << std::floor(msframe) << " ms/fps";
+  ss << title_ << " | " << std::floor(fps) << " fps | " << std::floor(msframe) << " ms/frame";
   glfwSetWindowTitle(window_.get(), ss.str().c_str());
 }
 
