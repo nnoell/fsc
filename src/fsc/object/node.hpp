@@ -32,6 +32,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the folder of the node
   std::shared_ptr<Folder> GetFolder() const;
 
+  // Gets the parent
+  std::shared_ptr<Node> GetParent() const;
+
   // Opens the selected folder
   std::shared_ptr<Node> OpenSelectedFolder();
 
@@ -56,7 +59,7 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   std::shared_ptr<Folder> folder_;
 
   // The parent node
-  std::shared_ptr<Node> parent_;
+  const std::shared_ptr<Node> parent_;
 
   // The selected node
   std::shared_ptr<Node> selected_node_;

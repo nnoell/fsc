@@ -26,6 +26,10 @@ std::shared_ptr<Folder> Node::GetFolder() const {
   return folder_;
 }
 
+std::shared_ptr<Node> Node::GetParent() const {
+  return parent_;
+}
+
 // Opens the selected folder
 std::shared_ptr<Node> Node::OpenSelectedFolder() {
   return OpenFolder(folder_->GetSelectedFile());

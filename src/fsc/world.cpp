@@ -58,4 +58,8 @@ void World::OpenSelected() {
   selected_node_ = selected_node_->OpenSelectedFolder();
 }
 
+void World::SelectParent() {
+  selected_node_ = selected_node_->GetParent();
+}
+
 }  // namespace fsc

@@ -41,6 +41,9 @@ class World final {
   // Opens selected file
   void OpenSelected();
 
+  // Selects the parent node
+  void SelectParent();
+
  private:
   // Copy Constructor
   World(const World&) = delete;
