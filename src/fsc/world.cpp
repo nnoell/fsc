@@ -55,7 +55,7 @@ void World::SelectRight() {
 }
 
 void World::OpenSelected() {
-  selected_node_->OpenSelectedFile();
+  selected_node_ = selected_node_->OpenSelectedFolder();
 }
 
 }  // namespace fsc

@@ -32,8 +32,11 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the folder of the node
   std::shared_ptr<Folder> GetFolder() const;
 
-  // Opens the selected file if it is a folder, otherwise does nothing
-  void OpenSelectedFile();
+  // Opens the selected folder
+  std::shared_ptr<Node> OpenSelectedFolder();
+
+  // Opens a folder given its Id
+  std::shared_ptr<Node> OpenFolder(std::shared_ptr<File> folder);
 
  private:
   // Copy Constructor

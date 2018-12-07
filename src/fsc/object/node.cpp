@@ -26,22 +26,28 @@ std::shared_ptr<Folder> Node::GetFolder() const {
   return folder_;
 }
 
-void Node::OpenSelectedFile() {
-  // Get the selected file
-  std::shared_ptr<object::File> file = folder_->GetSelectedFile();
-  if (!file->IsFolder())
-    return;
+// Opens the selected folder
+std::shared_ptr<Node> Node::OpenSelectedFolder() {
+  return OpenFolder(folder_->GetSelectedFile());
+}
+
+std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder) {
+  // Check if the file is a folder
+  if (!folder->IsFolder())
+    return nullptr;
 
   // Check if the file is already open
-  const unsigned int id = file->GetId();
-  std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(id);
+  const unsigned int folder_id = folder->GetId();
+  std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(folder_id);
   if (it != opened_nodes_.end())
-    return;
+    return it->second;
 
   // Create and add the node to the list
-  selected_node_ = std::make_shared<Node>(file->GetPath(), shared_from_this(), object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {});
-  opened_nodes_[id] = selected_node_;
+  selected_node_ = std::make_shared<Node>(folder->GetPath(), shared_from_this(), object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {});
+  opened_nodes_[folder_id] = selected_node_;
   AddObject(selected_node_);
+
+  return selected_node_;
 }
 
 }  // namespace object
