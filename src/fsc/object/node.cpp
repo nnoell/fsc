@@ -37,7 +37,7 @@ std::shared_ptr<Node> Node::OpenSelectedFolder() {
 
 std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder) {
   // Check if the file is a folder
-  if (!folder->IsFolder())
+  if (!folder || !folder->IsFolder())
     return nullptr;
 
   // Check if folder is inside this node

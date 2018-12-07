@@ -80,11 +80,16 @@ Cursor::~Cursor() {
 
 // Counts the number of files a folder has
 static std::vector<std::filesystem::directory_entry> GetDirectoryEntries(std::filesystem::path path) {
-  std::vector<std::filesystem::directory_entry> entries;
-  std::filesystem::directory_iterator dir {path};
-  for (const std::filesystem::directory_entry& dir_entry : dir)
-    entries.push_back(dir_entry);
-  return entries;
+  // Access denied might happen when creating a directory iterator
+  try {
+    std::vector<std::filesystem::directory_entry> entries;
+    std::filesystem::directory_iterator dir {path};
+    for (const std::filesystem::directory_entry& dir_entry : dir)
+      entries.push_back(dir_entry);
+    return entries;
+  } catch (...) {
+    return {};
+  }
 }
 
 // Counts the number of rows the folder has based on the number of files
@@ -124,6 +129,8 @@ void Folder::Update() {
 
   // Get the number of files
   num_files_ = entries.size();
+  if (num_files_ <= 0)
+    return;
 
   // Get the number of rows
   num_rows_ = CountNumRows(num_files_);
@@ -235,6 +242,9 @@ void Folder::MoveCursorRight() {
 
 void Folder::UpdateCursor() {
   const std::shared_ptr<File> selected_file = GetSelectedFile();
+  if (!selected_file)
+    return;
+
   cursor_->SetTransformData({selected_file->GetTransformData().position, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   folder_details_->SetSelectedFile(std::move(selected_file));
 }
