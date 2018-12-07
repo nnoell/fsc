@@ -40,8 +40,12 @@ std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder) {
   if (!folder->IsFolder())
     return nullptr;
 
-  // Check if the file is already open
+  // Check if folder is inside this node
   const unsigned int folder_id = folder->GetId();
+  if (!folder_->FindObject(folder_id))
+    return nullptr;
+
+  // Check if the file is already open
   std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(folder_id);
   if (it != opened_nodes_.end())
     return it->second;
