@@ -48,17 +48,29 @@ class Object {
   // Sets the transform data
   void SetTransformData(TransformData transform_data);
 
-  // Gets the current position
-  glm::vec3 GetPosition() const;
+  // Gets the top vertex
+  glm::vec3 GetVertexTop() const;
 
-  // Gets the max position
-  glm::vec3 GetPositionMax() const;
+  // Gets the middle vertex
+  glm::vec3 GetVertexMiddle() const;
 
-  // Gets the min position
-  glm::vec3 GetPositionMin() const;
+  // Gets the middle vertex using a specific model
+  virtual glm::vec3 GetModelVertexMiddle(const glm::mat4& model = {}) const = 0;
+
+  // Gets the max vertex
+  glm::vec3 GetVertexMax() const;
+
+  // Gets the max vertex using a specific model
+  virtual glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const = 0;
+
+  // Gets the min vertex
+  glm::vec3 GetVertexMin() const;
+
+  // Gets the min vertex using a specific model
+  virtual glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const = 0;
   
   // Transforms the object
-  glm::mat4 Transform();
+  glm::mat4 Transform() const;
 
   // Transforms the object using a specific model
   glm::mat4 ModelTransform(const glm::mat4& model = {}) const;

@@ -31,6 +31,18 @@ void Simple::SetColor(glm::vec4 color) {
   color_ = color;
 }
 
+glm::vec3 Simple::GetModelVertexMiddle(const glm::mat4& model) const {
+  return model * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
+}
+
+glm::vec3 Simple::GetModelVertexMax(const glm::mat4& model) const {
+  return model * glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f};
+}
+
+glm::vec3 Simple::GetModelVertexMin(const glm::mat4& model) const {
+  return model * glm::vec4 {-1.0f, -1.0f, -1.0f, 1.0f};
+}
+
 }  // namespace base
 }  // namespace object
 }  // namespace fsc

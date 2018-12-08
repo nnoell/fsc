@@ -12,7 +12,6 @@
 #include <fsc/external.hpp>
 
 // FSC
-#include "base/vertices/cube.hpp"
 #include "base/complex.hpp"
 #include "base/ascii.hpp"
 #include "base/polygon.hpp"

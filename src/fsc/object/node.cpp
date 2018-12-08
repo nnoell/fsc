@@ -12,7 +12,7 @@ namespace object {
 
 Node::Node(std::filesystem::path path, std::shared_ptr<Node> parent, base::TransformData transform_data, glm::mat4 model) :
     Complex({}, std::move(transform_data), std::move(model)),
-    folder_(std::make_shared<Folder>(std::move(path), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 {})),
+    folder_(std::make_shared<Folder>(std::move(path), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {})),
     parent_(std::move(parent)),
     selected_node_(nullptr),
     opened_nodes_() {

@@ -29,6 +29,18 @@ class Complex : public Object {
   // Checks whether the object is complex or not
   const bool IsComplex() const override;
 
+  // Gets the middle vertex using a specific model
+  glm::vec3 GetModelVertexMiddle(const glm::mat4& model = {}) const override;
+
+  // Gets the max vertex using a specific model
+  glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const override;
+
+  // Gets the min vertex using a specific model
+  glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const override;
+
+  // Draws the complex object
+  void ModelDraw(const glm::mat4& model = {}) const override;
+
   // Finds the nested object by Id
   std::shared_ptr<Object> FindObject(unsigned int id) const;
 
@@ -44,9 +56,6 @@ class Complex : public Object {
  protected:
   // Constructor
   Complex(std::vector<std::shared_ptr<Object>> objects = {}, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
-
-  // Draws the complex object
-  void ModelDraw(const glm::mat4& model = {}) const override;
 
  private:
   // Copy Constructor

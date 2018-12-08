@@ -41,27 +41,32 @@ void Object::SetTransformData(TransformData transform_data) {
   transform_data_ = std::move(transform_data);
 }
 
-glm::vec3 Object::GetPosition() const {
-  return model_ * ModelTransform({}) * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
+glm::vec3 Object::GetVertexTop() const {
+  const glm::vec3 max = GetVertexMax();
+  const glm::vec3 middle = GetVertexMiddle();
+  return {middle.x, max.y, middle.z};
 }
 
-glm::vec3 Object::GetPositionMax() const {
-  return model_ * ModelTransform({}) * glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f};
+glm::vec3 Object::GetVertexMiddle() const {
+  return GetModelVertexMiddle(model_);
 }
 
-glm::vec3 Object::GetPositionMin() const {
-  return model_ * ModelTransform({}) * glm::vec4 {-1.0f, -1.0f, -1.0f, 1.0f};
+glm::vec3 Object::GetVertexMax() const {
+  return GetModelVertexMax(model_);
 }
 
-glm::mat4 Object::Transform() {
-  model_ = ModelTransform(model_);
-  return model_;
+glm::vec3 Object::GetVertexMin() const {
+  return GetModelVertexMin(model_);
 }
- 
+
+glm::mat4 Object::Transform() const {
+  return ModelTransform(model_);
+}
+
 glm::mat4 Object::ModelTransform(const glm::mat4& model) const {
-  glm::mat4 res = glm::scale(model, transform_data_.scale);
-  res = glm::rotate(res, transform_data_.radians, transform_data_.axes);
-  return glm::translate(res, transform_data_.position);
+  glm::mat4 res = glm::scale(model, GetTransformData().scale);
+  res = glm::rotate(res, GetTransformData().radians, GetTransformData().axes);
+  return glm::translate(res, GetTransformData().position);
 }
 
 void Object::Draw() const {
