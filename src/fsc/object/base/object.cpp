@@ -42,7 +42,15 @@ void Object::SetTransformData(TransformData transform_data) {
 }
 
 glm::vec3 Object::GetPosition() const {
-  return model_ * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
+  return model_ * ModelTransform({}) * glm::vec4 {0.0f, 0.0f, 0.0f, 1.0f};
+}
+
+glm::vec3 Object::GetPositionMax() const {
+  return model_ * ModelTransform({}) * glm::vec4 {1.0f, 1.0f, 1.0f, 1.0f};
+}
+
+glm::vec3 Object::GetPositionMin() const {
+  return model_ * ModelTransform({}) * glm::vec4 {-1.0f, -1.0f, -1.0f, 1.0f};
 }
 
 glm::mat4 Object::Transform() {

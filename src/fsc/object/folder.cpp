@@ -157,7 +157,7 @@ void Folder::Update() {
 
   // Add the cursor if the folder is not empty
   if (num_files_ > 0) {
-    cursor_ = std::make_shared<folder::Cursor>(base::TransformData {files_[0]->GetPosition() + glm::vec3 {0.0f, 2.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    cursor_ = std::make_shared<folder::Cursor>(base::TransformData {files_[0]->GetPosition(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     AddObject(cursor_);
     cursor_position_ = {0, 0};
   }

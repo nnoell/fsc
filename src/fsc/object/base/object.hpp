@@ -50,6 +50,12 @@ class Object {
 
   // Gets the current position
   glm::vec3 GetPosition() const;
+
+  // Gets the max position
+  glm::vec3 GetPositionMax() const;
+
+  // Gets the min position
+  glm::vec3 GetPositionMin() const;
   
   // Transforms the object
   glm::mat4 Transform();
