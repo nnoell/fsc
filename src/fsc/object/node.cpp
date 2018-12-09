@@ -14,7 +14,7 @@ Node::Node(std::filesystem::path path, std::shared_ptr<Node> parent, base::Trans
     Complex({}, std::move(transform_data), std::move(model)),
     folder_(std::make_shared<Folder>(std::move(path), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {})),
     parent_(std::move(parent)),
-    depth_(!parent ? 0 : parent_->GetDepth() + 1),
+    depth_(!parent_ ? 0 : parent_->GetDepth() + 1),
     selected_node_(nullptr),
     opened_nodes_() {
   AddObject(folder_);
@@ -36,11 +36,11 @@ unsigned int Node::GetDepth() const {
 }
 
 // Opens the selected folder
-std::shared_ptr<Node> Node::OpenSelectedFolder(base::TransformData new_node_transform_data) {
-  return OpenFolder(folder_->GetSelectedFile(), std::move(new_node_transform_data));
+std::shared_ptr<Node> Node::OpenSelectedFolder() {
+  return OpenFolder(folder_->GetSelectedFile());
 }
 
-std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder, base::TransformData new_node_transform_data) {
+std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder) {
   // Check if the file is a folder
   if (!folder || !folder->IsFolder())
     return nullptr;
@@ -56,7 +56,7 @@ std::shared_ptr<Node> Node::OpenFolder(std::shared_ptr<File> folder, base::Trans
     return it->second;
 
   // Create and add the node to the list
-  selected_node_ = std::make_shared<Node>(folder->GetPath(), shared_from_this(), std::move(new_node_transform_data), glm::mat4 {});
+  selected_node_ = std::make_shared<Node>(folder->GetPath(), shared_from_this());
   opened_nodes_[folder_id] = selected_node_;
   AddObject(selected_node_);
 

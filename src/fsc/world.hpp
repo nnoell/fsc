@@ -45,6 +45,13 @@ class World final {
   void SelectParent();
 
  private:
+  // Adds a node to the map
+  void AddNode(std::shared_ptr<object::Node> node);
+
+  // Updates the position of all nodes
+  void UpdateNodePosition();
+
+ private:
   // Copy Constructor
   World(const World&) = delete;
 
@@ -75,6 +82,9 @@ class World final {
 
   // The room dimension for each node
   glm::vec4 room_dimension_;
+
+  // The map representing the structure of the nodes position
+  std::unordered_map<unsigned int, std::vector<std::shared_ptr<object::Node> > > node_map_;
 };
 
 }  // namespace fsc
