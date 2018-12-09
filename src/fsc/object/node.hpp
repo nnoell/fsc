@@ -36,10 +36,10 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   std::shared_ptr<Node> GetParent() const;
 
   // Opens the selected folder
-  std::shared_ptr<Node> OpenSelectedFolder();
+  std::shared_ptr<Node> OpenSelectedFolder(base::TransformData new_node_transform_data);
 
   // Opens a folder given its Id
-  std::shared_ptr<Node> OpenFolder(std::shared_ptr<File> folder);
+  std::shared_ptr<Node> OpenFolder(std::shared_ptr<File> folder, base::TransformData new_node_transform_data);
 
  private:
   // Copy Constructor

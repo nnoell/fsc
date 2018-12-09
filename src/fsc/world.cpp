@@ -55,7 +55,7 @@ void World::SelectRight() {
 }
 
 void World::OpenSelected() {
-  const auto node = selected_node_->OpenSelectedFolder();
+  const auto node = selected_node_->OpenSelectedFolder(object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   if (!node)
     return;
 
