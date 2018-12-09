@@ -68,7 +68,7 @@ void Details::UpdatePath() {
 Cursor::Cursor(base::TransformData transform_data, glm::mat4 model) :
     Complex(
       {
-        std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}, true, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})
+        std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.3f, 0.0f, 1.0f}, true, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})
       },
       std::move(transform_data),
       std::move(model)) {
