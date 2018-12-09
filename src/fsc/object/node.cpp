@@ -14,6 +14,7 @@ Node::Node(std::filesystem::path path, std::shared_ptr<Node> parent, base::Trans
     Complex({}, std::move(transform_data), std::move(model)),
     folder_(std::make_shared<Folder>(std::move(path), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {})),
     parent_(std::move(parent)),
+    depth_(!parent ? 0 : parent_->GetDepth() + 1),
     selected_node_(nullptr),
     opened_nodes_() {
   AddObject(folder_);
@@ -28,6 +29,10 @@ std::shared_ptr<Folder> Node::GetFolder() const {
 
 std::shared_ptr<Node> Node::GetParent() const {
   return parent_;
+}
+
+unsigned int Node::GetDepth() const {
+  return depth_;
 }
 
 // Opens the selected folder

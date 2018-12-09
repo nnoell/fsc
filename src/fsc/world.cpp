@@ -15,7 +15,8 @@ World::World(int width, int height, glm::vec4 color) :
     projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
     title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::TransformData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
     root_(std::make_shared<object::Node>("C:/", nullptr)),
-    selected_node_(root_) {
+    selected_node_(root_),
+    room_dimension_(root_->GetAreaDimension()) {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
 }
@@ -55,7 +56,7 @@ void World::SelectRight() {
 }
 
 void World::OpenSelected() {
-  const auto node = selected_node_->OpenSelectedFolder(object::base::TransformData {{0.0f, 0.0f, -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+  const auto node = selected_node_->OpenSelectedFolder(object::base::TransformData {{0.0f, 0.0f, -1 * (room_dimension_.x + room_dimension_.w)}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   if (!node)
     return;
 

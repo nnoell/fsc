@@ -35,6 +35,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the parent
   std::shared_ptr<Node> GetParent() const;
 
+  // Gets the depth
+  unsigned int GetDepth() const;
+
   // Opens the selected folder
   std::shared_ptr<Node> OpenSelectedFolder(base::TransformData new_node_transform_data);
 
@@ -60,6 +63,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
 
   // The parent node
   const std::shared_ptr<Node> parent_;
+
+  // The depth
+  const unsigned int depth_;
 
   // The selected node
   std::shared_ptr<Node> selected_node_;

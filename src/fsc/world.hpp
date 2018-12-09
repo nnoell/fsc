@@ -72,6 +72,9 @@ class World final {
 
   // The selected node
   std::shared_ptr<object::Node> selected_node_;
+
+  // The room dimension for each node
+  glm::vec4 room_dimension_;
 };
 
 }  // namespace fsc

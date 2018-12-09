@@ -59,6 +59,12 @@ glm::vec3 Object::GetVertexMin() const {
   return GetModelVertexMin(model_);
 }
 
+glm::vec4 Object::GetAreaDimension() const {
+  const glm::vec3 max = GetVertexMax();
+  const glm::vec3 diff = GetVertexMax() - GetVertexMin();
+  return {max.x, max.z, diff.x, diff.z};
+}
+
 glm::mat4 Object::Transform() const {
   return ModelTransform(model_);
 }
