@@ -74,8 +74,11 @@ class World final {
   // The title object
   object::base::Ascii title_;
 
-  // The root node of the filesystem
-  std::shared_ptr<object::Node> root_;
+  // The root file
+  const object::File root_file_;
+
+  // The root node
+  std::shared_ptr<object::Node> root_node_;
 
   // The selected node
   std::shared_ptr<object::Node> selected_node_;
@@ -83,8 +86,8 @@ class World final {
   // The room dimension for each node
   glm::vec4 room_dimension_;
 
-  // The map representing the structure of the nodes position
-  std::unordered_map<unsigned int, std::vector<std::shared_ptr<object::Node> > > node_map_;
+  // The map with all opened nodes
+  std::unordered_map<unsigned int, std::vector<std::shared_ptr<object::Node> > > opened_nodes_map_;
 };
 
 }  // namespace fsc

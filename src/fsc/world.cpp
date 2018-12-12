@@ -14,14 +14,16 @@ World::World(int width, int height, glm::vec4 color) :
     color_(std::move(color)),
     projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
     title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::TransformData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
-    root_(std::make_shared<object::Node>("C:/", nullptr)),
-    selected_node_(root_),
-    room_dimension_({0.0f, 0.0f, 30.0f, 30.0f}) {
+    root_file_(std::filesystem::directory_entry {"C:/"}),
+    root_node_(std::make_shared<object::Node>(root_file_, nullptr)),
+    selected_node_(root_node_),
+    room_dimension_(root_node_->GetAreaDimension()),
+    opened_nodes_map_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
 
   // Add the root node to the map
-  AddNode(root_);
+  AddNode(root_node_);
 }
 
 World::~World() {
@@ -38,8 +40,15 @@ void World::Update() const {
   // Draw the objects
   title_.Draw();
 
-  // Draw all the filesystem tree
-  root_->Draw();
+  // Draw all the opened nodes
+  unsigned int key = 0;
+  auto it = opened_nodes_map_.find(key);
+  while (it != opened_nodes_map_.end()) {
+    for (auto&& n : it->second)
+      n->Draw();
+    ++key;
+    it = opened_nodes_map_.find(key);
+  }
 }
 
 void World::SelectUp() {
@@ -60,7 +69,7 @@ void World::SelectRight() {
 
 void World::OpenSelected() {
   // Create the new node
-  const auto node = selected_node_->OpenSelectedFolder();
+  const auto node = selected_node_->OpenSelectedFile();
   if (!node)
     return;
 
@@ -84,22 +93,22 @@ void World::SelectParent() {
 
 void World::AddNode(std::shared_ptr<object::Node> node) {
   const unsigned int key = node->GetDepth();
-  if (node_map_.find(key) == node_map_.end())
-    node_map_[key] = {};
-  node_map_[key].push_back(std::move(node));
+  if (opened_nodes_map_.find(key) == opened_nodes_map_.end())
+    opened_nodes_map_[key] = {};
+  opened_nodes_map_[key].push_back(std::move(node));
 }
 
 void World::UpdateNodePosition() {
   unsigned int key = 0;
-  auto it = node_map_.find(key);
-  while (it != node_map_.end()) {
+  auto it = opened_nodes_map_.find(key);
+  while (it != opened_nodes_map_.end()) {
     unsigned int i = 0;
     for (auto&& n : it->second) {
       n->SetTransformData({{i * 50.0f, 0.0f, key * -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
       ++i;
     }
     ++key;
-    it = node_map_.find(key);
+    it = opened_nodes_map_.find(key);
   }
 }
 

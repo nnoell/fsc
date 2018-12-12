@@ -28,6 +28,12 @@ class Line final : public Simple {
   // Destructor
   virtual ~Line();
 
+  // Updates the line
+  void Update();
+
+  // Sets the points
+  void SetPoints(std::vector<glm::vec3> points);
+
   // Draw the line
   void ModelDraw(const glm::mat4& model = {}) const override;
 
@@ -45,6 +51,9 @@ class Line final : public Simple {
   Line& operator=(Line &&) = delete;
 
  private:
+  // The points of the line
+  std::vector<glm::vec3> points_;
+
   // The number of vertices
   unsigned int num_vertices_;
 

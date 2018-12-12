@@ -16,6 +16,7 @@
 
 // FSC
 #include "folder.hpp"
+#include "base/line.hpp"
 
 namespace fsc {
 namespace object {
@@ -24,7 +25,7 @@ namespace object {
 class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
  public:
   // Constructor
-  Node(std::filesystem::path path, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Node();
@@ -38,11 +39,14 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the depth
   unsigned int GetDepth() const;
 
-  // Opens the selected folder
-  std::shared_ptr<Node> OpenSelectedFolder();
+  // Opens the selected file
+  std::shared_ptr<Node> OpenSelectedFile();
 
-  // Opens a folder given its Id
-  std::shared_ptr<Node> OpenFolder(std::shared_ptr<File> folder);
+  // Opens a file within the node
+  std::shared_ptr<Node> OpenFile(const File& file);
+
+  // Updates the node
+  void Update();
 
  private:
   // Copy Constructor
@@ -58,6 +62,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   Node& operator=(Node &&) = delete;
 
  private:
+  // The file this node belongs to
+  const File& file_;
+
   // The folder
   std::shared_ptr<Folder> folder_;
 
@@ -66,6 +73,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
 
   // The depth
   const unsigned int depth_;
+
+  // The origin line
+  const std::shared_ptr<base::Line> origin_line_;
 
   // The selected node
   std::shared_ptr<Node> selected_node_;

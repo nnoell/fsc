@@ -14,10 +14,29 @@ namespace base {
 
 Line::Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data, glm::mat4 model) :
     Simple(std::move(color), std::move(transform_data), std::move(model)),
-    num_vertices_(points.size() * 6),
-    vertices_(new float[num_vertices_], std::default_delete<float[]>()) {
+    points_(std::move(points)),
+    num_vertices_(0),
+    vertices_(nullptr) {
+  Update();
+}
+
+Line::~Line() {
+}
+
+void Line::Update() {
+  // Return if there are no points
+  if (points_.size() == 0)
+    return;
+
+  // Update the number of vertices
+  num_vertices_ = points_.size() * 6;
+
+  // Allocate the vertices array
+  vertices_ = std::shared_ptr<float []> {new float[num_vertices_], std::default_delete<float[]>()};
+
+  // Set the vertices array
   unsigned int i = 0;
-  for (auto&& p : points) {
+  for (auto&& p : points_) {
     vertices_[i++] = p.x;
     vertices_[i++] = p.y;
     vertices_[i++] = p.z;
@@ -27,10 +46,16 @@ Line::Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transfo
   }
 }
 
-Line::~Line() {
+void Line::SetPoints(std::vector<glm::vec3> points) {
+  points_ = std::move(points);
+  Update();
 }
 
 void Line::ModelDraw(const glm::mat4& model) const {
+  // Return if there are no points
+  if (points_.size() == 0)
+    return;
+
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", model);

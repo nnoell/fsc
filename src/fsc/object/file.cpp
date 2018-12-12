@@ -28,9 +28,6 @@ File::File(std::filesystem::directory_entry entry, base::TransformData transform
       std::move(model)
     ),
     entry_(std::move(entry)) {
-  // Check if the entry has a filename
-  if (!entry_.path().has_filename())
-    throw std::runtime_error("Error: The provided entry dos not have a file name");
 }
 
 File::~File() {
@@ -41,6 +38,10 @@ std::filesystem::path File::GetPath() const {
 }
 
 std::string File::GetName() const {
+  // Return empty if the file does not have a name
+  if (!entry_.path().has_filename())
+    return "";
+
   return entry_.path().filename().string();
 }
 
