@@ -65,16 +65,24 @@ void Details::UpdatePath() {
   path_section_->SetAscii("Path: " + path_);
 }
 
-Cursor::Cursor(base::TransformData transform_data, glm::mat4 model) :
-    Complex(
-      {
-        std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.3f, 0.0f, 1.0f}, true, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})
-      },
-      std::move(transform_data),
-      std::move(model)) {
+Cursor::Cursor(std::string text, base::TransformData transform_data, glm::mat4 model) :
+    Complex({}, std::move(transform_data), std::move(model)),
+      pointer_(std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, false, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})),
+      text_(std::make_shared<base::Ascii>(std::move(text), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, base::TransformData {{0.0f, 4.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})) {
+  // Add the objects
+  AddObject(pointer_);
+  AddObject(text_);
 }
 
 Cursor::~Cursor() {
+}
+
+std::string Cursor::GetText() const {
+  return text_->GetAscii();
+}
+
+void Cursor::SetText(std::string text) {
+  text_->SetAscii(std::move(text));
 }
 
 }  // namespace folder
@@ -149,7 +157,7 @@ void Folder::Update() {
     }
 
     // Create the file object and add it into the lists
-    auto file = std::make_shared<File>(entry, base::TransformData {{x * 5.0f,  2.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    auto file = std::make_shared<File>(entry, base::TransformData {{x * 5.0f,  0.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     files_[x + (z * num_rows_)] = file;
     AddObject(file);
 
@@ -158,7 +166,7 @@ void Folder::Update() {
 
   // Add the cursor if the folder is not empty
   if (num_files_ > 0) {
-    cursor_ = std::make_shared<folder::Cursor>(base::TransformData {files_[0]->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    cursor_ = std::make_shared<folder::Cursor>(files_[0]->GetName(), base::TransformData {files_[0]->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
     AddObject(cursor_);
     cursor_position_ = {0, 0};
   }
@@ -168,10 +176,6 @@ void Folder::Update() {
   folder_details_->SetNumFiles(num_files_);
   folder_details_->SetPath(path_.filename().string());
   AddObject(folder_details_);
-
-  // Create and add the plane
-  auto plane = std::make_shared<Plane>(num_rows_, num_rows_, 1, base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}});
-  AddObject(std::move(plane));
 }
 
 unsigned int Folder::GetNumFiles() const {
@@ -246,6 +250,7 @@ void Folder::UpdateCursor() {
   if (!selected_file)
     return;
 
+  cursor_->SetText(selected_file->GetName());
   cursor_->SetTransformData({selected_file->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   folder_details_->SetSelectedFile(std::move(selected_file));
 }

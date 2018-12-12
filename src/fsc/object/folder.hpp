@@ -26,7 +26,7 @@ namespace folder {
 class Details : public base::Complex {
  public:
   // Constructor
-  Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.5, 1.0f, 0.0f, 1.0f},
+  Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.2, 0.8f, 0.8f, 1.0f},
       base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
@@ -88,10 +88,16 @@ class Details : public base::Complex {
 class Cursor final : public base::Complex {
  public:
   // Constructor
-  Cursor(base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Cursor(std::string text, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
 
   // Destructor
   virtual ~Cursor();
+
+  // Gets the text
+  std::string GetText() const;
+
+  // Sets the text
+  void SetText(std::string text);
 
  private:
   // Copy Constructor
@@ -105,6 +111,13 @@ class Cursor final : public base::Complex {
 
   // Move-Assign Constructr
   Cursor& operator=(Cursor &&) = delete;
+
+ private:
+  // The pointer object
+  std::shared_ptr<base::Polygon> pointer_;
+
+  // The text object
+  std::shared_ptr<base::Ascii> text_;
 };
 
 }  // namespace folder
