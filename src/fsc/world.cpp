@@ -73,6 +73,16 @@ void World::OpenSelected() {
   if (!node)
     return;
 
+  // Check if it is already open
+  if (FindNode(node->GetId())) {
+    selected_node_ = node;
+    return; 
+  }
+
+  // Do not open if it is an empty folder
+  if (node->GetFolder()->GetNumFiles() == 0)
+    return;
+
   // Add the node
   AddNode(node);
 
@@ -96,6 +106,28 @@ void World::AddNode(std::shared_ptr<object::Node> node) {
   if (opened_nodes_map_.find(key) == opened_nodes_map_.end())
     opened_nodes_map_[key] = {};
   opened_nodes_map_[key].push_back(std::move(node));
+}
+
+void World::RemoveNode(std::shared_ptr<object::Node> node) {
+  const unsigned int node_id = node->GetId();
+  auto&& nodes_ = opened_nodes_map_[node->GetDepth()];
+  nodes_.erase(std::remove_if(nodes_.begin(), nodes_.end(),
+      [&](const std::shared_ptr<object::Node>& n){
+        return n->GetId() == node_id;
+      }));
+}
+
+std::shared_ptr<object::Node> World::FindNode(unsigned int node_id) const {
+  unsigned int key = 0;
+  auto it = opened_nodes_map_.find(key);
+  while (it != opened_nodes_map_.end()) {
+    for (auto&& n : it->second)
+      if (n->GetId() == node_id)
+        return n;
+    ++key;
+    it = opened_nodes_map_.find(key);
+  }
+  return nullptr;
 }
 
 void World::UpdateNodePosition() {

@@ -60,7 +60,7 @@ bool Main(int argc, char* argv[]) {
     // Create the world
     World world {WINDOW_WIDTH, WINDOW_HEIGHT, {0.1f, 0.1f, 0.1f, 0.1f}};
 
-    // Bind the keys camera keys
+    // Bind the camera keys
     window.AddKeyCallback(GLFW_KEY_W, std::bind(&Camera::MoveFront, &camera));
     window.AddKeyCallback(GLFW_KEY_S, std::bind(&Camera::MoveBack, &camera));
     window.AddKeyCallback(GLFW_KEY_A, std::bind(&Camera::MoveLeft, &camera));

@@ -48,6 +48,12 @@ class World final {
   // Adds a node to the map
   void AddNode(std::shared_ptr<object::Node> node);
 
+  // Removes a node from the map
+  void RemoveNode(std::shared_ptr<object::Node> node);
+
+  // Finds a node in the map given it's Id
+  std::shared_ptr<object::Node> FindNode(unsigned int node_id) const;
+
   // Updates the position of all nodes
   void UpdateNodePosition();
 
