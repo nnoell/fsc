@@ -14,78 +14,6 @@
 
 namespace fsc {
 namespace object {
-namespace folder {
-
-Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, base::TransformData transform_data , glm::mat4 model) :
-    Complex({}, std::move(transform_data), std::move(model)),
-    selected_file_(std::move(selected_file)),
-    num_files_(std::move(num_files)),
-    path_(std::move(path)),
-    selected_file_section_(std::make_shared<base::Ascii>("", color, base::TransformData {{-1.5f, -3.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    num_files_section_(std::make_shared<base::Ascii>("", color, base::TransformData {{-1.5f, -4.5f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})),
-    path_section_(std::make_shared<base::Ascii>("", color, base::TransformData {{-1.5f, -6.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}})) {
-  // Add the objects
-  AddObject(selected_file_section_);
-  AddObject(num_files_section_);
-  AddObject(path_section_);
-
-  // Update the objects
-  UpdateSelectedFile();
-  UpdateNumFiles();
-  UpdatePath();
-}
-
-Details::~Details() {
-}
-
-void Details::SetSelectedFile(std::shared_ptr<File> selected_file) {
-  selected_file_ = std::move(selected_file);
-  UpdateSelectedFile();
-}
-
-void Details::SetNumFiles(unsigned int num_files) {
-  num_files_ = std::move(num_files);
-  UpdateNumFiles();
-}
-  
-void Details::SetPath(std::string path) {
-  path_ = std::move(path);
-  UpdatePath();
-}
-
-void Details::UpdateSelectedFile() {
-  selected_file_section_->SetAscii("Selected File: " + (selected_file_ ? selected_file_->GetName() : "(NULL)"));
-}
-
-void Details::UpdateNumFiles() {
-  num_files_section_->SetAscii("Total Files: " + std::to_string(num_files_));
-}
-
-void Details::UpdatePath() {
-  path_section_->SetAscii("Path: " + path_);
-}
-
-Cursor::Cursor(std::string text, base::TransformData transform_data, glm::mat4 model) :
-    Complex({}, std::move(transform_data), std::move(model)),
-      pointer_(std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, false, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})),
-      text_(std::make_shared<base::Ascii>(std::move(text), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, base::TransformData {{0.0f, 4.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})) {
-  // Add the objects
-  AddObject(pointer_);
-  AddObject(text_);
-}
-
-Cursor::~Cursor() {
-}
-
-std::string Cursor::GetText() const {
-  return text_->GetAscii();
-}
-
-void Cursor::SetText(std::string text) {
-  text_->SetAscii(std::move(text));
-}
-
-}  // namespace folder
 
 // Counts the number of files a folder has
 static std::vector<std::filesystem::directory_entry> GetDirectoryEntries(std::filesystem::path path) {
@@ -101,8 +29,8 @@ static std::vector<std::filesystem::directory_entry> GetDirectoryEntries(std::fi
   }
 }
 
-// Counts the number of rows the folder has based on the number of files
-static unsigned int CountNumRows(unsigned int size) {
+// Counts the number of cols the folder has based on the number of files
+static unsigned int CountNumCols(unsigned int size) {
   unsigned int res = 0;
   while (res * res < size)
     ++res;
@@ -112,12 +40,9 @@ static unsigned int CountNumRows(unsigned int size) {
 Folder::Folder(std::filesystem::path path, base::TransformData transform_data, glm::mat4 model) :
     Complex({}, std::move(transform_data), std::move(model)),
     path_(std::move(path)),
-    folder_details_(std::make_shared<folder::Details>(nullptr, 0, path_.filename().string())),
-    cursor_(nullptr),
     files_(nullptr),
     num_files_(0),
-    num_rows_(0),
-    cursor_position_({0, 0}) {
+    num_cols_(0) {
   // Update the folder
   Update();
 }
@@ -130,8 +55,7 @@ void Folder::Update() {
   ClearObjects();
   files_ = nullptr;
   num_files_ = 0;
-  num_rows_ = 0;
-  cursor_position_ = {0, 0};
+  num_cols_ = 0;
 
   // Get the directory entries
   const std::vector<std::filesystem::directory_entry> entries = GetDirectoryEntries(path_);
@@ -142,7 +66,7 @@ void Folder::Update() {
     return;
 
   // Get the number of rows
-  num_rows_ = CountNumRows(num_files_);
+  num_cols_ = CountNumCols(num_files_);
 
   // Allocate the files array
   files_ = std::shared_ptr<std::shared_ptr<File> []>(new std::shared_ptr<File> [num_files_], std::default_delete<std::shared_ptr<File> []>());
@@ -151,112 +75,37 @@ void Folder::Update() {
   unsigned int x = 0;
   unsigned int z = 0;
   for (const std::filesystem::directory_entry& entry : entries) {
-    if (x >= num_rows_) {
+    if (x >= num_cols_) {
       x = 0;
       z++;
     }
 
     // Create the file object and add it into the lists
     auto file = std::make_shared<File>(entry, base::TransformData {{x * 5.0f,  0.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
-    files_[x + (z * num_rows_)] = file;
+    files_[x + (z * num_cols_)] = file;
     AddObject(file);
 
     x++;
   }
-
-  // Add the cursor if the folder is not empty
-  if (num_files_ > 0) {
-    cursor_ = std::make_shared<folder::Cursor>(files_[0]->GetName(), base::TransformData {files_[0]->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
-    AddObject(cursor_);
-    cursor_position_ = {0, 0};
-  }
-
-  // Set and Add the folder details
-  folder_details_->SetSelectedFile(GetSelectedFile());
-  folder_details_->SetNumFiles(num_files_);
-  folder_details_->SetPath(path_.filename().string());
-  AddObject(folder_details_);
 }
 
 unsigned int Folder::GetNumFiles() const {
   return num_files_;
 }
 
-std::shared_ptr<File> Folder::GetSelectedFile() const {
-  if (num_files_ <= 0)
-    return nullptr;
-
-  return files_[cursor_position_.x + (cursor_position_.y * num_rows_)];
+unsigned int Folder::GetNumCols() const {
+  return num_cols_;
 }
 
 bool Folder::ContainsFile(unsigned int file_id) const {
   return FindObject(file_id) != nullptr;
 }
 
-void Folder::MoveCursorUp() {
-  // Check for the new position
-  const int new_y = cursor_position_.y + 1;
-  if (new_y < 0 || new_y >= num_rows_)
-    return;
-  const int pos = cursor_position_.x + (new_y * num_rows_);
-  if (pos < 0 || pos >= num_files_)
-    return;
+std::shared_ptr<File> Folder::GetFile(unsigned int row, unsigned int col) {
+  if (num_files_ <= 0)
+    return nullptr;
 
-  // Update the cursor
-  cursor_position_.y++;
-  UpdateCursor();
-}
-
-void Folder::MoveCursorDown() {
-  // Check for the new position
-  const int new_y = cursor_position_.y - 1;
-  if (new_y < 0 || new_y >= num_rows_)
-    return;
-  const int pos = cursor_position_.x + (new_y * num_rows_);
-  if (pos < 0 || pos >= num_files_)
-    return;
-
-  // Update the cursor
-  cursor_position_.y--;
-  UpdateCursor();
-}
-
-void Folder::MoveCursorLeft() {
-  // Check for the new position
-  const int new_x = cursor_position_.x - 1;
-  if (new_x < 0 || new_x >= num_rows_)
-    return;
-  const int pos = new_x + (cursor_position_.y * num_rows_);
-  if (pos < 0 || pos >= num_files_)
-    return;
-
-  // Update the cursor
-  cursor_position_.x--;
-  UpdateCursor();
-}
-
-void Folder::MoveCursorRight() {
-  // Check for the new position
-  const int new_x = cursor_position_.x + 1;
-  if (new_x < 0 || new_x >= num_rows_)
-    return;
-  const int pos = new_x + (cursor_position_.y * num_rows_);
-  if (pos < 0 || pos >= num_files_)
-    return;
-
-  // Update the cursor
-  cursor_position_.x++;
-  UpdateCursor();
-}
-
-void Folder::UpdateCursor() {
-  const std::shared_ptr<File> selected_file = GetSelectedFile();
-  if (!selected_file)
-    return;
-
-  cursor_->SetText(selected_file->GetName());
-  cursor_->SetTransformData({selected_file->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
-  folder_details_->SetSelectedFile(std::move(selected_file));
+  return files_[row + (col * num_cols_)];
 }
 
 }  // namespace object

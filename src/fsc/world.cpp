@@ -52,19 +52,19 @@ void World::Update() const {
 }
 
 void World::SelectUp() {
-  selected_node_->GetFolder()->MoveCursorUp();
+  selected_node_->MoveCursorUp();
 }
   
 void World::SelectDown() {
-  selected_node_->GetFolder()->MoveCursorDown();
+  selected_node_->MoveCursorDown();
 }
  
 void World::SelectLeft() {
-  selected_node_->GetFolder()->MoveCursorLeft();
+  selected_node_->MoveCursorLeft();
 }
 
 void World::SelectRight() {
-  selected_node_->GetFolder()->MoveCursorRight();
+  selected_node_->MoveCursorRight();
 }
 
 void World::OpenSelected() {
@@ -78,10 +78,6 @@ void World::OpenSelected() {
     selected_node_ = node;
     return; 
   }
-
-  // Do not open if it is an empty folder
-  if (node->GetFolder()->GetNumFiles() == 0)
-    return;
 
   // Add the node
   AddNode(node);
