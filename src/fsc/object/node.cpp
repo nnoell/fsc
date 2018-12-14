@@ -90,13 +90,13 @@ Node::Node(const File& file, std::shared_ptr<Node> parent, base::TransformData t
     parent_(std::move(parent)),
     depth_(!parent_ ? 0 : parent_->GetDepth() + 1),
     cursor_position_({0.0f, 0.0f}),
-    origin_line_(std::make_shared<base::Line>(std::vector<glm::vec3>{}, glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f})),
+    origin_line_(std::make_shared<base::Line>(std::vector<glm::vec3>{file_.GetVertexMiddle(), folder_->GetVertexMiddle()}, glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f})),
     cursor_(std::make_shared<node::Cursor>("")),
     details_(std::make_shared<node::Details>(nullptr, 0, file_.GetPath().string())),
     selected_node_(nullptr),
     opened_nodes_() {
   AddObject(folder_);
-  AddObject(origin_line_);
+  // AddObject(origin_line_);
   AddObject(cursor_);
   AddObject(details_);
 
@@ -151,14 +151,12 @@ std::shared_ptr<Node> Node::OpenFile(const File& file) {
 }
 
 void Node::Update() {
-  // Update the line
-  // origin_line_->SetPoints({file_.GetVertexMiddle(), GetVertexMiddle()});
-
-  // Update the cursor and details
+  // Get the selected file
   const std::shared_ptr<File> selected_file = folder_->GetFile(cursor_position_.x, cursor_position_.y);
   if (!selected_file)
     return;
 
+  // Update the cursor and details
   cursor_->SetText(selected_file->GetName());
   cursor_->SetTransformData({selected_file->GetVertexTop(), {1.0f, 1.0f, 1.0}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
   details_->SetSelectedFile(std::move(selected_file));
