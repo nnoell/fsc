@@ -107,6 +107,10 @@ Node::Node(const File& file, std::shared_ptr<Node> parent, base::TransformData t
 Node::~Node() {
 }
 
+const std::shared_ptr<Folder> Node::GetFolder() const {
+  return folder_;
+}
+
 std::shared_ptr<Node> Node::GetParent() const {
   return parent_;
 }

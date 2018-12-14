@@ -131,6 +131,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Destructor
   virtual ~Node();
 
+  // Gets the folder
+  const std::shared_ptr<Folder> GetFolder() const;
+
   // Gets the parent
   std::shared_ptr<Node> GetParent() const;
 

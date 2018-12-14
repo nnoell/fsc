@@ -17,7 +17,7 @@ World::World(int width, int height, glm::vec4 color) :
     root_file_(std::filesystem::directory_entry {"C:/"}),
     root_node_(std::make_shared<object::Node>(root_file_, nullptr)),
     selected_node_(root_node_),
-    max_dimension_(root_node_->GetDimension()),
+    max_dimension_(root_node_->GetFolder()->GetDimension()),
     opened_nodes_map_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
@@ -83,7 +83,7 @@ void World::OpenSelected() {
   AddNode(node);
 
   // Update the room dimension
-  max_dimension_ = glm::max(max_dimension_, node->GetDimension());
+  max_dimension_ = glm::max(max_dimension_, node->GetFolder()->GetDimension());
 
   // Update the position of all nodes
   UpdateNodePosition();
@@ -130,12 +130,13 @@ std::shared_ptr<object::Node> World::FindNode(unsigned int node_id) const {
 }
 
 void World::UpdateNodePosition() {
+  constexpr float gap = 10.0f;
   unsigned int key = 0;
   auto it = opened_nodes_map_.find(key);
   while (it != opened_nodes_map_.end()) {
     unsigned int i = 0;
     for (auto&& n : it->second) {
-      n->SetTransformData({{i * 50, 0.0f, key * -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+      n->SetTransformData({{i * (max_dimension_.x + gap), 0.0f, -1.0f * key * (max_dimension_.z + gap)}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
       ++i;
     }
     ++key;
