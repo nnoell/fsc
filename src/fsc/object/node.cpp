@@ -52,19 +52,19 @@ std::shared_ptr<Node> Node::OpenFile(const File& file) {
   if (!file.IsFolder())
     return nullptr;
 
-  // Check if file is within this node
-  const unsigned int folder_id = file.GetId();
-  if (!folder_->FindObject(folder_id))
+  // Check if the folder contains the file
+  const unsigned int file_id = file.GetId();
+  if (!folder_->ContainsFile(file_id))
     return nullptr;
 
   // Check if the file is already open
-  std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(folder_id);
+  std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(file_id);
   if (it != opened_nodes_.end())
     return it->second;
 
   // Create and add the node to the list
   selected_node_ = std::make_shared<Node>(file, shared_from_this());
-  opened_nodes_[folder_id] = selected_node_;
+  opened_nodes_[file_id] = selected_node_;
 
   return selected_node_;
 }

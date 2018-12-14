@@ -189,6 +189,10 @@ std::shared_ptr<File> Folder::GetSelectedFile() const {
   return files_[cursor_position_.x + (cursor_position_.y * num_rows_)];
 }
 
+bool Folder::ContainsFile(unsigned int file_id) const {
+  return FindObject(file_id) != nullptr;
+}
+
 void Folder::MoveCursorUp() {
   // Check for the new position
   const int new_y = cursor_position_.y + 1;

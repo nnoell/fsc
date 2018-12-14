@@ -90,13 +90,6 @@ void Complex::ModelDraw(const glm::mat4& model) const {
   } 
 }
 
-std::shared_ptr<Object> Complex::FindObject(unsigned int id) const {
-  for (auto&& object : objects_)
-    if (object->GetId() == id)
-      return object;
-  return nullptr;
-}
-
 void Complex::AddObject(std::shared_ptr<Object> object) {
   objects_.push_back(std::move(object));
 }
@@ -106,6 +99,13 @@ void Complex::RemoveObject(unsigned int id) {
       [&](const std::shared_ptr<Object>& object){
         return object->GetId() == id;
       }));
+}
+
+std::shared_ptr<Object> Complex::FindObject(unsigned int id) const {
+  for (auto&& object : objects_)
+    if (object->GetId() == id)
+      return object;
+  return nullptr;
 }
 
 void Complex::ClearObjects() {

@@ -140,6 +140,9 @@ class Folder final : public base::Complex {
   // Gets the selected file or null if the folder is empty
   std::shared_ptr<File> GetSelectedFile() const;
 
+  // Checks if the folder contains a given file id
+  bool ContainsFile(unsigned int file_id) const;
+
   // Moves the cursor up
   void MoveCursorUp();
 
