@@ -17,7 +17,7 @@ World::World(int width, int height, glm::vec4 color) :
     root_file_(std::filesystem::directory_entry {"C:/"}),
     root_node_(std::make_shared<object::Node>(root_file_, nullptr)),
     selected_node_(root_node_),
-    room_dimension_(root_node_->GetAreaDimension()),
+    max_dimension_(root_node_->GetDimension()),
     opened_nodes_map_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
@@ -86,6 +86,9 @@ void World::OpenSelected() {
   // Add the node
   AddNode(node);
 
+  // Update the room dimension
+  max_dimension_ = glm::max(max_dimension_, node->GetDimension());
+
   // Update the position of all nodes
   UpdateNodePosition();
 
@@ -136,7 +139,7 @@ void World::UpdateNodePosition() {
   while (it != opened_nodes_map_.end()) {
     unsigned int i = 0;
     for (auto&& n : it->second) {
-      n->SetTransformData({{i * 50.0f, 0.0f, key * -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+      n->SetTransformData({{i * 50, 0.0f, key * -50.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
       ++i;
     }
     ++key;

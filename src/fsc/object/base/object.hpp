@@ -69,8 +69,8 @@ class Object {
   // Gets the min vertex using a specific model
   virtual glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const = 0;
 
-  // Gets the area dimension
-  glm::vec4 GetAreaDimension() const;
+  // Gets the dimension
+  glm::vec3 GetDimension() const;
   
   // Transforms the object
   glm::mat4 Transform() const;

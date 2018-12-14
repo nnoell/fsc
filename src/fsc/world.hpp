@@ -89,8 +89,8 @@ class World final {
   // The selected node
   std::shared_ptr<object::Node> selected_node_;
 
-  // The room dimension for each node
-  glm::vec4 room_dimension_;
+  // The max room dimension for each node
+  glm::vec3 max_dimension_;
 
   // The map with all opened nodes
   std::unordered_map<unsigned int, std::vector<std::shared_ptr<object::Node> > > opened_nodes_map_;
