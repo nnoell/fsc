@@ -23,7 +23,7 @@ namespace base {
 class Polygon : public Simple {
  public:
   // Constructor
-  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~Polygon();

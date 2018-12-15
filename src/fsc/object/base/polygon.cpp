@@ -12,8 +12,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, TransformData transform_data, glm::mat4 model) :
-    Simple(std::move(color), std::move(transform_data), std::move(model)),
+Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, TransformData transform_data) :
+    Simple(std::move(color), std::move(transform_data)),
     vertices_data_(vertices_data),
     wireframe_(wireframe) {
 }

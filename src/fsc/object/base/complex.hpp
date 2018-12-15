@@ -40,7 +40,7 @@ class Complex : public Object {
 
  protected:
   // Constructor
-  Complex(TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Complex(TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Adds a object
   void AddObject(std::shared_ptr<Object> object);

@@ -20,10 +20,10 @@ static unsigned int GetUniqueId() {
   return id++;
 }
 
-Object::Object(TransformData transform_data, glm::mat4 model) :
+Object::Object(TransformData transform_data) :
     id_(GetUniqueId()),
     transform_data_(std::move(transform_data)),
-    model_(std::move(model)) {
+    model_() {
 }
 
 Object::~Object() {

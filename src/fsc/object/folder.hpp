@@ -25,7 +25,7 @@ namespace object {
 class Folder final : public base::Complex {
  public:
   // Constructor
-  Folder(std::filesystem::path path, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Folder(std::filesystem::path path, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~Folder();

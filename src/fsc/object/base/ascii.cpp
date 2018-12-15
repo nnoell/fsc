@@ -12,8 +12,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Ascii::Ascii(std::string ascii, glm::vec4 color, TransformData transform_data, glm::mat4 model) :
-    Complex(std::move(transform_data), std::move(model)),
+Ascii::Ascii(std::string ascii, glm::vec4 color, TransformData transform_data) :
+    Complex(std::move(transform_data)),
     ascii_(std::move(ascii)),
     color_(std::move(color)) {
   // Update the objects

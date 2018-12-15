@@ -12,8 +12,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Line::Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data, glm::mat4 model) :
-    Simple(std::move(color), std::move(transform_data), std::move(model)),
+Line::Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data) :
+    Simple(std::move(color), std::move(transform_data)),
     points_(std::move(points)),
     num_vertices_(0),
     vertices_(nullptr) {

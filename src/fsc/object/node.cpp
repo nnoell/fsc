@@ -12,8 +12,8 @@ namespace fsc {
 namespace object {
 namespace node {
 
-Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, base::TransformData transform_data , glm::mat4 model) :
-    Complex(std::move(transform_data), std::move(model)),
+Details::Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color, base::TransformData transform_data) :
+    Complex(std::move(transform_data)),
     selected_file_(std::move(selected_file)),
     num_files_(std::move(num_files)),
     path_(std::move(path)),
@@ -61,8 +61,8 @@ void Details::UpdatePath() {
   path_section_->SetAscii("Path: " + path_);
 }
 
-Cursor::Cursor(std::string text, base::TransformData transform_data, glm::mat4 model) :
-    Complex(std::move(transform_data), std::move(model)),
+Cursor::Cursor(std::string text, base::TransformData transform_data) :
+    Complex(std::move(transform_data)),
       pointer_(std::make_shared<base::Polygon>(base::vertices::GetPyramid(), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, false, base::TransformData {{0.0f, -1.0f, 0.0f}, {1.5f, 1.5f, 1.5f}, glm::radians(180.0f), {0.0f, 0.0f, 1.0f}})),
       text_(std::make_shared<base::Ascii>(std::move(text), glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}, base::TransformData {{0.0f, 4.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})) {
   // Add the objects
@@ -83,10 +83,10 @@ void Cursor::SetText(std::string text) {
 
 }  // namespace node
 
-Node::Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data, glm::mat4 model) :
-    Complex(std::move(transform_data), std::move(model)),
+Node::Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data) :
+    Complex(std::move(transform_data)),
     file_(file),
-    folder_(std::make_shared<Folder>(file_.GetPath(), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}}, glm::mat4 {})),
+    folder_(std::make_shared<Folder>(file_.GetPath(), base::TransformData {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}})),
     parent_(std::move(parent)),
     depth_(!parent_ ? 0 : parent_->GetDepth() + 1),
     cursor_position_({0.0f, 0.0f}),

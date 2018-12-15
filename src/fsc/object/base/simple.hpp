@@ -41,7 +41,7 @@ class Simple : public Object {
 
  protected:
   // Constructor
-  Simple(glm::vec4 color, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Simple(glm::vec4 color, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
  private:
   // Copy Constructor

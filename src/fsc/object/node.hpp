@@ -27,7 +27,7 @@ class Details : public base::Complex {
  public:
   // Constructor
   Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.2, 0.8f, 0.8f, 1.0f},
-      base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+      base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~Details();
@@ -88,7 +88,7 @@ class Details : public base::Complex {
 class Cursor final : public base::Complex {
  public:
   // Constructor
-  Cursor(std::string text, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Cursor(std::string text, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~Cursor();
@@ -126,7 +126,7 @@ class Cursor final : public base::Complex {
 class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
  public:
   // Constructor
-  Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~Node();

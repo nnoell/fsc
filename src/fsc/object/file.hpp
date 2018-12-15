@@ -23,7 +23,7 @@ namespace object {
 class File final : public base::Complex {
  public:
   // Constructor
-  File(std::filesystem::directory_entry entry, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}}, glm::mat4 model = {});
+  File(std::filesystem::directory_entry entry, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
 
   // Destructor
   virtual ~File();

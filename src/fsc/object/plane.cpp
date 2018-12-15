@@ -15,8 +15,8 @@
 namespace fsc {
 namespace object {
 
-Plane::Plane(unsigned int width, unsigned int height, float scale, glm::vec4 color, base::TransformData transform_data, glm::mat4 model) :
-    Complex(std::move(transform_data), std::move(model)),
+Plane::Plane(unsigned int width, unsigned int height, float scale, glm::vec4 color, base::TransformData transform_data) :
+    Complex(std::move(transform_data)),
     width_(std::move(width)),
     height_(std::move(height)),
     scale_(std::move(scale)),

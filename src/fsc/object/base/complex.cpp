@@ -15,8 +15,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Complex::Complex(TransformData transform_data, glm::mat4 model) :
-    Object(std::move(transform_data), std::move(model)),
+Complex::Complex(TransformData transform_data) :
+    Object(std::move(transform_data)),
     objects_() {
 }
 
