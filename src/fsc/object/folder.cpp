@@ -60,13 +60,15 @@ void Folder::Update() {
   // Get the directory entries
   const std::vector<std::filesystem::directory_entry> entries = GetDirectoryEntries(path_);
 
-  // Get the number of files
+  // Set the number of files
   num_files_ = entries.size();
+
+  // Set the number of columns
+  num_cols_ = CountNumCols(num_files_);
+
+  // Retirn of the folder is empty
   if (num_files_ <= 0)
     return;
-
-  // Get the number of rows
-  num_cols_ = CountNumCols(num_files_);
 
   // Allocate the files array
   files_ = std::shared_ptr<std::shared_ptr<File> []>(new std::shared_ptr<File> [num_files_], std::default_delete<std::shared_ptr<File> []>());
