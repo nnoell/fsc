@@ -52,10 +52,7 @@ class Object {
   glm::vec3 GetVertexTop() const;
 
   // Gets the middle vertex
-  glm::vec3 GetVertexMiddle() const;
-
-  // Gets the middle vertex using a specific model
-  virtual glm::vec3 GetModelVertexMiddle(const glm::mat4& model = {}) const = 0;
+  glm::vec3 GetVertexCenter() const;
 
   // Gets the max vertex
   glm::vec3 GetVertexMax() const;

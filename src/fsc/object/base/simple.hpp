@@ -30,9 +30,6 @@ class Simple : public Object {
   // Sets the color
   void SetColor(glm::vec4 color);
 
-  // Gets the middle vertex using a specific model
-  glm::vec3 GetModelVertexMiddle(const glm::mat4& model = {}) const override;
-
   // Gets the max vertex using a specific model
   glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const override;
 

@@ -27,53 +27,45 @@ const bool Complex::IsComplex() const {
   return true;
 }
 
-glm::vec3 Complex::GetModelVertexMiddle(const glm::mat4& model) const {
-  glm::vec3 middle = GetModelVertexMax(model) + GetModelVertexMin(model);
-  middle /= 2;
-  return middle;
-}
-
 glm::vec3 Complex::GetModelVertexMax(const glm::mat4& model) const {
-  glm::mat4 model2 = ModelTransform(model);
+  if (objects_.empty())
+    return {0.0f, 0.0f, 0.0f};
 
-  bool first_object = true;
-  glm::vec3 max;
-  for (auto&& object : objects_) {
-    if (object->IsComplex()) {
-      if (first_object)
-        max = object->GetModelVertexMax(model2);
-      else
-        max = glm::max(max, object->GetModelVertexMax(model2));
-    } else {
-      if (first_object)
-        max = object->GetModelVertexMax(object->ModelTransform(model2));
-      else
-        max = glm::max(max, object->GetModelVertexMax(object->ModelTransform(model2)));
-    }
-    first_object = false;
+  // Set max using the first object
+  glm::mat4 model2 = ModelTransform(model);
+  glm::vec3 max = objects_[0]->GetModelVertexMax(model2);
+
+  // Compare it with the rest of objects
+  std::vector<std::shared_ptr<Object>>::const_iterator it;
+  for (it = std::next(objects_.begin()); it != objects_.end(); ++it) {
+    const auto object = *it;
+    if (object->IsComplex())
+      max = glm::max(max, object->GetModelVertexMax(model2));
+    else
+      max = glm::max(max, object->GetModelVertexMax(object->ModelTransform(model2)));
   }
+
   return max;
 }
 
 glm::vec3 Complex::GetModelVertexMin(const glm::mat4& model) const {
-  glm::mat4 model2 = ModelTransform(model);
+  if (objects_.empty())
+    return {0.0f, 0.0f, 0.0f};
 
-  bool first_object = true;
-  glm::vec3 min;
-  for (auto&& object : objects_) {
-    if (object->IsComplex()) {
-      if (first_object)
-        min = object->GetModelVertexMin(model2);
-      else
-        min = glm::min(min, object->GetModelVertexMin(model2));
-    } else {
-      if (first_object)
-        min = object->GetModelVertexMin(object->ModelTransform(model2));
-      else
-        min = glm::min(min, object->GetModelVertexMin(object->ModelTransform(model2)));
-    }
-    first_object = false;
+  // Set min using the first object
+  glm::mat4 model2 = ModelTransform(model);
+  glm::vec3 min = objects_[0]->GetModelVertexMin(model2);
+
+  // Compare it with the rest of objects
+  std::vector<std::shared_ptr<Object>>::const_iterator it;
+  for (it = std::next(objects_.begin()); it != objects_.end(); ++it) {
+    const auto object = *it;
+    if (object->IsComplex())
+      min = glm::min(min, object->GetModelVertexMin(model2));
+    else
+      min = glm::min(min, object->GetModelVertexMin(object->ModelTransform(model2)));
   }
+
   return min;
 }
 

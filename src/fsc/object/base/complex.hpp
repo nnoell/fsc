@@ -29,9 +29,6 @@ class Complex : public Object {
   // Checks whether the object is complex or not
   const bool IsComplex() const override;
 
-  // Gets the middle vertex using a specific model
-  glm::vec3 GetModelVertexMiddle(const glm::mat4& model = {}) const override;
-
   // Gets the max vertex using a specific model
   glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const override;
 

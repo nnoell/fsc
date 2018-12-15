@@ -43,12 +43,14 @@ void Object::SetTransformData(TransformData transform_data) {
 
 glm::vec3 Object::GetVertexTop() const {
   const glm::vec3 max = GetVertexMax();
-  const glm::vec3 middle = GetVertexMiddle();
-  return {middle.x, max.y, middle.z};
+  const glm::vec3 center = GetVertexCenter();
+  return {center.x, max.y, center.z};
 }
 
-glm::vec3 Object::GetVertexMiddle() const {
-  return GetModelVertexMiddle(model_);
+glm::vec3 Object::GetVertexCenter() const {
+  glm::vec3 center = GetVertexMax() + GetVertexMin();
+  center /= 2.0f;
+  return center;
 }
 
 glm::vec3 Object::GetVertexMax() const {
