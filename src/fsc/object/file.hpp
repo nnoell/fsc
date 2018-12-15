@@ -13,6 +13,8 @@
 
 // FSC
 #include "base/complex.hpp"
+#include "base/polygon.hpp"
+#include "base/ascii.hpp"
 
 namespace fsc {
 namespace object {
@@ -51,6 +53,12 @@ class File final : public base::Complex {
  private:
   // The directory entry
   const std::filesystem::directory_entry entry_;
+
+  // The base object
+  std::shared_ptr<base::Polygon> base_;
+
+  // The cube object
+  std::shared_ptr<base::Polygon> cube_;
 };
 
 }  // namespace object
