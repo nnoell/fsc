@@ -38,7 +38,7 @@ static unsigned int CountNumCols(unsigned int size) {
 }
 
 Folder::Folder(std::filesystem::path path, base::TransformData transform_data, glm::mat4 model) :
-    Complex({}, std::move(transform_data), std::move(model)),
+    Complex(std::move(transform_data), std::move(model)),
     path_(std::move(path)),
     files_(nullptr),
     num_files_(0),
