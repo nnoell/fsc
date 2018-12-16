@@ -13,8 +13,9 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Character::Character(char character, glm::vec4 color, TransformData transform_data) :
-    Simple(std::move(color), std::move(transform_data)),
+Character::Character(char character, glm::vec4 color,
+      transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
+    Simple(std::move(color), std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     character_(character),
     vertices_data_(vertices::Font::GetInstance().GetCharVerticesData(character_)) {
 }
@@ -32,14 +33,14 @@ void Character::SetCharacter(char character) {
   vertices_data_ = vertices::Font::GetInstance().GetCharVerticesData(character_);
 }
 
-double Character::GetNextPosition() const {
+float Character::GetNextPosition() const {
   return vertices_data_->next_position;
 }
 
-void Character::ModelDraw(const glm::mat4& model) const {
+void Character::Draw() const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", true);
-  Pipeline::GetInstance().SetMat4("model_", model);
+  Pipeline::GetInstance().SetMat4("model_", GetModel());
   Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL to render text

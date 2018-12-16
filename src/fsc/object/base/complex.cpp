@@ -15,74 +15,61 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Complex::Complex(TransformData transform_data) :
-    Object(std::move(transform_data)),
+Complex::Complex(transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
+    Object(std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
+    model_(),
     objects_() {
+  // Refresh the model matrix
+  RefreshModel();
 }
 
 Complex::~Complex() {
 }
 
-const bool Complex::IsComplex() const {
-  return true;
-}
-
-glm::vec3 Complex::GetModelVertexMax(const glm::mat4& model) const {
+glm::vec3 Complex::GetVertexMax() const {
   if (objects_.empty())
     return {0.0f, 0.0f, 0.0f};
 
   // Set max using the first object
-  glm::mat4 model2 = ModelTransform(model);
-  glm::vec3 max = objects_[0]->GetModelVertexMax(model2);
+  glm::vec3 max = objects_[0]->GetVertexMax();
 
   // Compare it with the rest of objects
   std::vector<std::shared_ptr<Object>>::const_iterator it;
   for (it = std::next(objects_.begin()); it != objects_.end(); ++it) {
-    const auto object = *it;
-    if (object->IsComplex())
-      max = glm::max(max, object->GetModelVertexMax(model2));
-    else
-      max = glm::max(max, object->GetModelVertexMax(object->ModelTransform(model2)));
+    const auto& object = *it;
+    max = glm::max(max, object->GetVertexMax());
   }
 
   return max;
 }
 
-glm::vec3 Complex::GetModelVertexMin(const glm::mat4& model) const {
+glm::vec3 Complex::GetVertexMin() const {
   if (objects_.empty())
     return {0.0f, 0.0f, 0.0f};
 
   // Set min using the first object
-  glm::mat4 model2 = ModelTransform(model);
-  glm::vec3 min = objects_[0]->GetModelVertexMin(model2);
+  glm::vec3 min = objects_[0]->GetVertexMin();
 
   // Compare it with the rest of objects
   std::vector<std::shared_ptr<Object>>::const_iterator it;
   for (it = std::next(objects_.begin()); it != objects_.end(); ++it) {
-    const auto object = *it;
-    if (object->IsComplex())
-      min = glm::min(min, object->GetModelVertexMin(model2));
-    else
-      min = glm::min(min, object->GetModelVertexMin(object->ModelTransform(model2)));
+    const auto& object = *it;
+    min = glm::min(min, object->GetVertexMin());
   }
 
   return min;
 }
 
-void Complex::ModelDraw(const glm::mat4& model) const {
-  // Transform the object model using the transform data
-  glm::mat4 model2 = ModelTransform(model);
-
-  // Transform each sub-object model using each sub-object model
-  for (auto&& object : objects_) {
-    if (object->IsComplex())
-      object->ModelDraw(model2);
-    else
-      object->ModelDraw(object->ModelTransform(model2));
-  } 
+void Complex::Draw() const {
+  for (auto&& object : objects_)
+    object->Draw();
 }
 
 void Complex::AddObject(std::shared_ptr<Object> object) {
+  // Update the object model
+  object->Model({model_});
+
+  // Add it to the list
   objects_.push_back(std::move(object));
 }
 
@@ -102,6 +89,18 @@ std::shared_ptr<Object> Complex::FindObject(unsigned int id) const {
 
 void Complex::ClearObjects() {
   objects_.clear();
+}
+
+void Complex::RefreshModel() {
+  // First we re-calculate the master model
+  const glm::mat4 modeled = GetTransformerModel().Transform({});
+  const glm::mat4 rotated = GetTransformerRotate().Transform(modeled);
+  const glm::mat4 scaled = GetTransformerScale().Transform(rotated);
+  model_ = GetTransformerTranslate().Transform(scaled);
+
+  // Then re-calculate the children's model
+  for (auto&& object : objects_)
+    object->Model({model_});
 }
 
 }  // namespace base

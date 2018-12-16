@@ -17,7 +17,7 @@ namespace object {
 
 // Counts the number of files a folder has
 static std::vector<std::filesystem::directory_entry> GetDirectoryEntries(std::filesystem::path path) {
-  // Access denied might happen when creating a directory iterator
+  // TODO: Access denied might happen when creating a directory iterator
   try {
     std::vector<std::filesystem::directory_entry> entries;
     std::filesystem::directory_iterator dir {path};
@@ -37,8 +37,9 @@ static unsigned int CountNumCols(unsigned int size) {
   return res;
 }
 
-Folder::Folder(std::filesystem::path path, base::TransformData transform_data) :
-    Complex(std::move(transform_data)),
+Folder::Folder(std::filesystem::path path,
+      base::transformer::Translate translate, base::transformer::Scale scale, base::transformer::Rotate rotate, base::transformer::Model model) :
+    Complex(std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     path_(std::move(path)),
     files_(nullptr),
     num_files_(0),
@@ -83,7 +84,7 @@ void Folder::Update() {
     }
 
     // Create the file object and add it into the lists
-    auto file = std::make_shared<File>(entry, base::TransformData {{x * 5.0f,  0.0f, z * -5.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+    auto file = std::make_shared<File>(entry, base::transformer::Translate {{x * 5.0f,  0.0f, z * -5.0f}});
     files_[x + (z * num_cols_)] = file;
     AddObject(file);
 

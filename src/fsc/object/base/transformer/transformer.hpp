@@ -11,48 +11,45 @@
 // PUBLIC
 #include <fsc/external.hpp>
 
-// FSC
-#include "vertices/data.hpp"
-#include "simple.hpp"
-
 namespace fsc {
 namespace object {
 namespace base {
+namespace transformer {
 
-// The Polygon class
-class Polygon : public Simple {
+// The Transformer base class
+class Transformer {
  public:
-  // Constructor
-  Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe,
-      transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
-
   // Destructor
-  virtual ~Polygon();
+  virtual ~Transformer();
 
-  // Draws the polygon object
-  void Draw() const override;
+  // Gets the name
+  std::string GetName() const;
 
- private:
   // Copy Constructor
-  Polygon(const Polygon&) = delete;
+  Transformer(const Transformer& other);
 
   // Move Constructor
-  Polygon(Polygon &&) = delete;
+  Transformer(Transformer && other);
 
   // Copy-Assign Constructor
-  Polygon& operator=(const Polygon&) = delete;
+  Transformer& operator=(const Transformer& other);
 
   // Move-Assign Constructr
-  Polygon& operator=(Polygon &&) = delete;
+  Transformer& operator=(Transformer && other);
+
+  // Transforms a model matrix with this transformer
+  virtual glm::mat4 Transform(const glm::mat4& model = {}) const = 0;
+
+ protected:
+  // Constructor
+  Transformer(std::string name);
 
  private:
-  // The vertices data
-  const vertices::Data& vertices_data_;
-
-  // Whether it is in wireframe mode or not
-  bool wireframe_;
+  // The name
+  std::string name_;
 };
 
+}  // namespace transformer
 }  // namespace base
 }  // namespace object
 }  // namespace fsc

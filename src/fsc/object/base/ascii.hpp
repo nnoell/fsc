@@ -22,7 +22,8 @@ namespace base {
 class Ascii final : public Complex {
  public:
   // Constructor
-  Ascii(std::string ascii, glm::vec4 color = glm::vec4 {0.2, 0.8f, 0.8f, 1.0f}, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0.0f, {1.0f, 1.0f, 1.0f}});
+  Ascii(std::string ascii, glm::vec4 color = glm::vec4 {0.2, 0.8f, 0.8f, 1.0f},
+    transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
   // Destructor
   virtual ~Ascii();

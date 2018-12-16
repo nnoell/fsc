@@ -12,8 +12,9 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Line::Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data) :
-    Simple(std::move(color), std::move(transform_data)),
+Line::Line(std::vector<glm::vec3> points, glm::vec4 color,
+    transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
+    Simple(std::move(color), std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     points_(std::move(points)),
     num_vertices_(0),
     vertices_(nullptr) {
@@ -51,14 +52,14 @@ void Line::SetPoints(std::vector<glm::vec3> points) {
   Update();
 }
 
-void Line::ModelDraw(const glm::mat4& model) const {
+void Line::Draw() const {
   // Return if there are no points
   if (points_.size() == 0)
     return;
 
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
-  Pipeline::GetInstance().SetMat4("model_", model);
+  Pipeline::GetInstance().SetMat4("model_", GetModel());
   Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL
@@ -67,7 +68,7 @@ void Line::ModelDraw(const glm::mat4& model) const {
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // The stride of the vertex
-  constexpr float stride = 6;
+  constexpr unsigned int stride = 6;
 
   // Generate
   unsigned int vao = 0, vbo = 0;
@@ -79,7 +80,7 @@ void Line::ModelDraw(const glm::mat4& model) const {
 
   // Bind and set VBO
   glBindBuffer(GL_ARRAY_BUFFER, vbo);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * stride * num_vertices_, vertices_.get(), GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices_, vertices_.get(), GL_STATIC_DRAW);
 
   // Configure Vertex
   glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * stride, (void*)0);

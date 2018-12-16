@@ -13,11 +13,11 @@ namespace fsc {
 World::World(int width, int height, glm::vec4 color) :
     color_(std::move(color)),
     projection_(glm::perspective(glm::radians(54.0f), (float)width / (float)height, 0.1f, 1000.0f)),
-    title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::TransformData {{0.0f, -2.0f, 0.0f}, {7.0f, 7.0f, 7.0f}, glm::radians(-90.0f), {1.0f, 0.0f, 0.0f}}),
+    title_("F S C", glm::vec4 {0.0f, 1.0f, 1.0f, 1.0f}, object::base::transformer::Translate {{0.0f, -2.0f, 0.0f}}, object::base::transformer::Scale {{7.0f, 7.0f, 7.0f}}, object::base::transformer::Rotate {-90.0f, {1.0f, 0.0f, 0.0f}}),
     root_file_(std::filesystem::directory_entry {"C:/"}),
     root_node_(std::make_shared<object::Node>(root_file_, nullptr)),
     selected_node_(root_node_),
-    max_dimension_(root_node_->GetFolder()->GetDimension()),
+    max_dimension_(root_node_->GetDimension()),
     opened_nodes_map_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
@@ -83,7 +83,7 @@ void World::OpenSelected() {
   AddNode(node);
 
   // Update the room dimension
-  max_dimension_ = glm::max(max_dimension_, node->GetFolder()->GetDimension());
+  max_dimension_ = glm::max(max_dimension_, node->GetDimension());
 
   // Update the position of all nodes
   UpdateNodePosition();
@@ -136,7 +136,7 @@ void World::UpdateNodePosition() {
   while (it != opened_nodes_map_.end()) {
     unsigned int i = 0;
     for (auto&& n : it->second) {
-      n->SetTransformData({{i * (max_dimension_.x + gap), 0.0f, -1.0f * key * (max_dimension_.z + gap)}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 1.0f}});
+      n->Translate(glm::vec3 {i * (max_dimension_.x + gap), 0.0f, -1.0f * key * (max_dimension_.z + gap)});
       ++i;
     }
     ++key;

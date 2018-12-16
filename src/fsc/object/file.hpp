@@ -23,7 +23,8 @@ namespace object {
 class File final : public base::Complex {
  public:
   // Constructor
-  File(std::filesystem::directory_entry entry, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  File(std::filesystem::directory_entry entry,
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~File();

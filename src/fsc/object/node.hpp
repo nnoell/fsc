@@ -27,7 +27,7 @@ class Details : public base::Complex {
  public:
   // Constructor
   Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.2, 0.8f, 0.8f, 1.0f},
-      base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Details();
@@ -88,7 +88,8 @@ class Details : public base::Complex {
 class Cursor final : public base::Complex {
  public:
   // Constructor
-  Cursor(std::string text, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Cursor(std::string text,
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Cursor();
@@ -126,7 +127,8 @@ class Cursor final : public base::Complex {
 class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
  public:
   // Constructor
-  Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Node(const File& file, std::shared_ptr<Node> parent,
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Node();
@@ -188,7 +190,7 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   const unsigned int depth_;
 
   // The cursor position
-  glm::vec2 cursor_position_;
+  glm::uvec2 cursor_position_;
 
   // The origin line
   const std::shared_ptr<base::Line> origin_line_;

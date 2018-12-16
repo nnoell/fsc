@@ -21,7 +21,8 @@ namespace object {
 class Plane final : public base::Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale, glm::vec4 color, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Plane(unsigned int width, unsigned int height, float scale_factor, glm::vec4 color,
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Plane();
@@ -47,7 +48,7 @@ class Plane final : public base::Complex {
   const unsigned int height_;
 
   // The scale of the plane
-  float scale_;
+  float scale_factor_;
 
   // The color
   glm::vec4 color_;

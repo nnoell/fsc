@@ -21,8 +21,8 @@ class Simple : public Object {
   // Destructor
   virtual ~Simple();
 
-  // Checks whether the object is complex or not
-  const bool IsComplex() const override;
+  // Gets the model
+  const glm::mat4 GetModel() const;
 
   // Gets the color
   glm::vec4 GetColor() const;
@@ -30,18 +30,21 @@ class Simple : public Object {
   // Sets the color
   void SetColor(glm::vec4 color);
 
-  // Gets the max vertex using a specific model
-  glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const override;
+  // Gets the max vertex
+  glm::vec3 GetVertexMax() const override;
 
-  // Gets the min vertex using a specific model
-  glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const override;
+  // Gets the min vertex
+  glm::vec3 GetVertexMin() const override;
 
-  // Draw the line
-  virtual void ModelDraw(const glm::mat4& model = {}) const override = 0;
+  // Draws the line
+  virtual void Draw() const override = 0;
+
+  // Re-calculates the model matrix
+  void RefreshModel() override;
 
  protected:
   // Constructor
-  Simple(glm::vec4 color, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Simple(glm::vec4 color, transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
  private:
   // Copy Constructor
@@ -57,6 +60,9 @@ class Simple : public Object {
   Simple& operator=(Simple &&) = delete;
 
  private:
+  // The model matrix
+  glm::mat4 model_;
+
   // The color of the line
   glm::vec4 color_;
 };

@@ -26,21 +26,21 @@ class Complex : public Object {
   // Destructor
   virtual ~Complex();
 
-  // Checks whether the object is complex or not
-  const bool IsComplex() const override;
+  // Gets the max vertex
+  glm::vec3 GetVertexMax() const override;
 
-  // Gets the max vertex using a specific model
-  glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const override;
-
-  // Gets the min vertex using a specific model
-  glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const override;
+  // Gets the min vertex
+  glm::vec3 GetVertexMin() const override;
 
   // Draws the complex object
-  void ModelDraw(const glm::mat4& model = {}) const override;
+  void Draw() const override;
+
+  // Re-calculates the model matrix
+  void RefreshModel() override;
 
  protected:
   // Constructor
-  Complex(TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Complex(transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
   // Adds a object
   void AddObject(std::shared_ptr<Object> object);
@@ -68,6 +68,9 @@ class Complex : public Object {
   Complex& operator=(Complex &&) = delete;
 
  private:
+  // The model matrix
+  glm::mat4 model_;
+
   // The list of objects
   std::vector<std::shared_ptr<Object>> objects_;
 };
