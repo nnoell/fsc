@@ -33,10 +33,6 @@ unsigned int Object::GetId() const {
   return id_;
 }
 
-const TransformData& Object::GetTransformData() const {
-  return transform_data_;
-}
-
 void Object::SetTransformData(TransformData transform_data) {
   transform_data_ = std::move(transform_data);
 }
@@ -70,9 +66,9 @@ glm::mat4 Object::Transform() const {
 }
 
 glm::mat4 Object::ModelTransform(const glm::mat4& model) const {
-  glm::mat4 res = glm::scale(model, GetTransformData().scale);
-  res = glm::rotate(res, GetTransformData().radians, GetTransformData().axes);
-  return glm::translate(res, GetTransformData().position);
+  glm::mat4 res = glm::scale(model, transform_data_.scale);
+  res = glm::rotate(res, transform_data_.radians, transform_data_.axes);
+  return glm::translate(res, transform_data_.position);
 }
 
 void Object::Draw() const {

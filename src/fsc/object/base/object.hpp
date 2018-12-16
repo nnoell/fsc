@@ -42,9 +42,6 @@ class Object {
   // Checks whether the object is complex or not
   virtual const bool IsComplex() const = 0;
 
-  // Gets the transform data
-  const TransformData& GetTransformData() const;
-
   // Sets the transform data
   void SetTransformData(TransformData transform_data);
 
