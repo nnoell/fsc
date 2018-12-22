@@ -16,6 +16,7 @@
 
 // FSC
 #include "folder.hpp"
+#include "cursor.hpp"
 #include "base/line.hpp"
 
 namespace fsc {
@@ -82,43 +83,6 @@ class Details : public base::Complex {
 
   // The path section
   std::shared_ptr<base::Ascii> path_section_;
-};
-
-// The folder Cursor class
-class Cursor final : public base::Complex {
- public:
-  // Constructor
-  Cursor(std::string text,
-      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
-
-  // Destructor
-  virtual ~Cursor();
-
-  // Gets the text
-  std::string GetText() const;
-
-  // Sets the text
-  void SetText(std::string text);
-
- private:
-  // Copy Constructor
-  Cursor(const Cursor&) = delete;
-
-  // Move Constructor
-  Cursor(Cursor &&) = delete;
-
-  // Copy-Assign Constructor
-  Cursor& operator=(const Cursor&) = delete;
-
-  // Move-Assign Constructr
-  Cursor& operator=(Cursor &&) = delete;
-
- private:
-  // The pointer object
-  std::shared_ptr<base::Polygon> pointer_;
-
-  // The text object
-  std::shared_ptr<base::Ascii> text_;
 };
 
 }  // namespace node
@@ -196,7 +160,7 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   const std::shared_ptr<base::Line> origin_line_;
 
   // The node cursor
-  const std::shared_ptr<node::Cursor> cursor_;
+  const std::shared_ptr<Cursor> cursor_;
 
   // The node details
   const std::shared_ptr<node::Details> details_;
