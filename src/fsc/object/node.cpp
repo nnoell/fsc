@@ -72,13 +72,9 @@ Node::Node(const File& file, std::shared_ptr<Node> parent,
     depth_(!parent_ ? 0 : parent_->GetDepth() + 1),
     cursor_position_({0.0f, 0.0f}),
     origin_line_(std::make_shared<base::Line>(std::vector<glm::vec3>{file_.GetVertexCenter(), folder_->GetVertexCenter()}, glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f})),
-    cursor_(std::make_shared<Cursor>("")),
-    details_(std::make_shared<node::Details>(nullptr, 0, file_.GetPath().string())),
-    selected_node_(nullptr),
-    opened_nodes_() {
+    details_(std::make_shared<node::Details>(nullptr, 0, file_.GetPath().string())) {
   AddObject(folder_);
   // AddObject(origin_line_);
-  AddObject(cursor_);
   AddObject(details_);
 
   // Update the node
@@ -86,6 +82,10 @@ Node::Node(const File& file, std::shared_ptr<Node> parent,
 }
 
 Node::~Node() {
+}
+
+const File& Node::GetFile() const {
+  return file_;
 }
 
 const std::shared_ptr<Folder> Node::GetFolder() const {
@@ -100,53 +100,11 @@ unsigned int Node::GetDepth() const {
   return depth_;
 }
 
-// Opens the selected folder
-std::shared_ptr<Node> Node::OpenSelectedFile() {
-  std::shared_ptr<File> selected_file = folder_->GetFile(cursor_position_.x, cursor_position_.y);
-  if (!selected_file)
-    return nullptr;
-
-  return OpenFile(*selected_file);
+std::shared_ptr<File> Node::GetSelectedFile() const {
+  return folder_->GetFile(cursor_position_.x, cursor_position_.y);
 }
 
-std::shared_ptr<Node> Node::OpenFile(const File& file) {
-  // Check if the file is a folder
-  if (!file.IsFolder())
-    return nullptr;
-
-  // Check if the folder contains the file
-  const unsigned int file_id = file.GetId();
-  if (!folder_->ContainsFile(file_id))
-    return nullptr;
-
-  // Check if the file is already open
-  std::unordered_map<unsigned int, std::shared_ptr<Node>>::const_iterator it = opened_nodes_.find(file_id);
-  if (it != opened_nodes_.end())
-    return it->second;
-
-  // Create and add the node to the list
-  selected_node_ = std::make_shared<Node>(file, shared_from_this());
-  opened_nodes_[file_id] = selected_node_;
-
-  return selected_node_;
-}
-
-void Node::Update() {
-  // Get the selected file
-  const std::shared_ptr<File> selected_file = folder_->GetFile(cursor_position_.x, cursor_position_.y);
-  if (!selected_file)
-    return;
-
-  // Update the cursor
-  cursor_->SetText(selected_file->GetName());
-  cursor_->Translate(selected_file->GetTransformerTranslate().GetPosition() + glm::vec3 {0.0f, 2.5f, 0.0f});
-
-  // Update the details
-  details_->SetSelectedFile(std::move(selected_file));
-  details_->SetNumFiles(folder_->GetNumFiles());
-}
-
-void Node::MoveCursorUp() {
+void Node::SelectFileUp() {
   // Check for the new position
   const unsigned int new_y = cursor_position_.y + 1;
   if (new_y < 0 || new_y >= folder_->GetNumCols())
@@ -160,7 +118,7 @@ void Node::MoveCursorUp() {
   Update();
 }
 
-void Node::MoveCursorDown() {
+void Node::SelectFileDown() {
   if (cursor_position_.y <= 0)
     return;
 
@@ -176,8 +134,7 @@ void Node::MoveCursorDown() {
   cursor_position_.y--;
   Update();
 }
-
-void Node::MoveCursorLeft() {
+void Node::SelectFileLeft() {
   if (cursor_position_.x <= 0)
     return;
 
@@ -194,7 +151,7 @@ void Node::MoveCursorLeft() {
   Update();
 }
 
-void Node::MoveCursorRight() {
+void Node::SelectFileRight() {
   // Check for the new position
   const unsigned int new_x = cursor_position_.x + 1;
   if (new_x < 0 || new_x >= folder_->GetNumCols())
@@ -206,6 +163,17 @@ void Node::MoveCursorRight() {
   // Update the cursor
   cursor_position_.x++;
   Update();
+}
+
+void Node::Update() {
+  // Get the selected file
+  const std::shared_ptr<File> selected_file = GetSelectedFile();
+  if (!selected_file)
+    return;
+
+  // Update the details
+  details_->SetSelectedFile(std::move(selected_file));
+  details_->SetNumFiles(folder_->GetNumFiles());
 }
 
 }  // namespace object

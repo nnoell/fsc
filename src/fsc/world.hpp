@@ -52,7 +52,10 @@ class World final {
   void RemoveNode(std::shared_ptr<object::Node> node);
 
   // Finds a node in the map given it's Id
-  std::shared_ptr<object::Node> FindNode(unsigned int node_id) const;
+  std::shared_ptr<object::Node> FindNode(unsigned int file_id) const;
+
+  // Updates the cursor position
+  void UpdateCursorPosition();
 
   // Updates the position of all nodes
   void UpdateNodePosition();
@@ -79,6 +82,9 @@ class World final {
 
   // The title object
   object::base::Ascii title_;
+
+  // The cursor
+  object::Cursor cursor_;
 
   // The root file
   const object::File root_file_;

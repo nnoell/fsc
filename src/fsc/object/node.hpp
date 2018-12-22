@@ -88,7 +88,7 @@ class Details : public base::Complex {
 }  // namespace node
 
 // The Node class
-class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
+class Node final : public base::Complex {
  public:
   // Constructor
   Node(const File& file, std::shared_ptr<Node> parent,
@@ -96,6 +96,9 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
 
   // Destructor
   virtual ~Node();
+
+  // Gets the file this node belongs to
+  const File& GetFile() const;
 
   // Gets the folder
   const std::shared_ptr<Folder> GetFolder() const;
@@ -106,26 +109,23 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the depth
   unsigned int GetDepth() const;
 
-  // Opens the selected file
-  std::shared_ptr<Node> OpenSelectedFile();
+  // Gets the selected file
+  std::shared_ptr<File> GetSelectedFile() const;
 
-  // Opens a file within the node
-  std::shared_ptr<Node> OpenFile(const File& file);
+  // Selects the upper file
+  void SelectFileUp();
+
+  // Selects the lower file
+  void SelectFileDown();
+
+  // Selects the left file
+  void SelectFileLeft();
+
+  // Selected the right file
+  void SelectFileRight();
 
   // Updates the node
   void Update();
-
-  // Moves the cursor up-wards
-  void MoveCursorUp();
-
-  // Moves the cursor down-wards
-  void MoveCursorDown();
-
-  // Moves the cursor to the left
-  void MoveCursorLeft();
-
-  // Moves the cursor to the right
-  void MoveCursorRight();
 
  private:
   // Copy Constructor
@@ -159,17 +159,8 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // The origin line
   const std::shared_ptr<base::Line> origin_line_;
 
-  // The node cursor
-  const std::shared_ptr<Cursor> cursor_;
-
   // The node details
   const std::shared_ptr<node::Details> details_;
-
-  // The selected node
-  std::shared_ptr<Node> selected_node_;
-
-  // Opened nodes
-  std::unordered_map<unsigned int, std::shared_ptr<Node>> opened_nodes_;
 };
 
 }  // namespace object
