@@ -20,10 +20,12 @@ static unsigned int GetUniqueId() {
   return id++;
 }
 
-Object::Object(TransformData transform_data) :
+Object::Object(transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
     id_(GetUniqueId()),
-    transform_data_(std::move(transform_data)),
-    model_() {
+    translate_transformer_(std::move(translate)),
+    scale_transformer_(std::move(scale)),
+    rotate_transformer_(std::move(rotate)),
+    model_transformer_(std::move(model)) {
 }
 
 Object::~Object() {
@@ -33,8 +35,48 @@ unsigned int Object::GetId() const {
   return id_;
 }
 
-void Object::SetTransformData(TransformData transform_data) {
-  transform_data_ = std::move(transform_data);
+const transformer::Translate& Object::GetTransformerTranslate() const {
+  return translate_transformer_;
+}
+
+const transformer::Scale& Object::GetTransformerScale() const {
+  return scale_transformer_;
+}
+
+const transformer::Rotate& Object::GetTransformerRotate() const {
+  return rotate_transformer_;
+}
+
+const transformer::Model& Object::GetTransformerModel() const {
+  return model_transformer_;
+}
+
+Object& Object::Translate(transformer::Translate translate) {
+  translate_transformer_ = std::move(translate);
+  RefreshModel();
+  return *this;
+}
+
+Object& Object::Scale(transformer::Scale scale) {
+  scale_transformer_ = std::move(scale);
+  RefreshModel();
+  return *this;
+}
+
+Object& Object::Rotate(transformer::Rotate rotate) {
+  rotate_transformer_ = std::move(rotate);
+  RefreshModel();
+  return *this;
+}
+
+Object& Object::Model(transformer::Model model) {
+  model_transformer_ = std::move(model);
+  RefreshModel();
+  return *this;
+}
+
+glm::vec3 Object::GetDimension() const {
+  return glm::abs(GetVertexMax() - GetVertexMin());
 }
 
 glm::vec3 Object::GetVertexTop() const {
@@ -47,32 +89,6 @@ glm::vec3 Object::GetVertexCenter() const {
   glm::vec3 center = GetVertexMax() + GetVertexMin();
   center /= 2.0f;
   return center;
-}
-
-glm::vec3 Object::GetVertexMax() const {
-  return GetModelVertexMax(model_);
-}
-
-glm::vec3 Object::GetVertexMin() const {
-  return GetModelVertexMin(model_);
-}
-
-glm::vec3 Object::GetDimension() const {
-  return glm::abs(GetVertexMax() - GetVertexMin());
-}
-
-glm::mat4 Object::Transform() const {
-  return ModelTransform(model_);
-}
-
-glm::mat4 Object::ModelTransform(const glm::mat4& model) const {
-  glm::mat4 res = glm::scale(model, transform_data_.scale);
-  res = glm::rotate(res, transform_data_.radians, transform_data_.axes);
-  return glm::translate(res, transform_data_.position);
-}
-
-void Object::Draw() const {
-  ModelDraw(model_);
 }
 
 }  // namespace base

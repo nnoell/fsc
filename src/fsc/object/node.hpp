@@ -16,6 +16,7 @@
 
 // FSC
 #include "folder.hpp"
+#include "cursor.hpp"
 #include "base/line.hpp"
 
 namespace fsc {
@@ -27,7 +28,7 @@ class Details : public base::Complex {
  public:
   // Constructor
   Details(std::shared_ptr<File> selected_file, unsigned int num_files, std::string path, glm::vec4 color = {0.2, 0.8f, 0.8f, 1.0f},
-      base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Details();
@@ -84,52 +85,20 @@ class Details : public base::Complex {
   std::shared_ptr<base::Ascii> path_section_;
 };
 
-// The folder Cursor class
-class Cursor final : public base::Complex {
- public:
-  // Constructor
-  Cursor(std::string text, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
-
-  // Destructor
-  virtual ~Cursor();
-
-  // Gets the text
-  std::string GetText() const;
-
-  // Sets the text
-  void SetText(std::string text);
-
- private:
-  // Copy Constructor
-  Cursor(const Cursor&) = delete;
-
-  // Move Constructor
-  Cursor(Cursor &&) = delete;
-
-  // Copy-Assign Constructor
-  Cursor& operator=(const Cursor&) = delete;
-
-  // Move-Assign Constructr
-  Cursor& operator=(Cursor &&) = delete;
-
- private:
-  // The pointer object
-  std::shared_ptr<base::Polygon> pointer_;
-
-  // The text object
-  std::shared_ptr<base::Ascii> text_;
-};
-
 }  // namespace node
 
 // The Node class
-class Node final : public base::Complex, public std::enable_shared_from_this<Node> {
+class Node final : public base::Complex {
  public:
   // Constructor
-  Node(const File& file, std::shared_ptr<Node> parent, base::TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Node(const File& file, std::shared_ptr<Node> parent,
+      base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
   virtual ~Node();
+
+  // Gets the file this node belongs to
+  const File& GetFile() const;
 
   // Gets the folder
   const std::shared_ptr<Folder> GetFolder() const;
@@ -140,26 +109,23 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   // Gets the depth
   unsigned int GetDepth() const;
 
-  // Opens the selected file
-  std::shared_ptr<Node> OpenSelectedFile();
+  // Gets the selected file
+  std::shared_ptr<File> GetSelectedFile() const;
 
-  // Opens a file within the node
-  std::shared_ptr<Node> OpenFile(const File& file);
+  // Selects the upper file
+  void SelectFileUp();
+
+  // Selects the lower file
+  void SelectFileDown();
+
+  // Selects the left file
+  void SelectFileLeft();
+
+  // Selected the right file
+  void SelectFileRight();
 
   // Updates the node
   void Update();
-
-  // Moves the cursor up-wards
-  void MoveCursorUp();
-
-  // Moves the cursor down-wards
-  void MoveCursorDown();
-
-  // Moves the cursor to the left
-  void MoveCursorLeft();
-
-  // Moves the cursor to the right
-  void MoveCursorRight();
 
  private:
   // Copy Constructor
@@ -188,22 +154,13 @@ class Node final : public base::Complex, public std::enable_shared_from_this<Nod
   const unsigned int depth_;
 
   // The cursor position
-  glm::vec2 cursor_position_;
+  glm::uvec2 cursor_position_;
 
   // The origin line
   const std::shared_ptr<base::Line> origin_line_;
 
-  // The node cursor
-  const std::shared_ptr<node::Cursor> cursor_;
-
   // The node details
   const std::shared_ptr<node::Details> details_;
-
-  // The selected node
-  std::shared_ptr<Node> selected_node_;
-
-  // Opened nodes
-  std::unordered_map<unsigned int, std::shared_ptr<Node>> opened_nodes_;
 };
 
 }  // namespace object

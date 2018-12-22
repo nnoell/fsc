@@ -23,7 +23,8 @@ namespace base {
 class Line final : public Simple {
  public:
   // Constructor
-  Line(std::vector<glm::vec3> points, glm::vec4 color, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Line(std::vector<glm::vec3> points, glm::vec4 color,
+      transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
   // Destructor
   virtual ~Line();
@@ -34,8 +35,8 @@ class Line final : public Simple {
   // Sets the points
   void SetPoints(std::vector<glm::vec3> points);
 
-  // Draw the line
-  void ModelDraw(const glm::mat4& model = {}) const override;
+  // Draws the line
+  void Draw() const override;
 
  private:
   // Copy Constructor

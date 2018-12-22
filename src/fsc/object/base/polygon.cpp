@@ -12,8 +12,9 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe, TransformData transform_data) :
-    Simple(std::move(color), std::move(transform_data)),
+Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wireframe,
+    transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
+    Simple(std::move(color), std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     vertices_data_(vertices_data),
     wireframe_(wireframe) {
 }
@@ -21,10 +22,10 @@ Polygon::Polygon(const vertices::Data& vertices_data, glm::vec4 color, bool wire
 Polygon::~Polygon() {
 }
 
-void Polygon::ModelDraw(const glm::mat4& model) const {
+void Polygon::Draw() const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
-  Pipeline::GetInstance().SetMat4("model_", model);
+  Pipeline::GetInstance().SetMat4("model_", GetModel());
   Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL

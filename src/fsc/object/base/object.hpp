@@ -11,24 +11,15 @@
 // PUBLIC
 #include <fsc/external.hpp>
 
+// FSC
+#include "transformer/model.hpp"
+#include "transformer/rotate.hpp"
+#include "transformer/scale.hpp"
+#include "transformer/translate.hpp"
+
 namespace fsc {
 namespace object {
 namespace base {
-
-// The transform data type
-struct TransformData {
-  // The position
-  glm::vec3 position;
-
-  // The size
-  glm::vec3 scale;
-
-  // The radians
-  float radians;
-
-  // The axes
-  glm::vec3 axes;
-};
 
 // The Object base class
 class Object {
@@ -39,11 +30,32 @@ class Object {
   // Gets the Id
   unsigned int GetId() const;
 
-  // Checks whether the object is complex or not
-  virtual const bool IsComplex() const = 0;
+  // Gets the translate transformer
+  const transformer::Translate& GetTransformerTranslate() const;
 
-  // Sets the transform data
-  void SetTransformData(TransformData transform_data);
+  // Gets the scale transformer
+  const transformer::Scale& GetTransformerScale() const;
+
+  // Gets the rotate transformer
+  const transformer::Rotate& GetTransformerRotate() const;
+
+  // Gets the model transformer
+  const transformer::Model& GetTransformerModel() const;
+
+  // Translates the object given a translate transformer
+  Object& Translate(transformer::Translate translate);
+
+  // Scales the object given a scale transformer
+  Object& Scale(transformer::Scale scale);
+
+  // Rotates the object given a rotate transformer
+  Object& Rotate(transformer::Rotate rotate);
+
+  // Models the object given a model transformer
+  Object& Model(transformer::Model model);
+
+  // Gets the dimension
+  glm::vec3 GetDimension() const;
 
   // Gets the top vertex
   glm::vec3 GetVertexTop() const;
@@ -52,35 +64,20 @@ class Object {
   glm::vec3 GetVertexCenter() const;
 
   // Gets the max vertex
-  glm::vec3 GetVertexMax() const;
-
-  // Gets the max vertex using a specific model
-  virtual glm::vec3 GetModelVertexMax(const glm::mat4& model = {}) const = 0;
+  virtual glm::vec3 GetVertexMax() const = 0;
 
   // Gets the min vertex
-  glm::vec3 GetVertexMin() const;
-
-  // Gets the min vertex using a specific model
-  virtual glm::vec3 GetModelVertexMin(const glm::mat4& model = {}) const = 0;
-
-  // Gets the dimension
-  glm::vec3 GetDimension() const;
-  
-  // Transforms the object
-  glm::mat4 Transform() const;
-
-  // Transforms the object using a specific model
-  glm::mat4 ModelTransform(const glm::mat4& model = {}) const;
+  virtual glm::vec3 GetVertexMin() const = 0;
 
   // Draws the object
-  void Draw() const;
+  virtual void Draw() const = 0;
 
-  // Draws using a specific model
-  virtual void ModelDraw(const glm::mat4& model = {}) const = 0;
+  // Re-calculates the model matrix
+  virtual void RefreshModel() = 0;
 
  protected:
   // Constructor
-  Object(TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Object(transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
  private:
   // Copy Constructor
@@ -99,11 +96,17 @@ class Object {
   // The Id
   const unsigned int id_;
 
-  // The transform data
-  TransformData transform_data_;
+  // The translate transformer
+  transformer::Translate translate_transformer_;
 
-  // The model matrix
-  glm::mat4 model_;
+  // The scale transformer
+  transformer::Scale scale_transformer_;
+
+  // The rotate transformer
+  transformer::Rotate rotate_transformer_;
+
+  // The model transformer
+  transformer::Model model_transformer_;
 };
 
 }  // namespace base

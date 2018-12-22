@@ -12,8 +12,8 @@ namespace fsc {
 namespace object {
 namespace base {
 
-Ascii::Ascii(std::string ascii, glm::vec4 color, TransformData transform_data) :
-    Complex(std::move(transform_data)),
+Ascii::Ascii(std::string ascii, glm::vec4 color, transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
+    Complex(std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     ascii_(std::move(ascii)),
     color_(std::move(color)) {
   // Update the objects
@@ -39,7 +39,7 @@ void Ascii::Update() {
   // Add the new objects
   float next_pos = 0.0f;
   for (auto&& c : ascii_) {
-    auto character = std::make_shared<Character>(c, color_, TransformData {{next_pos, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, glm::radians(0.0f), {1.0f, 1.0f, 0.0f}});
+    const std::shared_ptr<Character> character = std::make_shared<Character>(c, color_, transformer::Translate {{next_pos, 0.0f, 0.0f}});
     next_pos += character->GetNextPosition();
     AddObject(std::move(character));
   }

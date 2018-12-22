@@ -5,53 +5,51 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
-// STL
-#include <string>
-
 // PUBLIC
 #include <fsc/external.hpp>
 
 // FSC
-#include "base/complex.hpp"
+#include "base/polygon.hpp"
+#include "base/ascii.hpp"
 
 namespace fsc {
 namespace object {
 
-// The Plane class
-class Plane final : public base::Complex {
+// The folder Cursor class
+class Cursor final : public base::Complex {
  public:
   // Constructor
-  Plane(unsigned int width, unsigned int height, float scale_factor, glm::vec4 color,
+  Cursor(std::string text,
       base::transformer::Translate translate = {}, base::transformer::Scale scale = {}, base::transformer::Rotate rotate = {}, base::transformer::Model model = {});
 
   // Destructor
-  virtual ~Plane();
+  virtual ~Cursor();
+
+  // Gets the text
+  std::string GetText() const;
+
+  // Sets the text
+  void SetText(std::string text);
 
  private:
   // Copy Constructor
-  Plane(const Plane&) = delete;
+  Cursor(const Cursor&) = delete;
 
   // Move Constructor
-  Plane(Plane &&) = delete;
+  Cursor(Cursor &&) = delete;
 
   // Copy-Assign Constructor
-  Plane& operator=(const Plane&) = delete;
+  Cursor& operator=(const Cursor&) = delete;
 
   // Move-Assign Constructr
-  Plane& operator=(Plane &&) = delete;
+  Cursor& operator=(Cursor &&) = delete;
 
  private:
-  // The width of the plane
-  const unsigned int width_;
+  // The pointer object
+  std::shared_ptr<base::Polygon> pointer_;
 
-  // The height of the plane
-  const unsigned int height_;
-
-  // The scale of the plane
-  float scale_factor_;
-
-  // The color
-  glm::vec4 color_;
+  // The text object
+  std::shared_ptr<base::Ascii> text_;
 };
 
 }  // namespace object

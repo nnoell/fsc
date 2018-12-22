@@ -20,7 +20,8 @@ namespace base {
 class Character final : public Simple {
  public:
   // Constructor
-  Character(char character, glm::vec4 color = glm::vec4 {0.5, 1.0f, 0.0f, 1.0f}, TransformData transform_data = {{0.0f, 0.0f, 0.0f}, {1.0f, 1.0f, 1.0f}, 0, {1.0f, 1.0f, 1.0f}});
+  Character(char character, glm::vec4 color = glm::vec4 {0.5, 1.0f, 0.0f, 1.0f},
+      transformer::Translate translate = {}, transformer::Scale scale = {}, transformer::Rotate rotate = {}, transformer::Model model = {});
 
   // Destructor
   virtual ~Character();
@@ -32,10 +33,10 @@ class Character final : public Simple {
   void SetCharacter(char character);
 
   // Gets the next position for the next character
-  double GetNextPosition() const;
+  float GetNextPosition() const;
 
   // Draws the text object
-  void ModelDraw(const glm::mat4& model = {}) const override;
+  void Draw() const override;
 
  private:
   // Copy Constructor
