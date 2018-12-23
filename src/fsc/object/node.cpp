@@ -71,10 +71,8 @@ Node::Node(const File& file, std::shared_ptr<Node> parent,
     parent_(std::move(parent)),
     depth_(!parent_ ? 0 : parent_->GetDepth() + 1),
     cursor_position_({0.0f, 0.0f}),
-    origin_line_(std::make_shared<base::Line>(std::vector<glm::vec3>{file_.GetVertexCenter(), folder_->GetVertexCenter()}, glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f})),
     details_(std::make_shared<node::Details>(nullptr, 0, file_.GetPath().string())) {
   AddObject(folder_);
-  // AddObject(origin_line_);
   AddObject(details_);
 
   // Update the node

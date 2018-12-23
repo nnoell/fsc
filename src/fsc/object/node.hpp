@@ -156,9 +156,6 @@ class Node final : public base::Complex {
   // The cursor position
   glm::uvec2 cursor_position_;
 
-  // The origin line
-  const std::shared_ptr<base::Line> origin_line_;
-
   // The node details
   const std::shared_ptr<node::Details> details_;
 };
