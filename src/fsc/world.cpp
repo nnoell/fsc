@@ -89,7 +89,7 @@ void World::OpenSelected() {
     return;
 
   // Check if the file is already open and create the node if it is not
-  std::shared_ptr<object::Node> node = FindNode(file->GetId());
+  std::shared_ptr<object::Node> node = FindNode([&](std::shared_ptr<object::Node> node) { return node->GetFile().GetId() == file->GetId();});
   if (!node) {
     // Create and add the node to the list
     node = std::make_shared<object::Node>(*file, selected_node_);
@@ -136,12 +136,12 @@ void World::RemoveNode(std::shared_ptr<object::Node> node) {
       }));
 }
 
-std::shared_ptr<object::Node> World::FindNode(unsigned int file_id) const {
+std::shared_ptr<object::Node> World::FindNode(std::function<bool(std::shared_ptr<object::Node>)> find_func) const {
   unsigned int key = 0;
   auto it = opened_nodes_map_.find(key);
   while (it != opened_nodes_map_.end()) {
     for (auto&& n : it->second)
-      if (n->GetFile().GetId() == file_id)
+      if (find_func(n))
         return n;
     ++key;
     it = opened_nodes_map_.find(key);

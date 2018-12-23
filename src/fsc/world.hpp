@@ -5,6 +5,9 @@
 // Maintainer  :  Julian Bouzas - nnoell3[at]gmail.com
 //----------------------------------------------------------------------------------------------------------------------
 
+// STL
+#include <functional>
+
 // PUBLIC
 #include <fsc/external.hpp>
 
@@ -52,7 +55,7 @@ class World final {
   void RemoveNode(std::shared_ptr<object::Node> node);
 
   // Finds a node in the map given it's Id
-  std::shared_ptr<object::Node> FindNode(unsigned int file_id) const;
+  std::shared_ptr<object::Node> FindNode(std::function<bool(std::shared_ptr<object::Node>)> find_func) const;
 
   // Updates the cursor position
   void UpdateCursorPosition();
