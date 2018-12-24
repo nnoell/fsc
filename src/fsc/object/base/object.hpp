@@ -60,6 +60,9 @@ class Object {
   // Gets the top vertex
   glm::vec3 GetVertexTop() const;
 
+  // Gets the front vertex
+  glm::vec3 GetVertexFront() const;
+
   // Gets the middle vertex
   glm::vec3 GetVertexCenter() const;
 

@@ -14,11 +14,22 @@
 // FSC
 #include "object/base/ascii.hpp"
 #include "object/node.hpp"
+#include "object/base/line.hpp"
 
 namespace fsc {
 
 // The World class
 class World final {
+ public:
+  // The Node Info type
+  struct NodeInfo {
+    // The node
+    std::shared_ptr<object::Node> node;
+
+    // The origin line
+    std::shared_ptr<object::base::Line> line;
+  };
+
  public:
   // Constructor
   World(int width, int height, glm::vec4 color);
@@ -55,7 +66,7 @@ class World final {
   void RemoveNode(std::shared_ptr<object::Node> node);
 
   // Finds a node in the map given it's Id
-  std::shared_ptr<object::Node> FindNode(std::function<bool(std::shared_ptr<object::Node>)> find_func) const;
+  std::shared_ptr<object::Node> FindNode(std::function<bool(const NodeInfo&)> find_func) const;
 
   // Updates the cursor position
   void UpdateCursorPosition();
@@ -102,7 +113,7 @@ class World final {
   glm::vec3 max_dimension_;
 
   // The map with all opened nodes
-  std::unordered_map<unsigned int, std::vector<std::shared_ptr<object::Node> > > opened_nodes_map_;
+  std::unordered_map<unsigned int, std::vector<NodeInfo> > opened_nodes_;
 };
 
 }  // namespace fsc

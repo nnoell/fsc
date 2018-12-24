@@ -98,6 +98,10 @@ unsigned int Node::GetDepth() const {
   return depth_;
 }
 
+const node::Details& Node::GetDetails() const {
+  return *details_;
+}
+
 std::shared_ptr<File> Node::GetSelectedFile() const {
   return folder_->GetFile(cursor_position_.x, cursor_position_.y);
 }

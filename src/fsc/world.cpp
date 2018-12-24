@@ -19,7 +19,7 @@ World::World(int width, int height, glm::vec4 color) :
     root_node_(std::make_shared<object::Node>(root_file_, nullptr)),
     selected_node_(root_node_),
     max_dimension_(root_node_->GetDimension()),
-    opened_nodes_map_() {
+    opened_nodes_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
 
@@ -49,12 +49,15 @@ void World::Update() const {
 
   // Draw all the opened nodes
   unsigned int key = 0;
-  auto it = opened_nodes_map_.find(key);
-  while (it != opened_nodes_map_.end()) {
-    for (auto&& n : it->second)
-      n->Draw();
+  auto it = opened_nodes_.find(key);
+  while (it != opened_nodes_.end()) {
+    for (const auto& ni : it->second) {
+      ni.node->Draw();
+      if (ni.line)
+        ni.line->Draw();
+    }
     ++key;
-    it = opened_nodes_map_.find(key);
+    it = opened_nodes_.find(key);
   }
 }
 
@@ -89,7 +92,7 @@ void World::OpenSelected() {
     return;
 
   // Check if the file is already open and create the node if it is not
-  std::shared_ptr<object::Node> node = FindNode([&](std::shared_ptr<object::Node> node) { return node->GetFile().GetId() == file->GetId();});
+  std::shared_ptr<object::Node> node = FindNode([&](const NodeInfo& ni) { return ni.node->GetFile().GetId() == file->GetId();});
   if (!node) {
     // Create and add the node to the list
     node = std::make_shared<object::Node>(*file, selected_node_);
@@ -122,29 +125,43 @@ void World::SelectParent() {
 
 void World::AddNode(std::shared_ptr<object::Node> node) {
   const unsigned int key = node->GetDepth();
-  if (opened_nodes_map_.find(key) == opened_nodes_map_.end())
-    opened_nodes_map_[key] = {};
-  opened_nodes_map_[key].push_back(std::move(node));
+  if (opened_nodes_.find(key) == opened_nodes_.end())
+    opened_nodes_[key] = {};
+
+  // Create the origin line if the n ode has a parent
+  std::shared_ptr<object::base::Line> line = nullptr;
+  if (node->GetParent()) {
+    line = std::make_shared<object::base::Line>(
+      std::vector<glm::vec3> {
+          node->GetFile().GetVertexCenter(),
+          node->GetDetails().GetVertexFront()
+      },
+      glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}
+    );
+  }
+
+  // Create the node info and add it
+  opened_nodes_[key].push_back({node, line});
 }
 
 void World::RemoveNode(std::shared_ptr<object::Node> node) {
   const unsigned int node_id = node->GetId();
-  auto&& nodes_ = opened_nodes_map_[node->GetDepth()];
+  auto&& nodes_ = opened_nodes_[node->GetDepth()];
   nodes_.erase(std::remove_if(nodes_.begin(), nodes_.end(),
-      [&](const std::shared_ptr<object::Node>& n){
-        return n->GetId() == node_id;
+      [&](const NodeInfo& ni){
+        return ni.node->GetId() == node_id;
       }));
 }
 
-std::shared_ptr<object::Node> World::FindNode(std::function<bool(std::shared_ptr<object::Node>)> find_func) const {
+std::shared_ptr<object::Node> World::FindNode(std::function<bool(const NodeInfo&)> find_func) const {
   unsigned int key = 0;
-  auto it = opened_nodes_map_.find(key);
-  while (it != opened_nodes_map_.end()) {
-    for (auto&& n : it->second)
-      if (find_func(n))
-        return n;
+  auto it = opened_nodes_.find(key);
+  while (it != opened_nodes_.end()) {
+    for (const auto& ni : it->second)
+      if (find_func(ni))
+        return ni.node;
     ++key;
-    it = opened_nodes_map_.find(key);
+    it = opened_nodes_.find(key);
   }
   return nullptr;
 }
@@ -161,15 +178,17 @@ void World::UpdateCursorPosition() {
 void World::UpdateNodePosition() {
   constexpr float gap = 10.0f;
   unsigned int key = 0;
-  auto it = opened_nodes_map_.find(key);
-  while (it != opened_nodes_map_.end()) {
+  auto it = opened_nodes_.find(key);
+  while (it != opened_nodes_.end()) {
     unsigned int i = 0;
     for (auto&& n : it->second) {
-      n->Translate(glm::vec3 {i * (max_dimension_.x + gap), 0.0f, -1.0f * key * (max_dimension_.z + gap)});
+      n.node->Translate(glm::vec3 {i * (max_dimension_.x + gap), 0.0f, -1.0f * key * (max_dimension_.z + gap)});
+      if (n.line)
+        n.line->SetPoints({n.node->GetFile().GetVertexCenter(), n.node->GetDetails().GetVertexFront()});
       ++i;
     }
     ++key;
-    it = opened_nodes_map_.find(key);
+    it = opened_nodes_.find(key);
   }
 }
 

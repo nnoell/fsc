@@ -85,6 +85,12 @@ glm::vec3 Object::GetVertexTop() const {
   return {center.x, max.y, center.z};
 }
 
+glm::vec3 Object::GetVertexFront() const {
+  const glm::vec3 max = GetVertexMax();
+  const glm::vec3 center = GetVertexCenter();
+  return {center.x, center.y, max.z};
+}
+
 glm::vec3 Object::GetVertexCenter() const {
   glm::vec3 center = GetVertexMax() + GetVertexMin();
   center /= 2.0f;

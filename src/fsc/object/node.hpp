@@ -109,6 +109,9 @@ class Node final : public base::Complex {
   // Gets the depth
   unsigned int GetDepth() const;
 
+  // Gets the details
+  const node::Details& GetDetails() const;
+
   // Gets the selected file
   std::shared_ptr<File> GetSelectedFile() const;
 
