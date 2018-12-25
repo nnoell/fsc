@@ -29,8 +29,6 @@ void Polygon::Draw() const {
   Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL
-  glDisable(GL_CULL_FACE);
-  glDisable(GL_BLEND);
   if (wireframe_)
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
   else

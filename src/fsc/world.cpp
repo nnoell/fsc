@@ -22,6 +22,7 @@ World::World(int width, int height, glm::vec4 color) :
     opened_nodes_() {
   // Configure opengl to remeber depth
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
 
   // Add the root node to the map
   AddNode(root_node_);

@@ -32,11 +32,21 @@ static const float pyramid_vertices_[] = {
   // Left
   0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
   -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 0.0f,
-  -1.0f,-1.0f, 1.0f, 1.0f, 0.0f, 0.0f
+  -1.0f,-1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+
+  // Bottom 1
+  -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+  -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+  1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+
+  // Bottom 2
+  1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+  1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f,
+  -1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 0.0f
 };
 
 const Data& GetPyramid() {
-  static const Data pyramid_data {pyramid_vertices_, 12, 6};
+  static const Data pyramid_data {pyramid_vertices_, 18, 6};
   return pyramid_data;
 }
 

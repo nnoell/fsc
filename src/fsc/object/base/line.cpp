@@ -63,8 +63,6 @@ void Line::Draw() const {
   Pipeline::GetInstance().SetVec4("color_", GetColor());
 
   // Configure OpenGL
-  glDisable(GL_CULL_FACE);
-  glDisable(GL_BLEND);
   glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // The stride of the vertex
