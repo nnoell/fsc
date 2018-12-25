@@ -26,7 +26,7 @@ Key Bindings
  - `R`: Reset camera position
  - `F`: Reset camera angle
  - `Up`: Select upper file
- - `Down: Select lower file
+ - `Down`: Select lower file
  - `Left`: Select left file
  - `Right`: Select right file
  - `Enter`: Open selected folder
