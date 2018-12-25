@@ -136,7 +136,7 @@ void World::AddNode(std::shared_ptr<object::Node> node) {
           node->GetFile().GetVertexCenter(),
           node->GetDetails().GetVertexFront()
       },
-      glm::vec4 {1.0f, 0.0f, 0.0f, 1.0f}
+      glm::vec4 {1.0f, 0.5f, 0.2f, 1.0f}
     );
   }
 
