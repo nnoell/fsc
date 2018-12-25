@@ -29,14 +29,15 @@ class Line final : public Simple {
   // Destructor
   virtual ~Line();
 
-  // Updates the line
-  void Update();
-
   // Sets the points
   void SetPoints(std::vector<glm::vec3> points);
 
   // Draws the line
   void Draw() const override;
+
+ private:
+  // Updates the line
+  void Update();
 
  private:
   // Copy Constructor
@@ -60,6 +61,12 @@ class Line final : public Simple {
 
   // The vertices of the line
   std::shared_ptr<float []> vertices_;
+
+  // The Vertex Array Object
+  unsigned int vao_;
+
+  // The Vertex Buffer Object
+  unsigned int vbo_;
 };
 
 }  // namespace base

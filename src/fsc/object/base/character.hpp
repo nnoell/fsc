@@ -39,6 +39,10 @@ class Character final : public Simple {
   void Draw() const override;
 
  private:
+  // Updates the changes
+  void Update();
+
+ private:
   // Copy Constructor
   Character(const Character&) = delete;
 
@@ -57,6 +61,12 @@ class Character final : public Simple {
 
   // The vertices data
   std::shared_ptr<const vertices::CharData> vertices_data_;
+
+  // The Vertex Array Object
+  unsigned int vao_;
+
+  // The buffer Array Object
+  unsigned int vbo_;
 };
 
 }  // namespace base

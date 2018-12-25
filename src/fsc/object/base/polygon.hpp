@@ -51,6 +51,12 @@ class Polygon : public Simple {
 
   // Whether it is in wireframe mode or not
   bool wireframe_;
+
+  // The vertex array object
+  unsigned int vao_;
+
+  // The vertex buffer object
+  unsigned int vbo_;
 };
 
 }  // namespace base

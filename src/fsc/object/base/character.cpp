@@ -16,21 +16,30 @@ namespace base {
 Character::Character(char character, glm::vec4 color,
       transformer::Translate translate, transformer::Scale scale, transformer::Rotate rotate, transformer::Model model) :
     Simple(std::move(color), std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
-    character_(character),
-    vertices_data_(vertices::Font::GetInstance().GetCharVerticesData(character_)) {
+    character_(std::move(character)),
+    vertices_data_(vertices::Font::GetInstance().GetCharVerticesData(character_)),
+    vao_(0),
+    vbo_(0) {
+  // Update the character
+  Update();
 }
 
 Character::~Character() {
+  // Release VAO and VBO
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
 }
 
 char Character::GetCharacter() const {
   return character_;
 }
 
-
 void Character::SetCharacter(char character) {
   character_ = character;
   vertices_data_ = vertices::Font::GetInstance().GetCharVerticesData(character_);
+  Update();
 }
 
 float Character::GetNextPosition() const {
@@ -46,16 +55,33 @@ void Character::Draw() const {
   // Configure OpenGL to render text
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-  glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-  // Generate VAO and VBO
-  GLuint vao = 0, vbo = 0;
-  glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
+  // Bind texture
+  glBindTexture(GL_TEXTURE_2D, vertices_data_->texture);
+
+  // Draw
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_TRIANGLES, 0, vertices_data_->num_vertices);
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+  // Unbind texture
+  glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Character::Update() {
+  // Release VAO and VBO
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
+
+  // Generate
+  glGenVertexArrays(1, &vao_);
+  glGenBuffers(1, &vbo_);
 
   // Bind VAO and VBO
-  glBindVertexArray(vao);
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindVertexArray(vao_);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
 
   // Configure Buffer
   glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices_data_->stride * vertices_data_->num_vertices, NULL, GL_DYNAMIC_DRAW);
@@ -69,25 +95,9 @@ void Character::Draw() const {
   // Configure VBO
   glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * vertices_data_->stride * vertices_data_->num_vertices, vertices_data_->vertices.get());
 
-  // Activate render state
-  glActiveTexture(GL_TEXTURE0);
-
-  // Bind texture
-  glBindTexture(GL_TEXTURE_2D, vertices_data_->texture);
-
-  // Draw
-  glDrawArrays(GL_TRIANGLES, 0, vertices_data_->num_vertices);
-
-  // Unbind texture
-  glBindTexture(GL_TEXTURE_2D, 0);
-
   // Unbind VAO and VBO
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
-
-  // Delete VAO and VBO
-  glDeleteBuffers(1, &vbo);
-  glDeleteVertexArrays(1, &vao);
 }
 
 }  // namespace base

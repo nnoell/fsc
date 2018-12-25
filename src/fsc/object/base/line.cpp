@@ -17,11 +17,39 @@ Line::Line(std::vector<glm::vec3> points, glm::vec4 color,
     Simple(std::move(color), std::move(translate), std::move(scale), std::move(rotate), std::move(model)),
     points_(std::move(points)),
     num_vertices_(0),
-    vertices_(nullptr) {
+    vertices_(nullptr),
+    vao_(0),
+    vbo_(0) {
   Update();
 }
 
 Line::~Line() {
+  // Release VAO and VBO
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
+}
+
+void Line::SetPoints(std::vector<glm::vec3> points) {
+  points_ = std::move(points);
+  Update();
+}
+
+void Line::Draw() const {
+  // Return if there are no points
+  if (points_.size() == 0)
+    return;
+
+  // Set the pipeline
+  Pipeline::GetInstance().SetBool("is_text_", false);
+  Pipeline::GetInstance().SetMat4("model_", GetModel());
+  Pipeline::GetInstance().SetVec4("color_", GetColor());
+  
+  // Draw
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_LINES, 0, num_vertices_);
+  glBindVertexArray(0);
 }
 
 void Line::Update() {
@@ -45,42 +73,26 @@ void Line::Update() {
     vertices_[i++] = 0.0f;
     vertices_[i++] = 0.0f;
   }
-}
 
-void Line::SetPoints(std::vector<glm::vec3> points) {
-  points_ = std::move(points);
-  Update();
-}
+  // Release VAO and VBO
+  if (vbo_)
+    glDeleteBuffers(1, &vbo_);
+  if (vao_)
+    glDeleteVertexArrays(1, &vao_);
 
-void Line::Draw() const {
-  // Return if there are no points
-  if (points_.size() == 0)
-    return;
-
-  // Set the pipeline
-  Pipeline::GetInstance().SetBool("is_text_", false);
-  Pipeline::GetInstance().SetMat4("model_", GetModel());
-  Pipeline::GetInstance().SetVec4("color_", GetColor());
-
-  // Configure OpenGL
-  glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-  // The stride of the vertex
-  constexpr unsigned int stride = 6;
-
-  // Generate
-  unsigned int vao = 0, vbo = 0;
-  glGenVertexArrays(1, &vao);
-  glGenBuffers(1, &vbo);
+  // Generate VAO and VBO
+  glGenVertexArrays(1, &vao_);
+  glGenBuffers(1, &vbo_);
 
   // Bind VAO
-  glBindVertexArray(vao);
+  glBindVertexArray(vao_);
 
   // Bind and set VBO
-  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, vbo_);
   glBufferData(GL_ARRAY_BUFFER, sizeof(float) * num_vertices_, vertices_.get(), GL_STATIC_DRAW);
 
   // Configure Vertex
+  constexpr unsigned int stride = 6;
   glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * stride, (void*)0);
   glEnableVertexAttribArray(0);
   // Configure Extra
@@ -90,15 +102,6 @@ void Line::Draw() const {
   // Unbind
   glBindBuffer(GL_ARRAY_BUFFER, 0);
   glBindVertexArray(0);
-
-  // Draw
-  glBindVertexArray(vao);
-  glDrawArrays(GL_LINES, 0, num_vertices_);
-  glBindVertexArray(0);
-
-  // Delete
-  glDeleteBuffers(1, &vbo);
-  glDeleteVertexArrays(1, &vao);
 }
 
 }  // namespace base
