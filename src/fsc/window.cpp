@@ -6,6 +6,7 @@
 
 // STL
 #include <sstream>
+#include <iostream>
 
 // FSC
 #include "window.hpp"
@@ -15,16 +16,17 @@ namespace fsc {
 
 // Initializes GLFW
 std::unique_ptr<const int, void(*)(const int*)> InitGlfw() {
+  // Sets the error callback
+  glfwSetErrorCallback([](int error, const char *description) {
+    std::cout << "Error: " << std::string(description) << std::endl;
+  });
+
   // Init GLFW
   const int res = glfwInit();
   if (res != GLFW_TRUE)
-    throw std::runtime_error("Error: Ccould not initialize GLFW");
+    throw std::runtime_error("Error: Could not initialize GLFW");
 
-  // Configure
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+  // Return the unique_ptr
   return {new int {res}, [](const int *res) { glfwTerminate(); delete res;}};
 }
 
@@ -35,7 +37,8 @@ Window::Window(unsigned int width, unsigned int height, std::string title) :
     key_callback_map_mutex_(),
     mouse_callback_mutex_(),
     key_callback_map_({{GLFW_KEY_ESCAPE, {[&](){glfwSetWindowShouldClose(window_.get(), true);}, false, false}}}),
-    mouse_callback_(nullptr) {
+    mouse_callback_(nullptr),
+    resize_callback_(nullptr) {
   if (!window_)
     throw std::runtime_error("Error: Could not create GLFW window");
 
