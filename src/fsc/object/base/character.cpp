@@ -50,7 +50,7 @@ void Character::Draw() const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", true);
   Pipeline::GetInstance().SetMat4("model_", GetModel());
-  Pipeline::GetInstance().SetVec4("color_", GetColor());
+  Pipeline::GetInstance().SetVec4("object_color_", GetColor());
 
   // Configure OpenGL to render text
   glEnable(GL_BLEND);

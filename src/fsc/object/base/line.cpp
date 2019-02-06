@@ -44,7 +44,7 @@ void Line::Draw() const {
   // Set the pipeline
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", GetModel());
-  Pipeline::GetInstance().SetVec4("color_", GetColor());
+  Pipeline::GetInstance().SetVec4("object_color_", GetColor());
   
   // Draw
   glBindVertexArray(vao_);
