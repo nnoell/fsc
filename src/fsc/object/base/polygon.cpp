@@ -55,6 +55,7 @@ void Polygon::Draw() const {
   Pipeline::GetInstance().SetBool("is_text_", false);
   Pipeline::GetInstance().SetMat4("model_", GetModel());
   Pipeline::GetInstance().SetVec4("object_color_", GetColor());
+  Pipeline::GetInstance().SetVec4("light_color_", glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f });
 
   // Configure
   if (wireframe_)
